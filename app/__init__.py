@@ -16,6 +16,9 @@ def create_app():
     os.makedirs(app.instance_path, exist_ok=True)
     app.config["DATABASE"] = os.path.join(app.instance_path, "scholarpath.db")
 
+    from . import db
+    db.init_app(app)
+
     @app.route("/")
     def index():
         return render_template("index.html")
