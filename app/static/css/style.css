@@ -192,6 +192,36 @@ nav, main, footer {
   color: #e11d48 !important;
 }
 
+/* Opportunities Pill Button: Always Sweet Pink */
+.nav-opportunities-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 1.1rem;
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  color: #ffffff !important;
+  border-radius: 25px !important;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.35) !important;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border: none;
+  text-decoration: none;
+}
+
+.nav-opportunities-pill:hover {
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important;
+  color: #ffffff !important;
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 18px rgba(244, 63, 94, 0.45) !important;
+}
+
+[data-theme="dark"] .nav-opportunities-pill {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(244, 63, 94, 0.45) !important;
+}
+
 .navbar-brand-logo {
   height: 38px;
   width: auto;

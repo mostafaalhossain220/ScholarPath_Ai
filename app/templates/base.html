@@ -35,23 +35,23 @@
 
       <div class="collapse navbar-collapse" id="spNav">
         <ul class="navbar-nav me-auto ms-lg-4 mb-2 mb-lg-0">
-          {% if g.user %}
-          <li class="nav-item">
-            <a class="nav-link sp-nav-link" href="{{ url_for('opportunities.list_opportunities') }}">
-              <i class="bi bi-grid-3x3-gap"></i> Opportunities
-            </a>
-          </li>
-          {% if matching_enabled %}
+          {% if g.user and matching_enabled %}
           <li class="nav-item">
             <a class="nav-link sp-nav-link" href="{{ url_for('matching.match') }}">
               <i class="bi bi-stars text-danger"></i> Find matches
             </a>
           </li>
           {% endif %}
-          {% endif %}
         </ul>
 
         <ul class="navbar-nav ms-auto align-items-center gap-2">
+          <!-- Opportunities Pill Button (Always Sweet Pink) -->
+          <li class="nav-item">
+            <a class="nav-opportunities-pill text-decoration-none" href="{{ url_for('opportunities.list_opportunities') }}" title="Browse Opportunities">
+              <i class="bi bi-grid-3x3-gap-fill"></i> Opportunities
+            </a>
+          </li>
+
           <!-- Night Mode / Theme Toggle -->
           <li class="nav-item">
             <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle Night Mode" title="Toggle Light / Night Mode">
