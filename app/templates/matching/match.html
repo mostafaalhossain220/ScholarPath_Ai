@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Find matches | ScholarPath AI{% endblock %}
+{% block content %}
+{% set badge = {
+  "satisfied": "success",
+  "not_satisfied": "danger",
+  "unclear": "warning",
+  "not_provided": "secondary",
+  "needs_verification": "warning"
+} %}
+
+<h1 class="h3 mb-1">Find opportunities that fit you</h1>
+<p class="text-muted">
+  Enter your profile. We rank opportunities by how close they are to your research interests
+  and show which requirements you meet.
+</p>
+
+{% for e in errors %}
+<div class="alert alert-danger py-2">{{ e }}</div>
+{% endfor %}
+
+<form method="post" class="card card-body mb-4">
+  <div class="row g-3">
+    <div class="col-md-3">
+      <label class="form-label" for="target_degree">Degree you want</label>
+      <select class="form-select" id="target_degree" name="target_degree">
+        <option value="">Any</option>
+        <option value="masters" {{ 'selected' if form.target_degree == 'masters' }}>Master's</option>
+        <option value="phd" {{ 'selected' if form.target_degree == 'phd' }}>PhD</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label" for="cgpa">CGPA (4.0 scale)</label>
+      <input class="form-control" id="cgpa" name="cgpa" value="{{ form.cgpa }}" placeholder="e.g. 3.4">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label" for="ielts">IELTS overall</label>
+      <input class="form-control" id="ielts" name="ielts" value="{{ form.ielts }}" placeholder="optional">
+    </div>
+    <div class="col-md-5">
+      <label class="form-label" for="preferred_countries">Preferred countries</label>
+      <input class="form-control" id="preferred_countries" name="preferred_countries"
+             value="{{ form.preferred_countries }}" placeholder="e.g. UK; USA; Germany">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label" for="field">Field of study</label>
+      <input class="form-control" id="field" name="field" value="{{ form.field }}"
+             placeholder="e.g. Computer Science">
+    </div>
+    <div class="col-md-8">
+      <label class="form-label" for="research_interests">Research interests</label>
+      <input class="form-control" id="research_interests" name="research_interests"
+             value="{{ form.research_interests }}"
+             placeholder="e.g. natural language processing, machine translation">
+    </div>
+    <div class="col-12">
+      <label class="form-label" for="skills">Skills (optional)</label>
+      <input class="form-control" id="skills" name="skills" value="{{ form.skills }}"
+             placeholder="e.g. Python, PyTorch">
+    </div>
+    <div class="col-12">
+      <button class="btn btn-primary" type="submit">Find matches</button>
+    </div>
+  </div>
+</form>
+
+{% if results is not none %}
+<div class="alert alert-warning">
+  The relevance score only orders opportunities. It is not a chance of admission or funding.
+  Eligibility results are advisory: confirm every requirement on the official source.
+</div>
+
+<h2 class="h5 mb-3">{{ results|length }} opportunities ranked</h2>
+
+{% for r in results %}
+{% set o = r.opportunity %}
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between flex-wrap">
+      <div>
+        <h3 class="h6 mb-1">
+          {{ loop.index }}.
+          <a href="{{ url_for('opportunities.detail', opportunity_id=o.id) }}">{{ o.title }}</a>
+        </h3>
+        <div class="text-muted small">
+          {{ o.provider }} &middot; {{ o.country or "Country not provided" }} &middot;
+          Deadline: {{ o.deadline or "Not provided" }}
+          <span class="badge text-bg-secondary ms-1">{{ o.degree_level }}</span>
+        </div>
+      </div>
+      <div class="text-end">
+        <div class="small text-muted">Relevance score</div>
+        <div class="fs-5">{{ "%.2f"|format(r.final_score) }}</div>
+        <span class="badge text-bg-{{ badge[r.eligibility.overall] }}">
+          {{ r.eligibility.overall.replace("_", " ") }}
+        </span>
+      </div>
+    </div>
+
+    <p class="mt-3 mb-1 fw-semibold small">Why it was recommended</p>
+    <ul class="small mb-2">
+      {% for reason in r.reasons %}
+      <li>{{ reason }}</li>
+      {% endfor %}
+    </ul>
+
+    <p class="mb-1 fw-semibold small">Requirements</p>
+    <ul class="list-unstyled small mb-0">
+      {% for req in r.eligibility.requirements %}
+      <li>
+        <span class="badge text-bg-{{ badge[req.status] }}">{{ req.status.replace("_", " ") }}</span>
+        <strong>{{ req.requirement }}:</strong> {{ req.reason }}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}
