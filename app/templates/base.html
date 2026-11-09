@@ -24,8 +24,9 @@
 
   <nav class="navbar navbar-expand-lg sp-navbar">
     <div class="container">
-      <a class="navbar-brand sp-brand d-flex align-items-center" href="/">
-        <img src="{{ url_for('static', filename='img/scholarpath-logo.png') }}" alt="ScholarPath AI" class="navbar-brand-logo" style="height: 38px; width: auto; object-fit: contain; background: #0b0718; padding: 2px 6px;">
+      <a class="navbar-brand sp-brand d-flex align-items-center gap-2" href="/">
+        <img src="{{ url_for('static', filename='img/scholarpath-icon.png') }}" alt="ScholarPath" class="sp-brand-icon-img">
+        <span class="sp-brand-text">ScholarPath <span class="sp-brand-ai-badge">Ai</span></span>
       </a>
 
       <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#spNav" aria-controls="spNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,13 +52,15 @@
         </ul>
 
         <ul class="navbar-nav ms-auto align-items-center gap-2">
-          {% if g.user %}
+          <!-- Night Mode / Theme Toggle -->
           <li class="nav-item">
-            <a href="{{ url_for('saved.tracker') }}" class="nav-saved-chip text-decoration-none" title="My Saved Scholarships & Tracker">
-              <i class="bi bi-bookmark-heart-fill text-danger"></i>
-              <span>My Saved</span>
-            </a>
+            <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle Night Mode" title="Toggle Light / Night Mode">
+              <i class="bi bi-moon-stars-fill theme-icon-moon"></i>
+              <i class="bi bi-sun-fill theme-icon-sun"></i>
+            </button>
           </li>
+
+          {% if g.user %}
           <li class="nav-item">
             <a href="{{ url_for('profile.edit') }}" class="user-pill text-decoration-none" title="View & Edit Academic Profile">
               <div class="user-avatar-mini">{{ g.user.name[0]|upper }}</div>

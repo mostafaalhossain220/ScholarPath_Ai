@@ -279,67 +279,20 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // =========================================================================
-  // 7. Interactive 3D Hardboard Depth Tilt ("Hardbord e jata deoa" Physics)
+  // 7. Night Mode Theme Toggle (Persisted in localStorage)
   // =========================================================================
-  const tiltCards = document.querySelectorAll(".tilt-press-card, .card:not(.table-card)");
+  const themeToggleBtn = document.getElementById("theme-toggle-btn");
+  const savedTheme = localStorage.getItem("sp-theme") || "light";
+  if (savedTheme === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
 
-  tiltCards.forEach((card) => {
-    card.classList.add("tilt-press-card");
-
-    // Add specular gloss sheen layer if not present
-    let sheen = card.querySelector(".card-sheen");
-    if (!sheen) {
-      sheen = document.createElement("div");
-      sheen.className = "card-sheen";
-      card.appendChild(sheen);
-    }
-
-    const MAX_TILT = 8; // degrees of tilt
-    let rafId = null;
-
-    function handleMove(e) {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      // Normalized coordinates from -1 (top/left) to +1 (bottom/right)
-      const normX = ((x / rect.width) * 2) - 1;
-      const normY = ((y / rect.height) * 2) - 1;
-
-      // "Hardbord e jata deoa": The side where cursor presses down tilts into the screen
-      // Top pressed (normY < 0) -> rotateX positive
-      // Bottom pressed (normY > 0) -> rotateX negative
-      // Left pressed (normX < 0) -> rotateY negative
-      // Right pressed (normX > 0) -> rotateY positive
-      const rotateX = (-normY * MAX_TILT).toFixed(2);
-      const rotateY = (normX * MAX_TILT).toFixed(2);
-
-      // Dynamic reactive shadow movement opposite to the tilt pressure
-      const shadowX = (-normX * 14).toFixed(1);
-      const shadowY = (-normY * 14 + 18).toFixed(1);
-
-      card.classList.remove("tilt-resting");
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.018, 1.018, 1.018)`;
-      card.style.boxShadow = `${shadowX}px ${shadowY}px 32px rgba(244, 63, 94, 0.18)`;
-
-      if (sheen) {
-        sheen.style.background = `radial-gradient(circle 280px at ${x}px ${y}px, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 70%)`;
-      }
-    }
-
-    card.addEventListener("mousemove", (e) => {
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => handleMove(e));
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", function () {
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      const nextTheme = isDark ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", nextTheme);
+      localStorage.setItem("sp-theme", nextTheme);
     });
-
-    card.addEventListener("mouseleave", () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      card.classList.add("tilt-resting");
-      card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
-      card.style.boxShadow = "";
-      if (sheen) {
-        sheen.style.background = "";
-      }
-    });
-  });
+  }
 });

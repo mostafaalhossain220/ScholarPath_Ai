@@ -29,7 +29,8 @@
       { base: "#fb7185", highlight: "#fff1f2", shadow: "#e11d48" }, // soft pastel blossom
     ];
 
-    const TOTAL_AMBIENT = Math.min(55, Math.max(28, Math.floor(width / 32)));
+    // Sparse, delicate ambient cherry blossom count
+    const TOTAL_AMBIENT = Math.min(14, Math.max(7, Math.floor(width / 130)));
     const ambientPetals = [];
     const cursorPetals = [];
 
@@ -39,16 +40,16 @@
       return {
         x: Math.random() * (width + 60) - 30,
         y: startY !== undefined ? startY : Math.random() * -height * 0.4,
-        size: 10 + Math.random() * 11,
-        speedY: 0.55 + Math.random() * 0.75, // slow, gentle falling speed
-        speedX: -0.3 + Math.random() * 0.7,
-        oscillationSpeed: 0.012 + Math.random() * 0.016, // gentle graceful side sway
+        size: 9 + Math.random() * 10,
+        speedY: 0.5 + Math.random() * 0.65, // slow, gentle falling speed
+        speedX: -0.25 + Math.random() * 0.55,
+        oscillationSpeed: 0.01 + Math.random() * 0.014, // gentle graceful side sway
         oscillationAngle: Math.random() * Math.PI * 2,
-        flipSpeed: 0.016 + Math.random() * 0.022, // slow realistic 3D tumbling
+        flipSpeed: 0.014 + Math.random() * 0.018, // slow realistic 3D tumbling
         flipAngle: Math.random() * Math.PI * 2,
         rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 0.9,
-        opacity: 0.85 + Math.random() * 0.15,
+        rotationSpeed: (Math.random() - 0.5) * 0.8,
+        opacity: 0.82 + Math.random() * 0.18,
         palette: palette,
       };
     }
@@ -106,35 +107,33 @@
       ctx.restore();
     }
 
-    // Cursor interaction
+    // Cursor interaction (sparse and subtle)
     let lastX = 0, lastY = 0;
     let throttleTimer = 0;
 
     function spawnCursorPetals(x, y, count, isBurst) {
+      if (cursorPetals.length >= 22) return; // Strict cap so it never clusters
+
       for (let i = 0; i < count; i++) {
         const palette = petalPalettes[Math.floor(Math.random() * petalPalettes.length)];
-        const angle = isBurst ? Math.random() * Math.PI * 2 : (Math.PI / 2) + (Math.random() - 0.5) * 1.4;
-        const speed = isBurst ? 1.4 + Math.random() * 2.2 : 0.65 + Math.random() * 1.1;
+        const angle = isBurst ? Math.random() * Math.PI * 2 : (Math.PI / 2) + (Math.random() - 0.5) * 1.2;
+        const speed = isBurst ? 1.2 + Math.random() * 1.8 : 0.55 + Math.random() * 0.9;
 
         cursorPetals.push({
-          x: x + (Math.random() - 0.5) * 10,
-          y: y + (Math.random() - 0.5) * 10,
+          x: x + (Math.random() - 0.5) * 8,
+          y: y + (Math.random() - 0.5) * 8,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          size: 8 + Math.random() * 9,
+          size: 7 + Math.random() * 8,
           rotation: Math.random() * 360,
-          rotationSpeed: (Math.random() - 0.5) * 1.8,
+          rotationSpeed: (Math.random() - 0.5) * 1.6,
           flipAngle: Math.random() * Math.PI * 2,
-          flipSpeed: 0.025 + Math.random() * 0.035,
+          flipSpeed: 0.02 + Math.random() * 0.03,
           life: 1.0,
-          decay: isBurst ? 0.008 + Math.random() * 0.007 : 0.01 + Math.random() * 0.008, // slower, lingering fade
-          opacity: 0.95,
+          decay: isBurst ? 0.01 + Math.random() * 0.008 : 0.014 + Math.random() * 0.01,
+          opacity: 0.9,
           palette: palette,
         });
-      }
-
-      if (cursorPetals.length > 90) {
-        cursorPetals.splice(0, cursorPetals.length - 90);
       }
     }
 
@@ -142,7 +141,7 @@
       const now = Date.now();
       const dist = Math.hypot(e.clientX - lastX, e.clientY - lastY);
 
-      if (dist > 18 && now - throttleTimer > 38) {
+      if (dist > 40 && now - throttleTimer > 100) {
         throttleTimer = now;
         lastX = e.clientX;
         lastY = e.clientY;
@@ -151,7 +150,7 @@
     });
 
     window.addEventListener("click", function (e) {
-      spawnCursorPetals(e.clientX, e.clientY, 7, true);
+      spawnCursorPetals(e.clientX, e.clientY, 5, true);
     });
 
     window.addEventListener("touchmove", function (e) {
