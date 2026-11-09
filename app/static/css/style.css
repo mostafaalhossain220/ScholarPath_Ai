@@ -713,7 +713,14 @@ nav, main, footer {
 }
 
 [data-theme="dark"] .sp-brand-text {
-  color: #f8fafc !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .sp-brand-ai-badge {
+  color: #ff4d88 !important;
+  border-color: #ff4d88 !important;
+  background: rgba(255, 77, 136, 0.18) !important;
+  box-shadow: 0 0 10px rgba(255, 77, 136, 0.45) !important;
 }
 
 [data-theme="dark"] .table {
