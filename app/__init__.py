@@ -19,9 +19,10 @@ def create_app():
     from . import db
     db.init_app(app)
 
-    from .routes import auth, opportunities, profile, saved
+    from .routes import auth, matching, opportunities, profile, saved
     app.register_blueprint(auth.bp)
     app.register_blueprint(opportunities.bp)
+    app.register_blueprint(matching.bp)
     app.register_blueprint(profile.bp)
     app.register_blueprint(saved.bp)
 
