@@ -1,0 +1,9 @@
+profile_id,target_degree,cgpa,ielts,field,preferred_countries,research_interests,skills
+P01,phd,3.4,,Computer Science,UK; USA,"natural language processing, machine translation","Python, PyTorch"
+P02,masters,3.2,6.5,Data Science,Germany; Sweden; Netherlands,"machine learning, data analysis","Python, SQL"
+P03,phd,3.6,7.0,Software Engineering,UK; USA,"software testing, program repair","Java, testing"
+P04,masters,3.0,6.0,Computer Science,Germany; China,"cybersecurity, computer networks","Linux, networking"
+P05,phd,3.5,6.5,Artificial Intelligence,UK,"human-centred AI, ethics of AI",Python
+P06,masters,3.3,6.5,Artificial Intelligence,Spain; Belgium; Netherlands,"artificial intelligence, deep learning","Python, TensorFlow"
+P07,phd,3.1,6.0,Computer Science,USA,"computer vision, medical image analysis","Python, OpenCV"
+P08,masters,2.9,6.0,Data Science,Germany,"business analytics, statistics","R, SQL"
