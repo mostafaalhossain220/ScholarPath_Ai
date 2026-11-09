@@ -19,8 +19,9 @@ def create_app():
     from . import db
     db.init_app(app)
 
-    from .routes import opportunities
+    from .routes import opportunities, matching
     app.register_blueprint(opportunities.bp)
+    app.register_blueprint(matching.bp)
 
     @app.route("/")
     def index():
