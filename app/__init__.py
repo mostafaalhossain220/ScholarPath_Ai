@@ -19,6 +19,9 @@ def create_app():
     from . import db
     db.init_app(app)
 
+    from .routes import opportunities
+    app.register_blueprint(opportunities.bp)
+
     @app.route("/")
     def index():
         return render_template("index.html")

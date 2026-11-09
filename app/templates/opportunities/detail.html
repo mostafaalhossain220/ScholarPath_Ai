@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ o.title }} | ScholarPath AI{% endblock %}
+{% block content %}
+<a href="{{ url_for('opportunities.list_opportunities') }}">&larr; Back to opportunities</a>
+
+<h1 class="h3 mt-3 mb-1">{{ o.title }}</h1>
+<p class="text-muted mb-3">
+  {{ o.provider }}
+  <span class="badge text-bg-secondary ms-2">{{ o.degree_level }}</span>
+</p>
+
+<div class="alert alert-warning">
+  This information was collected from the official source on
+  <strong>{{ o.last_checked or "an unknown date" }}</strong> and may have changed.
+  It is advisory only. Please confirm every detail on the official page before applying.
+</div>
+
+<table class="table">
+  <tbody>
+    <tr><th style="width: 200px">Country</th><td>{{ o.country or "Not provided" }}</td></tr>
+    <tr><th>Field</th><td>{{ o.field or "Not provided" }}</td></tr>
+    <tr><th>Deadline</th><td>{{ o.deadline or "Not provided" }}</td></tr>
+    <tr><th>Funding</th><td>{{ o.funding or "Not provided" }}</td></tr>
+    <tr><th>Minimum CGPA</th><td>{{ o.min_cgpa if o.min_cgpa is not none else "Not stated on the official page" }}</td></tr>
+    <tr><th>Minimum IELTS</th><td>{{ o.min_ielts if o.min_ielts is not none else "Not stated on the official page" }}</td></tr>
+    <tr><th>Description</th><td>{{ o.description or "Not provided" }}</td></tr>
+    <tr><th>Requirements</th><td>{{ o.requirements_text or "Not provided" }}</td></tr>
+    <tr><th>Last checked</th><td>{{ o.last_checked or "Not provided" }}</td></tr>
+  </tbody>
+</table>
+
+<a class="btn btn-primary" href="{{ o.source_url }}" target="_blank" rel="noopener noreferrer">
+  Open official source
+</a>
+{% endblock %}
