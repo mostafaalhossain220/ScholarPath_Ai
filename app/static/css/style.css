@@ -705,7 +705,7 @@ nav, main, footer {
 }
 
 /* ==========================================================================
-   Night Mode (Dark Sakura Theme)
+   Night Mode (Dark Sakura Theme) - Complete Legibility & High Contrast Overrides
    ========================================================================== */
 
 [data-theme="dark"] body {
@@ -717,7 +717,7 @@ nav, main, footer {
 }
 
 [data-theme="dark"] .sp-navbar {
-  background: rgba(15, 23, 42, 0.90) !important;
+  background: rgba(15, 23, 42, 0.92) !important;
   border-bottom-color: rgba(244, 63, 94, 0.28) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
 }
@@ -725,21 +725,33 @@ nav, main, footer {
 [data-theme="dark"] .card,
 [data-theme="dark"] .dashboard-banner,
 [data-theme="dark"] .auth-box-sweet {
-  background: rgba(17, 24, 39, 0.88) !important;
+  background: rgba(17, 24, 39, 0.90) !important;
   border: 1.5px solid rgba(244, 63, 94, 0.25) !important;
   color: #f1f5f9 !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important;
 }
 
+/* Headings and High-Contrast Typography */
 [data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3,
 [data-theme="dark"] h4, [data-theme="dark"] h5, [data-theme="dark"] h6,
 [data-theme="dark"] .display-5, [data-theme="dark"] .h1, [data-theme="dark"] .h2,
-[data-theme="dark"] .text-dark {
-  color: #f8fafc !important;
+[data-theme="dark"] .h3, [data-theme="dark"] .h4, [data-theme="dark"] .h5,
+[data-theme="dark"] .h6, [data-theme="dark"] .text-dark {
+  color: #ffffff !important;
 }
 
+/* Secondary & Muted text readable on dark canvas */
 [data-theme="dark"] .text-muted {
   color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .text-secondary {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .form-label,
+[data-theme="dark"] .form-check-label {
+  color: #cbd5e1 !important;
 }
 
 [data-theme="dark"] .sp-brand-text {
@@ -753,24 +765,107 @@ nav, main, footer {
   box-shadow: 0 0 10px rgba(255, 77, 136, 0.45) !important;
 }
 
+/* --------------------------------------------------------------------------
+   Table & Header Dark Mode Legibility (Fixes the white header & white pill bug)
+   -------------------------------------------------------------------------- */
 [data-theme="dark"] .table {
+  --bs-table-bg: transparent !important;
+  --bs-table-color: #f1f5f9 !important;
   color: #f1f5f9 !important;
-}
-
-[data-theme="dark"] .table td, [data-theme="dark"] .table th {
   border-color: rgba(255, 255, 255, 0.08) !important;
-  color: #f1f5f9 !important;
 }
 
-[data-theme="dark"] .opportunity-row:hover td {
-  background: rgba(244, 63, 94, 0.15) !important;
+/* Table Header - sleek dark slate with cool crystal silver text */
+[data-theme="dark"] .table thead,
+[data-theme="dark"] .table thead.table-light,
+[data-theme="dark"] thead.table-light,
+[data-theme="dark"] .table-light,
+[data-theme="dark"] th.table-light {
+  background-color: #1e293b !important;
+  --bs-table-bg: #1e293b !important;
+  color: #e2e8f0 !important;
+  border-bottom: 2px solid rgba(244, 63, 94, 0.4) !important;
 }
 
+[data-theme="dark"] .table th {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .table td {
+  background-color: transparent !important;
+  color: #cbd5e1 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Table interactive hover */
+[data-theme="dark"] .opportunity-row:hover td,
+[data-theme="dark"] .table-hover > tbody > tr:hover > * {
+  --bs-table-hover-bg: rgba(244, 63, 94, 0.14) !important;
+  background-color: rgba(244, 63, 94, 0.14) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .opportunity-title,
+[data-theme="dark"] .opportunity-row a {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .opportunity-row:hover .opportunity-title {
+  color: #fb7185 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Badges, Pills, and Deadline Visibility
+   -------------------------------------------------------------------------- */
+/* Deadline badge on dark background - glowing rose tint with crystal white date */
+[data-theme="dark"] .badge.text-bg-light,
+[data-theme="dark"] .text-bg-light {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  color: #fda4af !important;
+  border: 1px solid rgba(244, 63, 94, 0.45) !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="dark"] .badge.text-bg-secondary {
+  background-color: rgba(51, 65, 85, 0.85) !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(148, 163, 184, 0.3) !important;
+}
+
+[data-theme="dark"] .bg-light {
+  background-color: rgba(30, 41, 59, 0.75) !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Form Inputs, Search, Autocomplete & Calendar
+   -------------------------------------------------------------------------- */
 [data-theme="dark"] .form-control,
 [data-theme="dark"] .form-select,
-[data-theme="dark"] .input-sweet {
+[data-theme="dark"] .input-sweet,
+[data-theme="dark"] textarea.form-control {
   background-color: rgba(30, 41, 59, 0.95) !important;
   color: #f8fafc !important;
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus,
+[data-theme="dark"] .input-sweet:focus {
+  background-color: rgba(15, 23, 42, 0.98) !important;
+  color: #ffffff !important;
+  border-color: #f43f5e !important;
+  box-shadow: 0 0 0 0.25rem rgba(244, 63, 94, 0.25) !important;
+}
+
+[data-theme="dark"] .input-group-text,
+[data-theme="dark"] .input-group-text.bg-white {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  color: #94a3b8 !important;
   border-color: rgba(244, 63, 94, 0.35) !important;
 }
 
@@ -778,10 +873,184 @@ nav, main, footer {
   color: #64748b !important;
 }
 
+/* Custom Autocomplete dropdown */
+[data-theme="dark"] .autocomplete-dropdown {
+  background: rgba(17, 24, 39, 0.98) !important;
+  border-color: rgba(244, 63, 94, 0.4) !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-theme="dark"] .autocomplete-item {
+  color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .autocomplete-item:hover {
+  background-color: rgba(244, 63, 94, 0.22) !important;
+  color: #fb7185 !important;
+}
+
+/* Flatpickr Calendar in Dark Mode */
+[data-theme="dark"] .flatpickr-calendar {
+  background: rgba(17, 24, 39, 0.98) !important;
+  border: 1.5px solid rgba(244, 63, 94, 0.45) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .flatpickr-months {
+  border-bottom: 1px solid rgba(244, 63, 94, 0.3) !important;
+}
+
+[data-theme="dark"] .flatpickr-current-month,
+[data-theme="dark"] .flatpickr-current-month input.cur-year,
+[data-theme="dark"] span.flatpickr-weekday {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .flatpickr-day {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .flatpickr-day:hover {
+  background: rgba(244, 63, 94, 0.25) !important;
+  color: #fb7185 !important;
+  border-color: #f43f5e !important;
+}
+
+[data-theme="dark"] .flatpickr-day.prevMonthDay,
+[data-theme="dark"] .flatpickr-day.nextMonthDay {
+  color: #475569 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Tabs, Navigation & Action Buttons
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] .nav-pills {
+  background: rgba(17, 24, 39, 0.92) !important;
+  border: 1px solid rgba(244, 63, 94, 0.3) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .nav-pills .nav-link {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .nav-pills .nav-link:hover,
+[data-theme="dark"] .nav-pills .nav-link.active {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .auth-switcher-wrap {
+  background: rgba(30, 41, 59, 0.85) !important;
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+[data-theme="dark"] .auth-switcher-btn {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .auth-switcher-btn:hover {
+  color: #ffffff !important;
+}
+
+/* Outline Buttons */
+[data-theme="dark"] .btn-outline-secondary {
+  color: #cbd5e1 !important;
+  border-color: rgba(148, 163, 184, 0.4) !important;
+  background-color: rgba(30, 41, 59, 0.6) !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary:hover {
+  color: #ffffff !important;
+  background-color: rgba(244, 63, 94, 0.25) !important;
+  border-color: #f43f5e !important;
+}
+
+[data-theme="dark"] .btn-outline-danger {
+  color: #fb7185 !important;
+  border-color: rgba(244, 63, 94, 0.5) !important;
+  background-color: rgba(30, 41, 59, 0.6) !important;
+}
+
+[data-theme="dark"] .btn-outline-danger:hover {
+  background: linear-gradient(135deg, #fb7185, #f43f5e) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .btn-outline-primary {
+  color: #38bdf8 !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
+  background-color: rgba(30, 41, 59, 0.6) !important;
+}
+
+[data-theme="dark"] .btn-outline-primary:hover {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .btn-outline-success {
+  color: #34d399 !important;
+  border-color: rgba(52, 211, 153, 0.5) !important;
+  background-color: rgba(30, 41, 59, 0.6) !important;
+}
+
+[data-theme="dark"] .btn-outline-success:hover {
+  background-color: #059669 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .bg-white.bg-opacity-75 {
+  background-color: rgba(30, 41, 59, 0.85) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Alerts & Notifications in Dark Mode
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] .alert-info {
+  background-color: rgba(15, 23, 42, 0.92) !important;
+  border: 1px solid rgba(56, 189, 248, 0.4) !important;
+  color: #e0f2fe !important;
+}
+
+[data-theme="dark"] .alert-info strong {
+  color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .alert-warning {
+  background-color: rgba(45, 28, 12, 0.92) !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+  color: #fef3c7 !important;
+}
+
+[data-theme="dark"] .alert-warning strong {
+  color: #fbbf24 !important;
+}
+
+[data-theme="dark"] .alert-danger {
+  background-color: rgba(50, 15, 25, 0.92) !important;
+  border: 1px solid rgba(244, 63, 94, 0.45) !important;
+  color: #ffe4e6 !important;
+}
+
+[data-theme="dark"] .alert-success {
+  background-color: rgba(10, 40, 30, 0.92) !important;
+  border: 1px solid rgba(52, 211, 153, 0.4) !important;
+  color: #d1fae5 !important;
+}
+
+[data-theme="dark"] .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%) !important;
+}
+
+/* Footer & User Pill */
 [data-theme="dark"] .sp-footer {
-  background: rgba(15, 23, 42, 0.92) !important;
+  background: rgba(15, 23, 42, 0.94) !important;
   border-top-color: rgba(244, 63, 94, 0.25) !important;
   color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .sp-footer .text-dark {
+  color: #ffffff !important;
 }
 
 [data-theme="dark"] .user-pill {
@@ -792,20 +1061,6 @@ nav, main, footer {
 
 [data-theme="dark"] .feature-icon-box {
   background: rgba(244, 63, 94, 0.18) !important;
-  color: #fb7185 !important;
-}
-
-[data-theme="dark"] .autocomplete-dropdown {
-  background: rgba(17, 24, 39, 0.96) !important;
-  border-color: rgba(244, 63, 94, 0.35) !important;
-}
-
-[data-theme="dark"] .autocomplete-item {
-  color: #e2e8f0 !important;
-}
-
-[data-theme="dark"] .autocomplete-item:hover {
-  background-color: rgba(244, 63, 94, 0.22) !important;
   color: #fb7185 !important;
 }
 
