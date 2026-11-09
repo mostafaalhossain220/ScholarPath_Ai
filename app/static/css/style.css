@@ -494,39 +494,29 @@ nav, main, footer {
 }
 
 /* ==========================================================================
-   Custom Searchable Autocomplete Dropdown & Filter Card Elevation
+   Custom Searchable Autocomplete Dropdown
    ========================================================================== */
-
-.filter-card {
-  position: relative !important;
-  z-index: 100 !important;
-}
 
 .custom-autocomplete-wrap {
   position: relative;
-  z-index: 110;
-}
-
-.custom-autocomplete-wrap:focus-within {
-  z-index: 120;
 }
 
 .autocomplete-dropdown {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 4px);
   left: 0;
   right: 0;
-  z-index: 9999 !important;
+  z-index: 1050;
   display: none;
-  max-height: 280px;
+  max-height: 240px;
   overflow-y: auto;
-  background: rgba(255, 255, 255, 0.98) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border: 1.5px solid #fecdd3 !important;
-  border-radius: 14px !important;
-  box-shadow: 0 16px 36px rgba(244, 63, 94, 0.22), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-  padding: 6px !important;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid #fecdd3;
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(244, 63, 94, 0.16);
+  padding: 4px;
 }
 
 .autocomplete-item {
@@ -883,17 +873,11 @@ nav, main, footer {
   color: #64748b !important;
 }
 
-/* Custom Autocomplete dropdown in Dark Mode */
-[data-theme="dark"] .filter-card {
-  position: relative !important;
-  z-index: 100 !important;
-}
-
+/* Custom Autocomplete dropdown */
 [data-theme="dark"] .autocomplete-dropdown {
   background: rgba(17, 24, 39, 0.98) !important;
-  border: 1.5px solid rgba(244, 63, 94, 0.45) !important;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75), 0 0 20px rgba(244, 63, 94, 0.25) !important;
-  z-index: 9999 !important;
+  border-color: rgba(244, 63, 94, 0.4) !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6) !important;
 }
 
 [data-theme="dark"] .autocomplete-item {
