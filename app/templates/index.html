@@ -6,20 +6,20 @@
 <!-- ================= LOGGED IN DASHBOARD ================= -->
 <div class="row mb-4">
   <div class="col-12">
-    <div class="p-4 p-md-5 rounded-4 bg-white shadow-sm border border-light-subtle d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+    <div class="p-4 p-md-5 rounded-4 bg-white bg-opacity-95 shadow-sm border border-danger-subtle d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
       <div>
-        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-primary-subtle text-primary small fw-semibold mb-2">
-          <i class="bi bi-person-check-fill"></i> Authenticated Session
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-danger-subtle text-danger small fw-semibold mb-2">
+          <i class="bi bi-person-check-fill"></i> Welcome, {{ g.user.name }}
         </div>
-        <h1 class="h2 fw-bold mb-1">Welcome back, {{ g.user.name }}! 👋</h1>
-        <p class="text-muted mb-0">Ready to explore scholarship deadlines and find faculty positions tailored for you?</p>
+        <h1 class="h2 fw-bold mb-1">ScholarPath AI Dashboard</h1>
+        <p class="text-muted mb-0">Explore scholarship deadlines and find faculty positions tailored for you.</p>
       </div>
       <div class="d-flex gap-2 flex-wrap">
-        <a href="{{ url_for('opportunities.list_opportunities') }}" class="btn btn-primary px-3 py-2">
+        <a href="{{ url_for('opportunities.list_opportunities') }}" class="btn btn-sp-sweet px-3 py-2">
           <i class="bi bi-search me-1"></i> Browse Opportunities
         </a>
         {% if matching_enabled %}
-        <a href="{{ url_for('matching.match') }}" class="btn btn-outline-primary px-3 py-2">
+        <a href="{{ url_for('matching.match') }}" class="btn btn-outline-danger px-3 py-2 rounded-3">
           <i class="bi bi-stars me-1"></i> AI Match
         </a>
         {% endif %}
@@ -30,14 +30,14 @@
 
 <div class="row g-4 mb-4">
   <div class="col-md-4">
-    <div class="card h-100 border-0 shadow-sm rounded-4 p-3 hover-shadow transition">
+    <div class="card h-100 border-0 shadow-sm rounded-4 p-3">
       <div class="card-body">
-        <div class="feature-icon-box mb-3 text-primary bg-primary-subtle rounded-3 d-inline-flex p-3">
+        <div class="feature-icon-box mb-3 text-danger bg-danger-subtle rounded-3 d-inline-flex p-3">
           <i class="bi bi-mortarboard fs-3"></i>
         </div>
         <h3 class="h5 fw-bold mb-2">Opportunities Directory</h3>
-        <p class="text-muted small mb-3">Browse and search through curated, fully-funded Masters and PhD openings across top institutions.</p>
-        <a href="{{ url_for('opportunities.list_opportunities') }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+        <p class="text-muted small mb-3">Browse and search through curated, fully-funded Masters and PhD openings.</p>
+        <a href="{{ url_for('opportunities.list_opportunities') }}" class="btn btn-sm btn-outline-danger rounded-pill px-3">
           Explore List &rarr;
         </a>
       </div>
@@ -45,15 +45,15 @@
   </div>
 
   <div class="col-md-4">
-    <div class="card h-100 border-0 shadow-sm rounded-4 p-3 hover-shadow transition">
+    <div class="card h-100 border-0 shadow-sm rounded-4 p-3">
       <div class="card-body">
-        <div class="feature-icon-box mb-3 text-info bg-info-subtle rounded-3 d-inline-flex p-3">
+        <div class="feature-icon-box mb-3 text-danger bg-danger-subtle rounded-3 d-inline-flex p-3">
           <i class="bi bi-stars fs-3"></i>
         </div>
         <h3 class="h5 fw-bold mb-2">AI Matchmaking</h3>
         <p class="text-muted small mb-3">Compute semantic similarity between your research profile and faculty requirements.</p>
         {% if matching_enabled %}
-        <a href="{{ url_for('matching.match') }}" class="btn btn-sm btn-outline-info rounded-pill px-3">
+        <a href="{{ url_for('matching.match') }}" class="btn btn-sm btn-outline-danger rounded-pill px-3">
           Run Match &rarr;
         </a>
         {% else %}
@@ -64,14 +64,14 @@
   </div>
 
   <div class="col-md-4">
-    <div class="card h-100 border-0 shadow-sm rounded-4 p-3 hover-shadow transition">
+    <div class="card h-100 border-0 shadow-sm rounded-4 p-3">
       <div class="card-body">
-        <div class="feature-icon-box mb-3 text-success bg-success-subtle rounded-3 d-inline-flex p-3">
+        <div class="feature-icon-box mb-3 text-danger bg-danger-subtle rounded-3 d-inline-flex p-3">
           <i class="bi bi-bookmark-check fs-3"></i>
         </div>
         <h3 class="h5 fw-bold mb-2">Application Tracker</h3>
-        <p class="text-muted small mb-3">Manage your saved scholarships, keep application notes, and monitor upcoming deadlines.</p>
-        <a href="{{ url_for('saved.tracker') }}" class="btn btn-sm btn-outline-success rounded-pill px-3">
+        <p class="text-muted small mb-3">Manage your saved scholarships, keep application notes, and monitor deadlines.</p>
+        <a href="{{ url_for('saved.tracker') }}" class="btn btn-sm btn-outline-danger rounded-pill px-3">
           View Tracker &rarr;
         </a>
       </div>
@@ -80,89 +80,56 @@
 </div>
 
 {% else %}
-<!-- ================= GUEST LANDING / LOGIN MANDATORY CALLOUT ================= -->
-<div class="hero-section text-center text-md-start">
-  <div class="row align-items-center">
-    <div class="col-lg-8">
-      <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-white bg-opacity-10 text-white small fw-medium mb-3">
-        <i class="bi bi-stars text-warning"></i> AI-Powered Scholarship Matchmaker
-      </div>
-      <h1 class="hero-title">Unlock Global Scholarships & Funded PhD Positions</h1>
-      <p class="hero-subtitle">
-        ScholarPath AI connects ambitious students and researchers with world-class funding opportunities through intelligent semantic matching, rule-based eligibility checks, and real-time application tracking.
-      </p>
-      <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
-        <a href="{{ url_for('auth.register') }}" class="btn btn-sp-primary px-4 py-3 fw-bold fs-6">
-          <i class="bi bi-person-plus-fill me-2"></i> Create Free Account
-        </a>
-        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light px-4 py-3 fw-semibold fs-6">
-          <i class="bi bi-box-arrow-in-right me-2"></i> Log in
-        </a>
-      </div>
+<!-- ================= LOGGED OUT: CLEAN FACEBOOK-STYLE SWEET PINK LOGIN ================= -->
+<div class="row align-items-center justify-content-center min-vh-70 py-4 py-md-5">
+  <!-- Left Side: Clean Sweet Brand -->
+  <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0 pe-lg-4">
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-white bg-opacity-80 text-danger small fw-bold mb-3 shadow-sm border border-danger-subtle">
+      <i class="bi bi-flower1"></i> ScholarPath AI
     </div>
-    <div class="col-lg-4 d-none d-lg-block text-center">
-      <div class="p-4 rounded-4 bg-white bg-opacity-10 backdrop-blur border border-white border-opacity-20 shadow-lg text-start">
-        <div class="d-flex align-items-center gap-3 mb-3">
-          <div class="rounded-circle bg-success text-white p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
-            <i class="bi bi-shield-check"></i>
-          </div>
-          <div>
-            <div class="fw-bold text-white">Secure Student Auth</div>
-            <div class="text-white-50 small">Encrypted & Salted Passwords</div>
-          </div>
-        </div>
-        <hr class="border-white border-opacity-20 my-2">
-        <div class="d-flex align-items-center gap-3 mb-3">
-          <div class="rounded-circle bg-primary text-white p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
-            <i class="bi bi-cpu"></i>
-          </div>
-          <div>
-            <div class="fw-bold text-white">Sentence Embeddings</div>
-            <div class="text-white-50 small">Advanced Natural Language Match</div>
-          </div>
-        </div>
-        <hr class="border-white border-opacity-20 my-2">
-        <div class="d-flex align-items-center gap-3">
-          <div class="rounded-circle bg-warning text-white p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
-            <i class="bi bi-clock-history"></i>
-          </div>
-          <div>
-            <div class="fw-bold text-white">Deadline Alerts</div>
-            <div class="text-white-50 small">Keep track of crucial intake dates</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <h1 class="display-5 fw-bold text-dark mb-3" style="letter-spacing: -0.03em;">
+      Find Your Dream <span class="text-sweet-pink">Scholarship</span> & Funded PhD.
+    </h1>
+    <p class="text-muted fs-6 mb-0" style="max-width: 480px;">
+      Log in or create an account to unlock AI-powered semantic matchmaking, eligibility verification, and application tracking.
+    </p>
   </div>
-</div>
 
-<!-- Features Section -->
-<div class="row g-4 mb-5">
-  <div class="col-md-4">
-    <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center text-md-start">
-      <div class="feature-icon-box">
-        <i class="bi bi-search"></i>
-      </div>
-      <h3 class="h5 fw-bold mb-2">Verified Curations</h3>
-      <p class="text-muted small mb-0">Every opportunity contains direct links to official sources, verified requirement data, and advisor warnings.</p>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center text-md-start">
-      <div class="feature-icon-box text-danger bg-danger-subtle">
-        <i class="bi bi-graph-up-arrow"></i>
-      </div>
-      <h3 class="h5 fw-bold mb-2">Smart Eligibility Scoring</h3>
-      <p class="text-muted small mb-0">Automatically evaluates your CGPA, IELTS, and target degree against the minimum thresholds before you apply.</p>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center text-md-start">
-      <div class="feature-icon-box text-success bg-success-subtle">
-        <i class="bi bi-kanban"></i>
-      </div>
-      <h3 class="h5 fw-bold mb-2">Personalized Tracker</h3>
-      <p class="text-muted small mb-0">Save positions into stages (Saved, Preparing, Applied, Dropped) with private notes to streamline your journey.</p>
+  <!-- Right Side: Compact Clean Facebook-Style Login Card -->
+  <div class="col-md-7 col-lg-5 col-xl-4">
+    <div class="card border-0 shadow-lg rounded-4 p-4 auth-box-sweet">
+      <form method="post" action="{{ url_for('auth.login') }}" novalidate>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="mb-3">
+          <input class="form-control form-control-lg fs-6 rounded-3 py-2 px-3 input-sweet"
+                 type="email" id="email" name="email" placeholder="Email address"
+                 autocomplete="email" required autofocus>
+        </div>
+
+        <div class="mb-3">
+          <div class="position-relative">
+            <input class="form-control form-control-lg fs-6 rounded-3 py-2 px-3 input-sweet"
+                   type="password" id="password" name="password" placeholder="Password"
+                   autocomplete="current-password" required>
+            <button type="button" class="toggle-password-btn" data-target="password" aria-label="Toggle password visibility">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn btn-sp-sweet w-100 py-2 fs-6 fw-bold mb-3" type="submit">
+          Log in
+        </button>
+
+        <hr class="my-3 text-muted opacity-25">
+
+        <div class="text-center">
+          <a href="{{ url_for('auth.register') }}" class="btn btn-sp-create px-4 py-2 fs-6 fw-bold">
+            Create new account
+          </a>
+        </div>
+      </form>
     </div>
   </div>
 </div>

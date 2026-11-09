@@ -2,90 +2,80 @@
 {% block title %}Log in | ScholarPath AI{% endblock %}
 
 {% block auth_layout %}
-<div class="sakura-auth-container">
-  <div class="auth-glass-card">
-    <!-- Header with Sakura / Academic Icon -->
-    <div class="auth-header">
-      <div class="auth-header-icon">
-        <i class="bi bi-flower1"></i>
+<div class="container min-vh-75 d-flex align-items-center justify-content-center py-5">
+  <div class="row w-100 justify-content-center align-items-center">
+    <!-- Left Side: Brand -->
+    <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0 pe-lg-4">
+      <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-white bg-opacity-80 text-danger small fw-bold mb-3 shadow-sm border border-danger-subtle">
+        <i class="bi bi-flower1"></i> ScholarPath AI
       </div>
-      <h1 class="auth-title">Welcome Back</h1>
-      <p class="auth-subtitle">Log in to unlock your personalized scholarship & PhD matches</p>
+      <h1 class="display-5 fw-bold text-dark mb-3" style="letter-spacing: -0.03em;">
+        Welcome Back to <span class="text-sweet-pink">ScholarPath</span>
+      </h1>
+      <p class="text-muted fs-6 mb-0" style="max-width: 480px;">
+        Log in to explore deadlines, compute AI match scores, and track your scholarship applications.
+      </p>
     </div>
 
-    <!-- Auth Switch Tabs -->
-    <div class="auth-tabs">
-      <a href="{{ url_for('auth.login', next=next) }}" class="auth-tab-link active">
-        <i class="bi bi-box-arrow-in-right me-1"></i> Log In
-      </a>
-      <a href="{{ url_for('auth.register') }}" class="auth-tab-link">
-        <i class="bi bi-person-plus me-1"></i> Register
-      </a>
-    </div>
-
-    <!-- Flashed messages & error alerts -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-        <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show shadow-sm py-2 px-3 mb-3 small" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
+    <!-- Right Side: Compact Facebook-Style Login Card -->
+    <div class="col-md-7 col-lg-5 col-xl-4">
+      <div class="card border-0 shadow-lg rounded-4 p-4 auth-box-sweet">
+        <!-- Error Alert if wrong email or password -->
+        {% if error %}
+        <div class="alert alert-danger py-2 px-3 mb-3 small d-flex align-items-center gap-2 rounded-3" role="alert">
+          <i class="bi bi-exclamation-triangle-fill text-danger"></i>
+          <div>{{ error }}</div>
         </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+        {% endif %}
 
-    {% if error %}
-    <div class="alert alert-danger py-2 px-3 mb-3 small d-flex align-items-center gap-2" role="alert">
-      <i class="bi bi-exclamation-triangle-fill"></i>
-      <div>{{ error }}</div>
-    </div>
-    {% endif %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show shadow-sm py-2 px-3 mb-3 small rounded-3" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
 
-    <form method="post" novalidate>
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      {% if next %}
-      <input type="hidden" name="next" value="{{ next }}">
-      {% endif %}
+        <form method="post" novalidate>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          {% if next %}
+          <input type="hidden" name="next" value="{{ next }}">
+          {% endif %}
 
-      <div class="form-floating-custom mb-3">
-        <label class="form-label-custom" for="email">
-          <i class="bi bi-envelope"></i> Email Address
-        </label>
-        <div class="input-with-icon">
-          <i class="bi bi-envelope input-icon-left"></i>
-          <input class="form-control-custom" type="email" id="email" name="email" value="{{ email }}"
-                 placeholder="name@example.com" autocomplete="email" required autofocus>
-        </div>
-      </div>
+          <div class="mb-3">
+            <input class="form-control form-control-lg fs-6 rounded-3 py-2 px-3 input-sweet"
+                   type="email" id="email" name="email" value="{{ email }}" placeholder="Email address"
+                   autocomplete="email" required autofocus>
+          </div>
 
-      <div class="form-floating-custom mb-4">
-        <div class="d-flex justify-content-between align-items-center">
-          <label class="form-label-custom mb-1" for="password">
-            <i class="bi bi-lock"></i> Password
-          </label>
-        </div>
-        <div class="input-with-icon">
-          <i class="bi bi-shield-lock input-icon-left"></i>
-          <input class="form-control-custom" type="password" id="password" name="password"
-                 placeholder="Enter your password" autocomplete="current-password" required>
-          <button type="button" class="toggle-password-btn" data-target="password" aria-label="Toggle password visibility">
-            <i class="bi bi-eye"></i>
+          <div class="mb-3">
+            <div class="position-relative">
+              <input class="form-control form-control-lg fs-6 rounded-3 py-2 px-3 input-sweet"
+                     type="password" id="password" name="password" placeholder="Password"
+                     autocomplete="current-password" required>
+              <button type="button" class="toggle-password-btn" data-target="password" aria-label="Toggle password visibility">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <button class="btn btn-sp-sweet w-100 py-2 fs-6 fw-bold mb-3" type="submit">
+            Log in
           </button>
-        </div>
-      </div>
 
-      <button class="btn btn-sp-primary w-100 py-2 mb-3" type="submit">
-        <i class="bi bi-box-arrow-in-right me-1"></i> Log in
-      </button>
+          <hr class="my-3 text-muted opacity-25">
 
-      <div class="text-center pt-2">
-        <span class="text-muted small">New to ScholarPath AI?</span>
-        <a href="{{ url_for('auth.register') }}" class="fw-semibold text-decoration-none text-primary small ms-1">
-          Create an account
-        </a>
+          <div class="text-center">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-sp-create px-4 py-2 fs-6 fw-bold">
+              Create new account
+            </a>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   </div>
 </div>
 {% endblock %}

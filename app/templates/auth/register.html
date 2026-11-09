@@ -1,108 +1,91 @@
 {% extends "base.html" %}
-{% block title %}Create Account | ScholarPath AI{% endblock %}
+{% block title %}Create account | ScholarPath AI{% endblock %}
 
 {% block auth_layout %}
-<div class="sakura-auth-container">
-  <div class="auth-glass-card" style="max-width: 500px;">
-    <!-- Header with Sakura / Academic Icon -->
-    <div class="auth-header">
-      <div class="auth-header-icon">
-        <i class="bi bi-person-plus-fill"></i>
+<div class="container min-vh-75 d-flex align-items-center justify-content-center py-5">
+  <div class="row w-100 justify-content-center align-items-center">
+    <!-- Left Side: Brand -->
+    <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0 pe-lg-4">
+      <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-white bg-opacity-80 text-danger small fw-bold mb-3 shadow-sm border border-danger-subtle">
+        <i class="bi bi-flower1"></i> ScholarPath AI
       </div>
-      <h1 class="auth-title">Create Account</h1>
-      <p class="auth-subtitle">Join ScholarPath AI to find scholarships and funded PhD positions</p>
+      <h1 class="display-5 fw-bold text-dark mb-3" style="letter-spacing: -0.03em;">
+        Join <span class="text-sweet-pink">ScholarPath AI</span>
+      </h1>
+      <p class="text-muted fs-6 mb-0" style="max-width: 480px;">
+        Create an account to find fully funded scholarships and PhD positions matched directly to your research profile.
+      </p>
     </div>
 
-    <!-- Auth Switch Tabs -->
-    <div class="auth-tabs">
-      <a href="{{ url_for('auth.login') }}" class="auth-tab-link">
-        <i class="bi bi-box-arrow-in-right me-1"></i> Log In
-      </a>
-      <a href="{{ url_for('auth.register') }}" class="auth-tab-link active">
-        <i class="bi bi-person-plus me-1"></i> Register
-      </a>
-    </div>
-
-    <form method="post" novalidate>
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-
-      <div class="form-floating-custom mb-3">
-        <label class="form-label-custom" for="name">
-          <i class="bi bi-person"></i> Full Name
-        </label>
-        <div class="input-with-icon">
-          <i class="bi bi-person input-icon-left"></i>
-          <input class="form-control-custom {{ 'is-invalid border-danger' if errors.name }}" id="name" name="name"
-                 value="{{ form.name }}" maxlength="100" placeholder="e.g. Ayesha Siddika" autocomplete="name" required>
+    <!-- Right Side: Compact Register Card -->
+    <div class="col-md-7 col-lg-5 col-xl-4">
+      <div class="card border-0 shadow-lg rounded-4 p-4 auth-box-sweet">
+        <div class="mb-3 text-center text-lg-start">
+          <h2 class="h5 fw-bold mb-1">Create your account</h2>
+          <p class="text-muted small mb-0">It's quick and easy.</p>
         </div>
-        {% if errors.name %}
-          <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ errors.name }}</div>
-        {% endif %}
-      </div>
 
-      <div class="form-floating-custom mb-3">
-        <label class="form-label-custom" for="email">
-          <i class="bi bi-envelope"></i> Email Address
-        </label>
-        <div class="input-with-icon">
-          <i class="bi bi-envelope input-icon-left"></i>
-          <input class="form-control-custom {{ 'is-invalid border-danger' if errors.email }}" type="email" id="email" name="email"
-                 value="{{ form.email }}" placeholder="name@example.com" autocomplete="email" required>
-        </div>
-        {% if errors.email %}
-          <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ errors.email }}</div>
-        {% endif %}
-      </div>
+        <form method="post" novalidate>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-      <div class="form-floating-custom mb-3">
-        <label class="form-label-custom" for="password">
-          <i class="bi bi-lock"></i> Password
-        </label>
-        <div class="input-with-icon">
-          <i class="bi bi-shield-lock input-icon-left"></i>
-          <input class="form-control-custom {{ 'is-invalid border-danger' if errors.password }}" type="password" id="password"
-                 name="password" placeholder="Create a secure password" autocomplete="new-password" required>
-          <button type="button" class="toggle-password-btn" data-target="password" aria-label="Toggle password visibility">
-            <i class="bi bi-eye"></i>
-          </button>
-        </div>
-        {% if errors.password %}
-          <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ errors.password }}</div>
-        {% else %}
-          <div class="text-muted small mt-1" style="font-size: 0.78rem;">
-            <i class="bi bi-info-circle me-1"></i>At least 8 characters, with a letter and a number.
+          <div class="mb-3">
+            <input class="form-control form-control-lg fs-6 rounded-3 py-2 px-3 input-sweet {{ 'is-invalid' if errors.name }}"
+                   id="name" name="name" value="{{ form.name }}" maxlength="100"
+                   placeholder="Full name" autocomplete="name" required>
+            {% if errors.name %}<div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ errors.name }}</div>{% endif %}
           </div>
-        {% endif %}
-      </div>
 
-      <div class="form-floating-custom mb-4">
-        <label class="form-label-custom" for="confirm">
-          <i class="bi bi-lock-fill"></i> Confirm Password
-        </label>
-        <div class="input-with-icon">
-          <i class="bi bi-shield-check input-icon-left"></i>
-          <input class="form-control-custom {{ 'is-invalid border-danger' if errors.confirm }}" type="password" id="confirm"
-                 name="confirm" placeholder="Repeat your password" autocomplete="new-password" required>
-          <button type="button" class="toggle-password-btn" data-target="confirm" aria-label="Toggle password visibility">
-            <i class="bi bi-eye"></i>
+          <div class="mb-3">
+            <input class="form-control form-control-lg fs-6 rounded-3 py-2 px-3 input-sweet {{ 'is-invalid' if errors.email }}"
+                   type="email" id="email" name="email" value="{{ form.email }}"
+                   placeholder="Email address" autocomplete="email" required>
+            {% if errors.email %}<div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ errors.email }}</div>{% endif %}
+          </div>
+
+          <div class="mb-3">
+            <div class="position-relative">
+              <input class="form-control form-control-lg fs-6 rounded-3 py-2 px-3 input-sweet {{ 'is-invalid' if errors.password }}"
+                     type="password" id="password" name="password" placeholder="New password"
+                     autocomplete="new-password" required>
+              <button type="button" class="toggle-password-btn" data-target="password" aria-label="Toggle password visibility">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+            {% if errors.password %}
+              <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ errors.password }}</div>
+            {% else %}
+              <div class="text-muted small mt-1" style="font-size: 0.78rem;">
+                At least 8 characters, with a letter and a number.
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="mb-4">
+            <div class="position-relative">
+              <input class="form-control form-control-lg fs-6 rounded-3 py-2 px-3 input-sweet {{ 'is-invalid' if errors.confirm }}"
+                     type="password" id="confirm" name="confirm" placeholder="Confirm password"
+                     autocomplete="new-password" required>
+              <button type="button" class="toggle-password-btn" data-target="confirm" aria-label="Toggle password visibility">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+            {% if errors.confirm %}<div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ errors.confirm }}</div>{% endif %}
+          </div>
+
+          <button class="btn btn-sp-create w-100 py-2 fs-6 fw-bold mb-3" type="submit">
+            Create account
           </button>
-        </div>
-        {% if errors.confirm %}
-          <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ errors.confirm }}</div>
-        {% endif %}
-      </div>
 
-      <button class="btn btn-sp-primary w-100 py-2 mb-3" type="submit">
-        <i class="bi bi-person-check-fill me-1"></i> Create account
-      </button>
+          <hr class="my-3 text-muted opacity-25">
 
-      <div class="text-center pt-1">
-        <span class="text-muted small">Already have an account?</span>
-        <a href="{{ url_for('auth.login') }}" class="fw-semibold text-decoration-none text-primary small ms-1">
-          Log in
-        </a>
+          <div class="text-center">
+            <a href="{{ url_for('auth.login') }}" class="btn btn-sp-sweet px-4 py-2 fs-6 fw-bold">
+              Log in
+            </a>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   </div>
 </div>
 {% endblock %}
