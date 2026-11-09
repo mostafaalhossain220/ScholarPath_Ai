@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS opportunities (
     id               INTEGER PRIMARY KEY AUTOINCREMENT,
     title            TEXT NOT NULL,
     provider         TEXT NOT NULL,
-    type             TEXT NOT NULL CHECK (type IN ('scholarship', 'phd')),
+    type             TEXT NOT NULL CHECK (type IN ('scholarship', 'phd', 'masters', 'admission_and_scholarship')),
     degree_level     TEXT NOT NULL CHECK (degree_level IN ('masters', 'phd')),
     field            TEXT,
     country          TEXT,
