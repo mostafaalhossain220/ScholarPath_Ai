@@ -145,11 +145,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const countryDropdown = document.getElementById("country-dropdown");
 
   if (countryInput && countryDropdown) {
-    const POPULAR_COUNTRIES = [
-      "Bangladesh", "United Kingdom", "United States", "Germany",
-      "Canada", "Australia", "Sweden", "Japan", "South Korea"
-    ];
-
     function highlightMatch(text, query) {
       if (!query) return text;
       const idx = text.toLowerCase().indexOf(query.toLowerCase());
@@ -169,18 +164,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       let matches = [];
       if (!query) {
-        matches = [...POPULAR_COUNTRIES];
+        matches = ["United Kingdom", "United States", "Germany", "Canada", "Australia", "Sweden", "Japan", "South Korea"];
       } else {
         matches = COUNTRIES.filter((c) => c.toLowerCase().includes(query.toLowerCase())).slice(0, 10);
-        // Ensure at least 3 items are shown even if exact matches are fewer
-        if (matches.length < 3) {
-          for (const pop of POPULAR_COUNTRIES) {
-            if (!matches.some((m) => m.toLowerCase() === pop.toLowerCase())) {
-              matches.push(pop);
-              if (matches.length >= 3) break;
-            }
-          }
-        }
       }
 
       if (matches.length === 0) {
@@ -208,7 +194,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     countryInput.addEventListener("focus", function () {
-      this.select();
       renderCountries(this.value);
     });
 
