@@ -8,6 +8,7 @@ bp = Blueprint("opportunities", __name__, url_prefix="/opportunities")
 @bp.route("/")
 def list_opportunities():
     filters = {
+        "q": request.args.get("q", "").strip(),
         "degree": request.args.get("degree", "").strip(),
         "country": request.args.get("country", "").strip(),
         "field": request.args.get("field", "").strip(),
@@ -17,6 +18,13 @@ def list_opportunities():
 
     conditions = []
     params = []
+
+    # Keyword search: every word must appear in at least one of these columns
+    for word in filters["q"].split():
+        conditions.append(
+            "(title LIKE ? OR provider LIKE ? OR description LIKE ? OR field LIKE ?)"
+        )
+        params.extend([f"%{word}%"] * 4)
 
     if filters["degree"] in ("masters", "phd"):
         conditions.append("degree_level = ?")

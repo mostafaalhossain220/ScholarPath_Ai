@@ -3,10 +3,18 @@
 {% block content %}
 <h1 class="h3 mb-1">Scholarships and funded PhD opportunities</h1>
 <p class="text-muted">
-  Showing {{ opportunities|length }} opportunities. Always confirm details on the official source before applying.
+  Showing {{ opportunities|length }} {{ 'opportunity' if opportunities|length == 1 else 'opportunities' }}.
+  Always confirm details on the official source before applying.
 </p>
 
 <form method="get" class="card card-body mb-4">
+  <div class="row g-3 mb-1">
+    <div class="col-12">
+      <label class="form-label" for="q">Keyword search</label>
+      <input class="form-control" id="q" name="q" value="{{ filters.q }}"
+             placeholder="e.g. machine learning, cybersecurity, software testing">
+    </div>
+  </div>
   <div class="row g-3 align-items-end">
     <div class="col-md-2">
       <label class="form-label" for="degree">Degree</label>
@@ -33,7 +41,7 @@
         <input class="form-check-input" type="checkbox" id="upcoming" name="upcoming" value="1" {{ 'checked' if filters.upcoming == '1' }}>
         <label class="form-check-label" for="upcoming">Only upcoming deadlines</label>
       </div>
-      <button class="btn btn-primary" type="submit">Filter</button>
+      <button class="btn btn-primary" type="submit">Search</button>
       <a class="btn btn-outline-secondary" href="{{ url_for('opportunities.list_opportunities') }}">Reset</a>
     </div>
   </div>
@@ -62,7 +70,7 @@
         <td>{{ (o.funding or "Not provided")|truncate(70) }}</td>
       </tr>
       {% else %}
-      <tr><td colspan="6" class="text-center text-muted">No opportunities match these filters.</td></tr>
+      <tr><td colspan="6" class="text-center text-muted">No opportunities match your search.</td></tr>
       {% endfor %}
     </tbody>
   </table>
