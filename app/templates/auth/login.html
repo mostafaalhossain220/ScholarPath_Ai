@@ -3,9 +3,6 @@
 
 {% block auth_layout %}
 <div class="sakura-auth-container">
-  <!-- Interactive Falling Sakura Blossoms Canvas -->
-  <canvas id="sakura-canvas"></canvas>
-
   <div class="auth-glass-card">
     <!-- Header with Sakura / Academic Icon -->
     <div class="auth-header">
@@ -91,8 +88,4 @@
     </form>
   </div>
 </div>
-{% endblock %}
-
-{% block extra_scripts %}
-<script src="{{ url_for('static', filename='js/sakura.js') }}"></script>
 {% endblock %}
