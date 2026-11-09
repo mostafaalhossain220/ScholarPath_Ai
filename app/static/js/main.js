@@ -295,4 +295,74 @@ document.addEventListener("DOMContentLoaded", function () {
       localStorage.setItem("sp-theme", nextTheme);
     });
   }
+
+  // =========================================================================
+  // 8. Wooden Hardboard Depth Tilt - ONLY on the 3 Dashboard Cards
+  // =========================================================================
+  const hardboardCards = document.querySelectorAll(".hardboard-tilt-card");
+  hardboardCards.forEach((card) => {
+    const MAX_TILT = 7.5;
+    let rafId = null;
+
+    function handleMove(e) {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const normX = ((x / rect.width) * 2) - 1;
+      const normY = ((y / rect.height) * 2) - 1;
+
+      // Where cursor presses down, the hardboard tilts into the screen
+      const rotateX = (-normY * MAX_TILT).toFixed(2);
+      const rotateY = (normX * MAX_TILT).toFixed(2);
+      const shadowX = (-normX * 12).toFixed(1);
+      const shadowY = (-normY * 12 + 16).toFixed(1);
+
+      card.classList.remove("tilt-resting");
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+      card.style.boxShadow = `${shadowX}px ${shadowY}px 28px rgba(244, 63, 94, 0.18)`;
+    }
+
+    card.addEventListener("mousemove", (e) => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => handleMove(e));
+    });
+
+    card.addEventListener("mouseleave", () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      card.classList.add("tilt-resting");
+      card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
+      card.style.boxShadow = "";
+    });
+  });
+
+  // =========================================================================
+  // 9. Auth Segmented Switcher (Smooth Switch Between Log In & Sign Up)
+  // =========================================================================
+  const btnShowLogin = document.getElementById("btn-show-login");
+  const btnShowSignup = document.getElementById("btn-show-signup");
+  const loginPanel = document.getElementById("auth-login-panel");
+  const signupPanel = document.getElementById("auth-signup-panel");
+
+  if (btnShowLogin && btnShowSignup && loginPanel && signupPanel) {
+    btnShowLogin.addEventListener("click", function () {
+      btnShowLogin.classList.add("active");
+      btnShowSignup.classList.remove("active");
+      signupPanel.style.display = "none";
+      loginPanel.style.display = "block";
+      loginPanel.classList.add("fade-in-quick");
+      const emailInput = loginPanel.querySelector("input[type='email']");
+      if (emailInput) emailInput.focus();
+    });
+
+    btnShowSignup.addEventListener("click", function () {
+      btnShowSignup.classList.add("active");
+      btnShowLogin.classList.remove("active");
+      loginPanel.style.display = "none";
+      signupPanel.style.display = "block";
+      signupPanel.classList.add("fade-in-quick");
+      const nameInput = signupPanel.querySelector("input[name='name']");
+      if (nameInput) nameInput.focus();
+    });
+  }
 });
