@@ -19,12 +19,21 @@ def create_app():
     from . import db
     db.init_app(app)
 
-    from .routes import auth, matching, opportunities, profile, saved
+    from .routes import auth, opportunities, profile, saved
     app.register_blueprint(auth.bp)
     app.register_blueprint(opportunities.bp)
-    app.register_blueprint(matching.bp)
     app.register_blueprint(profile.bp)
     app.register_blueprint(saved.bp)
+
+    # The matching page needs the heavy 'sentence-transformers' package. If it is not
+    # installed (e.g. small free hosting) skip that page instead of crashing the whole app.
+    try:
+        from .routes import matching
+        app.register_blueprint(matching.bp)
+        app.jinja_env.globals["matching_enabled"] = True
+    except ImportError as error:
+        app.logger.warning("Matching page disabled: %s", error)
+        app.jinja_env.globals["matching_enabled"] = False
 
     # Lets templates write {{ csrf_token() }} inside forms
     app.jinja_env.globals["csrf_token"] = auth.get_csrf_token

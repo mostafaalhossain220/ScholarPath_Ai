@@ -14,9 +14,11 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('opportunities.list_opportunities') }}">Opportunities</a>
         </li>
+        {% if matching_enabled %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('matching.match') }}">Find matches</a>
         </li>
+        {% endif %}
         {% if g.user %}
         <li class="nav-item"><a class="nav-link" href="{{ url_for('saved.tracker') }}">My Saved</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('profile.edit') }}">Profile</a></li>
