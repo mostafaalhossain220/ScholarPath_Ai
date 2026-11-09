@@ -62,7 +62,7 @@
     <tbody>
       {% for o in opportunities %}
       <tr>
-        <td>{{ o.title }}</td>
+        <td><a href="{{ url_for('opportunities.detail', opportunity_id=o.id) }}">{{ o.title }}</a></td>
         <td>{{ o.provider }}</td>
         <td><span class="badge text-bg-secondary">{{ o.degree_level }}</span></td>
         <td>{{ o.country or "Not provided" }}</td>

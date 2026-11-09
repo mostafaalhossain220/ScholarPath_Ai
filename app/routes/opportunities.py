@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, abort, render_template, request
 
 from app.db import get_db
 
@@ -57,3 +57,14 @@ def list_opportunities():
     ).fetchall()
 
     return render_template("opportunities/list.html", opportunities=rows, filters=filters)
+
+
+@bp.route("/<int:opportunity_id>")
+def detail(opportunity_id):
+    db = get_db()
+    opportunity = db.execute(
+        "SELECT * FROM opportunities WHERE id = ?", (opportunity_id,)
+    ).fetchone()
+    if opportunity is None:
+        abort(404)
+    return render_template("opportunities/detail.html", o=opportunity)
