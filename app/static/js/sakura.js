@@ -38,17 +38,17 @@
       const palette = petalPalettes[Math.floor(Math.random() * petalPalettes.length)];
       return {
         x: Math.random() * (width + 60) - 30,
-        y: startY !== undefined ? startY : Math.random() * -height * 0.6,
-        size: 10 + Math.random() * 12,
-        speedY: 1.1 + Math.random() * 1.8,
-        speedX: -0.5 + Math.random() * 1.4,
-        oscillationSpeed: 0.018 + Math.random() * 0.025,
+        y: startY !== undefined ? startY : Math.random() * -height * 0.4,
+        size: 10 + Math.random() * 11,
+        speedY: 0.55 + Math.random() * 0.75, // slow, gentle falling speed
+        speedX: -0.3 + Math.random() * 0.7,
+        oscillationSpeed: 0.012 + Math.random() * 0.016, // gentle graceful side sway
         oscillationAngle: Math.random() * Math.PI * 2,
-        flipSpeed: 0.03 + Math.random() * 0.04,
+        flipSpeed: 0.016 + Math.random() * 0.022, // slow realistic 3D tumbling
         flipAngle: Math.random() * Math.PI * 2,
         rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 1.8,
-        opacity: 0.82 + Math.random() * 0.18,
+        rotationSpeed: (Math.random() - 0.5) * 0.9,
+        opacity: 0.85 + Math.random() * 0.15,
         palette: palette,
       };
     }
@@ -113,28 +113,28 @@
     function spawnCursorPetals(x, y, count, isBurst) {
       for (let i = 0; i < count; i++) {
         const palette = petalPalettes[Math.floor(Math.random() * petalPalettes.length)];
-        const angle = isBurst ? Math.random() * Math.PI * 2 : (Math.PI / 2) + (Math.random() - 0.5) * 1.8;
-        const speed = isBurst ? 2 + Math.random() * 4.5 : 1.2 + Math.random() * 2.5;
+        const angle = isBurst ? Math.random() * Math.PI * 2 : (Math.PI / 2) + (Math.random() - 0.5) * 1.4;
+        const speed = isBurst ? 1.4 + Math.random() * 2.2 : 0.65 + Math.random() * 1.1;
 
         cursorPetals.push({
-          x: x + (Math.random() - 0.5) * 12,
-          y: y + (Math.random() - 0.5) * 12,
+          x: x + (Math.random() - 0.5) * 10,
+          y: y + (Math.random() - 0.5) * 10,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          size: 8 + Math.random() * 10,
+          size: 8 + Math.random() * 9,
           rotation: Math.random() * 360,
-          rotationSpeed: (Math.random() - 0.5) * 4,
+          rotationSpeed: (Math.random() - 0.5) * 1.8,
           flipAngle: Math.random() * Math.PI * 2,
-          flipSpeed: 0.05 + Math.random() * 0.06,
+          flipSpeed: 0.025 + Math.random() * 0.035,
           life: 1.0,
-          decay: isBurst ? 0.015 + Math.random() * 0.012 : 0.02 + Math.random() * 0.015,
+          decay: isBurst ? 0.008 + Math.random() * 0.007 : 0.01 + Math.random() * 0.008, // slower, lingering fade
           opacity: 0.95,
           palette: palette,
         });
       }
 
-      if (cursorPetals.length > 80) {
-        cursorPetals.splice(0, cursorPetals.length - 80);
+      if (cursorPetals.length > 90) {
+        cursorPetals.splice(0, cursorPetals.length - 90);
       }
     }
 
@@ -142,21 +142,21 @@
       const now = Date.now();
       const dist = Math.hypot(e.clientX - lastX, e.clientY - lastY);
 
-      if (dist > 15 && now - throttleTimer > 28) {
+      if (dist > 18 && now - throttleTimer > 38) {
         throttleTimer = now;
         lastX = e.clientX;
         lastY = e.clientY;
-        spawnCursorPetals(e.clientX, e.clientY, 2, false);
+        spawnCursorPetals(e.clientX, e.clientY, 1, false);
       }
     });
 
     window.addEventListener("click", function (e) {
-      spawnCursorPetals(e.clientX, e.clientY, 8, true);
+      spawnCursorPetals(e.clientX, e.clientY, 7, true);
     });
 
     window.addEventListener("touchmove", function (e) {
       if (e.touches && e.touches[0]) {
-        spawnCursorPetals(e.touches[0].clientX, e.touches[0].clientY, 2, false);
+        spawnCursorPetals(e.touches[0].clientX, e.touches[0].clientY, 1, false);
       }
     }, { passive: true });
 
@@ -172,7 +172,7 @@
         p.rotation += p.rotationSpeed;
 
         p.y += p.speedY;
-        p.x += Math.sin(p.oscillationAngle) * 1.3 + p.speedX;
+        p.x += Math.sin(p.oscillationAngle) * 0.85 + p.speedX;
 
         if (p.y > height + 30 || p.x < -40 || p.x > width + 40) {
           ambientPetals[i] = createAmbientPetal();
@@ -186,8 +186,8 @@
         const cp = cursorPetals[i];
         cp.x += cp.vx;
         cp.y += cp.vy;
-        cp.vy += 0.05; // gravity
-        cp.vx *= 0.98; // air drag
+        cp.vy += 0.022; // gentle floaty gravity
+        cp.vx *= 0.96;  // smooth air drag
         cp.rotation += cp.rotationSpeed;
         cp.flipAngle += cp.flipSpeed;
         cp.life -= cp.decay;
