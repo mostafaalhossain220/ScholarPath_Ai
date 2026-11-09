@@ -1,78 +1,143 @@
 {% extends "base.html" %}
-{% block title %}Opportunities | ScholarPath AI{% endblock %}
+{% block title %}Opportunities Directory | ScholarPath AI{% endblock %}
+
 {% block content %}
-<h1 class="h3 mb-1">Scholarships and funded PhD opportunities</h1>
-<p class="text-muted">
-  Showing {{ opportunities|length }} {{ 'opportunity' if opportunities|length == 1 else 'opportunities' }}.
-  Always confirm details on the official source before applying.
-</p>
-
-<form method="get" class="card card-body mb-4">
-  <div class="row g-3 mb-1">
-    <div class="col-12">
-      <label class="form-label" for="q">Keyword search</label>
-      <input class="form-control" id="q" name="q" value="{{ filters.q }}"
-             placeholder="e.g. machine learning, cybersecurity, software testing">
-    </div>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+  <div>
+    <h1 class="h3 fw-bold mb-1">Scholarships & Funded Positions</h1>
+    <p class="text-muted mb-0">
+      Showing {{ opportunities|length }} curated {{ 'opportunity' if opportunities|length == 1 else 'opportunities' }}. Always confirm details on the official university portal before applying.
+    </p>
   </div>
-  <div class="row g-3 align-items-end">
-    <div class="col-md-2">
-      <label class="form-label" for="degree">Degree</label>
-      <select class="form-select" id="degree" name="degree">
-        <option value="">Any</option>
-        <option value="masters" {{ 'selected' if filters.degree == 'masters' }}>Master's</option>
-        <option value="phd" {{ 'selected' if filters.degree == 'phd' }}>PhD</option>
-      </select>
-    </div>
-    <div class="col-md-2">
-      <label class="form-label" for="country">Country</label>
-      <input class="form-control" id="country" name="country" value="{{ filters.country }}" placeholder="e.g. UK">
-    </div>
-    <div class="col-md-3">
-      <label class="form-label" for="field">Field</label>
-      <input class="form-control" id="field" name="field" value="{{ filters.field }}" placeholder="e.g. Data Science">
-    </div>
-    <div class="col-md-2">
-      <label class="form-label" for="deadline_before">Deadline before</label>
-      <input class="form-control" type="date" id="deadline_before" name="deadline_before" value="{{ filters.deadline_before }}">
-    </div>
-    <div class="col-md-3">
-      <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox" id="upcoming" name="upcoming" value="1" {{ 'checked' if filters.upcoming == '1' }}>
-        <label class="form-check-label" for="upcoming">Only upcoming deadlines</label>
+  {% if not g.user %}
+  <div>
+    <a href="{{ url_for('auth.login', next=request.full_path) }}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+      <i class="bi bi-lock me-1"></i> Log in to save items
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+{% if not g.user %}
+<div class="alert alert-info border-0 shadow-sm rounded-4 d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4 p-3">
+  <div class="d-flex align-items-center gap-2">
+    <i class="bi bi-info-circle-fill text-primary fs-5"></i>
+    <span><strong>Guest Mode:</strong> You are currently browsing public listings. Create an account to save scholarships and get AI-powered recommendations.</span>
+  </div>
+  <div class="d-flex gap-2">
+    <a href="{{ url_for('auth.login', next=request.full_path) }}" class="btn btn-primary btn-sm px-3">Log in</a>
+    <a href="{{ url_for('auth.register') }}" class="btn btn-outline-primary btn-sm px-3">Sign up</a>
+  </div>
+</div>
+{% endif %}
+
+<div class="card filter-card border-0 shadow-sm rounded-4 mb-4">
+  <div class="card-body p-4">
+    <form method="get">
+      <div class="row g-3 mb-3">
+        <div class="col-12">
+          <label class="form-label fw-semibold small text-muted" for="q">Keyword search</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+            <input class="form-control border-start-0 ps-0" id="q" name="q" value="{{ filters.q }}"
+                   placeholder="e.g. machine learning, cybersecurity, artificial intelligence, robotics">
+          </div>
+        </div>
       </div>
-      <button class="btn btn-primary" type="submit">Search</button>
-      <a class="btn btn-outline-secondary" href="{{ url_for('opportunities.list_opportunities') }}">Reset</a>
-    </div>
+      <div class="row g-3 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label fw-semibold small text-muted" for="degree_input">Degree Level</label>
+          <div class="position-relative custom-autocomplete-wrap">
+            <input type="hidden" id="degree" name="degree" value="{{ filters.degree }}">
+            <input class="form-control autocomplete-input" id="degree_input" autocomplete="off"
+                   placeholder="Type: Master's, PhD..."
+                   value="{{ 'Master\'s' if filters.degree == 'masters' else ('PhD' if filters.degree == 'phd' else '') }}">
+            <div class="autocomplete-dropdown shadow-lg rounded-3" id="degree-dropdown"></div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold small text-muted" for="country">Country</label>
+          <div class="position-relative custom-autocomplete-wrap">
+            <input class="form-control autocomplete-input" id="country" name="country" value="{{ filters.country }}"
+                   placeholder="Type any country (e.g. UK, USA)..." autocomplete="off">
+            <div class="autocomplete-dropdown shadow-lg rounded-3" id="country-dropdown"></div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-semibold small text-muted" for="field">Field of Study</label>
+          <input class="form-control" id="field" name="field" value="{{ filters.field }}" placeholder="e.g. Computer Science">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-semibold small text-muted" for="deadline_before">Deadline before</label>
+          <input class="form-control flatpickr-sweet" id="deadline_before" name="deadline_before"
+                 value="{{ filters.deadline_before }}" placeholder="Pick date..." autocomplete="off">
+        </div>
+        <div class="col-md-2 d-flex flex-column gap-2">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="upcoming" name="upcoming" value="1" {{ 'checked' if filters.upcoming == '1' }}>
+            <label class="form-check-label small" for="upcoming">Upcoming only</label>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sp-sweet btn-sm flex-grow-1" type="submit">
+              <i class="bi bi-funnel-fill me-1"></i> Filter
+            </button>
+            <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('opportunities.list_opportunities') }}">Reset</a>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
-</form>
+</div>
 
-<div class="table-responsive">
-  <table class="table table-hover align-middle">
-    <thead class="table-light">
-      <tr>
-        <th>Title</th>
-        <th>Provider</th>
-        <th>Degree</th>
-        <th>Country</th>
-        <th>Deadline</th>
-        <th>Funding</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for o in opportunities %}
-      <tr>
-        <td><a href="{{ url_for('opportunities.detail', opportunity_id=o.id) }}">{{ o.title }}</a></td>
-        <td>{{ o.provider }}</td>
-        <td><span class="badge text-bg-secondary">{{ o.degree_level }}</span></td>
-        <td>{{ o.country or "Not provided" }}</td>
-        <td>{{ o.deadline or "Not provided" }}</td>
-        <td>{{ (o.funding or "Not provided")|truncate(70) }}</td>
-      </tr>
-      {% else %}
-      <tr><td colspan="6" class="text-center text-muted">No opportunities match your search.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4" style="position: relative; z-index: 1;">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th class="ps-4 py-3">Title & Program</th>
+          <th>Provider / University</th>
+          <th>Degree</th>
+          <th>Country</th>
+          <th>Deadline</th>
+          <th class="pe-4">Funding Coverage</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in opportunities %}
+        <tr class="opportunity-row" onclick="window.location='{{ url_for('opportunities.detail', opportunity_id=o.id) }}'">
+          <td class="ps-4">
+            <a href="{{ url_for('opportunities.detail', opportunity_id=o.id) }}" class="fw-bold text-decoration-none text-dark opportunity-title">
+              {{ o.title }}
+            </a>
+          </td>
+          <td class="text-secondary small">{{ o.provider }}</td>
+          <td>
+            <span class="badge badge-degree-phd rounded-pill">
+              {{ o.degree_level|upper }}
+            </span>
+          </td>
+          <td>
+            <span class="small"><i class="bi bi-geo-alt text-danger me-1"></i>{{ o.country or "Global" }}</span>
+          </td>
+          <td class="small">
+            {% if o.deadline %}
+            <span class="badge text-bg-light border text-dark">{{ o.deadline }}</span>
+            {% else %}
+            <span class="text-muted">Not specified</span>
+            {% endif %}
+          </td>
+          <td class="pe-4 small text-muted">{{ (o.funding or "Not provided")|truncate(65) }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="text-center py-5 text-muted">
+            <i class="bi bi-search fs-2 d-block mb-2 text-secondary"></i>
+            No opportunities match your search filter criteria.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endblock %}

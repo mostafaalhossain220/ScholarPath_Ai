@@ -1,7 +1,187 @@
 {% extends "base.html" %}
+{% block title %}ScholarPath AI | Smart Scholarship & Funded PhD Matching{% endblock %}
+
 {% block content %}
-<h1>ScholarPath AI</h1>
-<p class="lead">Scholarship and funded PhD matching.</p>
-<a class="btn btn-primary" href="{{ url_for('opportunities.list_opportunities') }}">Browse opportunities</a>
-<a class="btn btn-outline-primary" href="{{ url_for('matching.match') }}">Find matches for my profile</a>
+{% if g.user %}
+{# ================= LOGGED IN DASHBOARD ================= #}
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="p-4 p-md-5 rounded-4 dashboard-banner shadow-sm d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div>
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill bg-danger-subtle text-danger small fw-semibold mb-3">
+          <img src="{{ url_for('static', filename='img/scholarpath-icon.png') }}" alt="Logo" style="height: 20px; width: 20px; object-fit: contain;">
+          <span>Welcome back, {{ g.user.name }}! 👋</span>
+        </div>
+        <h1 class="h2 fw-bold mb-1">ScholarPath AI Dashboard</h1>
+        <p class="text-muted mb-0">Explore scholarship deadlines, find faculty positions, and manage saved applications.</p>
+      </div>
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="{{ url_for('opportunities.list_opportunities') }}" class="btn btn-sp-sweet px-3 py-2">
+          <i class="bi bi-search me-1"></i> Browse Opportunities
+        </a>
+        <a href="{{ url_for('saved.tracker') }}" class="btn btn-outline-danger px-3 py-2 rounded-3 bg-white bg-opacity-75">
+          <i class="bi bi-bookmark-heart-fill text-danger me-1"></i> My Saved
+        </a>
+        {% if matching_enabled %}
+        <a href="{{ url_for('matching.match') }}" class="btn btn-outline-secondary px-3 py-2 rounded-3 bg-white bg-opacity-75">
+          <i class="bi bi-stars text-danger me-1"></i> AI Match
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm rounded-4 p-3 hardboard-tilt-card">
+      <div class="card-body">
+        <div class="feature-icon-box mb-3 text-danger bg-danger-subtle rounded-3 d-inline-flex p-3">
+          <i class="bi bi-mortarboard fs-3"></i>
+        </div>
+        <h3 class="h5 fw-bold mb-2">Opportunities Directory</h3>
+        <p class="text-muted small mb-3">Browse and search through curated, fully-funded Masters and PhD openings.</p>
+        <a href="{{ url_for('opportunities.list_opportunities') }}" class="btn btn-sm btn-sp-sweet rounded-pill px-3">
+          Explore List &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm rounded-4 p-3 hardboard-tilt-card">
+      <div class="card-body">
+        <div class="feature-icon-box mb-3 text-danger bg-danger-subtle rounded-3 d-inline-flex p-3">
+          <i class="bi bi-stars fs-3"></i>
+        </div>
+        <h3 class="h5 fw-bold mb-2">AI Matchmaking</h3>
+        <p class="text-muted small mb-3">Compute semantic similarity between your research profile and faculty requirements.</p>
+        {% if matching_enabled %}
+        <a href="{{ url_for('matching.match') }}" class="btn btn-sm btn-sp-sweet rounded-pill px-3">
+          Run Match &rarr;
+        </a>
+        {% else %}
+        <span class="badge text-bg-light border text-muted">Offline</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm rounded-4 p-3 hardboard-tilt-card">
+      <div class="card-body">
+        <div class="feature-icon-box mb-3 text-danger bg-danger-subtle rounded-3 d-inline-flex p-3">
+          <i class="bi bi-bookmark-check fs-3"></i>
+        </div>
+        <h3 class="h5 fw-bold mb-2">Application Tracker</h3>
+        <p class="text-muted small mb-3">Manage your saved scholarships, keep application notes, and monitor deadlines.</p>
+        <a href="{{ url_for('saved.tracker') }}" class="btn btn-sm btn-sp-sweet rounded-pill px-3">
+          View Tracker &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+{# ================= LOGGED OUT: CLEAN AUTHENTICATION PORTAL ================= #}
+<div class="row align-items-center justify-content-center min-vh-70 py-4 py-md-5">
+  {# Left Side: Clean Sweet Brand #}
+  <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0 pe-lg-4">
+    <h1 class="display-5 fw-bold text-dark mb-3" style="letter-spacing: -0.03em;">
+      Find Your Dream <span class="text-sweet-pink">Scholarship</span> & Funded PhD.
+    </h1>
+    <p class="text-muted fs-6 mb-0" style="max-width: 480px;">
+      Log in or create an account to unlock AI-powered semantic matchmaking, eligibility verification, and application tracking.
+    </p>
+  </div>
+
+  {# Right Side: Compact Clean Auth Card with Integrated Switcher #}
+  <div class="col-md-7 col-lg-5 col-xl-4">
+    <div class="card border-0 shadow-lg rounded-4 p-4 auth-box-sweet">
+      {# Top Segmented Switcher for Login / Sign Up #}
+      <div class="auth-switcher-wrap mb-3">
+        <button type="button" class="auth-switcher-btn active" id="btn-show-login">
+          <i class="bi bi-box-arrow-in-right me-1"></i> Log In
+        </button>
+        <button type="button" class="auth-switcher-btn" id="btn-show-signup">
+          <i class="bi bi-person-plus me-1"></i> Sign Up
+        </button>
+      </div>
+
+      {# LOGIN PANEL (Active by default) #}
+      <div id="auth-login-panel">
+        <form method="post" action="{{ url_for('auth.login') }}" novalidate>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <div class="mb-3">
+            <input class="form-control form-control-lg fs-6 rounded-3 py-2 px-3 input-sweet"
+                   type="email" id="email" name="email" placeholder="Email address"
+                   autocomplete="email" required autofocus>
+          </div>
+
+          <div class="mb-3">
+            <div class="position-relative">
+              <input class="form-control form-control-lg fs-6 rounded-3 py-2 px-3 input-sweet"
+                     type="password" id="password" name="password" placeholder="Password"
+                     autocomplete="current-password" required>
+              <button type="button" class="toggle-password-btn" data-target="password" aria-label="Toggle password visibility">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <button class="btn btn-sp-sweet w-100 py-2 fs-6 fw-bold" type="submit">
+            Log In
+          </button>
+        </form>
+      </div>
+
+      {# SIGN UP PANEL (Hidden by default, slides in seamlessly) #}
+      <div id="auth-signup-panel" style="display: none;">
+        <form method="post" action="{{ url_for('auth.register') }}" novalidate>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <div class="mb-2">
+            <input class="form-control fs-6 rounded-3 py-2 px-3 input-sweet"
+                   type="text" id="reg_name" name="name" placeholder="Full name" required>
+          </div>
+
+          <div class="mb-2">
+            <input class="form-control fs-6 rounded-3 py-2 px-3 input-sweet"
+                   type="email" id="reg_email" name="email" placeholder="Email address" required>
+          </div>
+
+          <div class="mb-2">
+            <div class="position-relative">
+              <input class="form-control fs-6 rounded-3 py-2 px-3 input-sweet"
+                     type="password" id="reg_password" name="password" placeholder="Create password" required>
+              <button type="button" class="toggle-password-btn" data-target="reg_password" aria-label="Toggle password visibility">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-2">
+            <select class="form-select fs-6 rounded-3 py-2 px-3 input-sweet" id="reg_degree" name="degree_target">
+              <option value="" selected>Target Degree (Optional)</option>
+              <option value="masters">Master's</option>
+              <option value="phd">PhD</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <input class="form-control fs-6 rounded-3 py-2 px-3 input-sweet"
+                   type="text" id="reg_field" name="research_field" placeholder="Research field (e.g. AI, Robotics)">
+          </div>
+
+          <button class="btn btn-sp-sweet w-100 py-2 fs-6 fw-bold" type="submit">
+            Create Account
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
 {% endblock %}

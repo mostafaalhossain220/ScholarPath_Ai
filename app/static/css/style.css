@@ -1,0 +1,1095 @@
+/* ==========================================================================
+   ScholarPath AI - Sweet Pink & Sakura Ultra-Smooth Design System
+   ========================================================================== */
+
+:root {
+  --sp-sweet-pink: #f43f5e;
+  --sp-sweet-rose: #fb7185;
+  --sp-sweet-soft: #fff1f2;
+  --sp-sweet-border: #fecdd3;
+  --sp-sweet-glow: rgba(244, 63, 94, 0.25);
+  
+  --sp-success: #10b981;
+  --sp-success-hover: #059669;
+  --sp-dark: #1e293b;
+  --sp-muted: #64748b;
+  --sp-border: rgba(254, 205, 211, 0.7);
+  
+  --sp-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --sp-radius-sm: 8px;
+  --sp-radius-md: 12px;
+  --sp-radius-lg: 18px;
+  --sp-radius-xl: 24px;
+}
+
+/* ==========================================================================
+   Body: Clear & Vivid Sakura Background
+   ========================================================================== */
+
+body {
+  font-family: var(--sp-font-sans);
+  color: var(--sp-dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  background-color: #f0f9ff;
+  background-image: 
+    linear-gradient(135deg, rgba(224, 242, 254, 0.18) 0%, rgba(254, 205, 211, 0.22) 100%),
+    url('/static/img/sakura-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+}
+
+#sakura-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+nav, main, footer {
+  position: relative;
+  z-index: 2;
+}
+
+/* ==========================================================================
+   Navigation Bar
+   ========================================================================== */
+
+.sp-navbar {
+  background: rgba(240, 248, 255, 0.92) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1.5px solid rgba(186, 230, 253, 0.85);
+  box-shadow: 0 4px 18px rgba(56, 189, 248, 0.10);
+  padding: 0.85rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+
+.sp-brand {
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: #0c2340 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.sp-brand:hover {
+  transform: scale(1.02);
+}
+
+.sp-brand-icon-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.sp-brand:hover .sp-brand-icon-img {
+  transform: rotate(-6deg) scale(1.08);
+}
+
+.sp-brand-text {
+  font-weight: 800;
+  color: #0c2340 !important; /* Deep Blue as requested */
+  letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sp-brand-ai-badge {
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  background: rgba(12, 35, 64, 0.08);
+  color: #0c2340 !important; /* Deep Blue */
+  padding: 0.12rem 0.48rem;
+  border-radius: 6px;
+  border: 1.5px solid #0c2340;
+  display: inline-block;
+  line-height: 1.2;
+  vertical-align: middle;
+}
+
+.sp-nav-link {
+  font-weight: 600;
+  color: #475569 !important;
+  padding: 0.5rem 0.95rem !important;
+  border-radius: 20px;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.925rem;
+}
+
+.sp-nav-link:hover, .sp-nav-link.active {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.28);
+}
+
+/* Clickable User Pill (Takes to Profile) */
+.user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 0.4rem 0.95rem;
+  border-radius: 30px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  border: 1.5px solid #fecdd3;
+  box-shadow: 0 2px 10px rgba(244, 63, 94, 0.12);
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: pointer;
+}
+
+.user-pill:hover {
+  background: #fff1f2;
+  border-color: #f43f5e;
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.25);
+  color: #e11d48 !important;
+}
+
+.nav-saved-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.95rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 30px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  border: 1.5px solid #bae6fd;
+  box-shadow: 0 2px 10px rgba(56, 189, 248, 0.12);
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: pointer;
+}
+
+.nav-saved-chip:hover {
+  background: #fff1f2;
+  border-color: #f43f5e;
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.25);
+  color: #e11d48 !important;
+}
+
+/* Opportunities Pill Button: Always Sweet Pink */
+.nav-opportunities-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 1.1rem;
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  color: #ffffff !important;
+  border-radius: 25px !important;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.35) !important;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border: none;
+  text-decoration: none;
+}
+
+.nav-opportunities-pill:hover {
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important;
+  color: #ffffff !important;
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 18px rgba(244, 63, 94, 0.45) !important;
+}
+
+[data-theme="dark"] .nav-opportunities-pill {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(244, 63, 94, 0.45) !important;
+}
+
+.navbar-brand-logo {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 10px;
+  transition: transform 0.2s ease;
+}
+
+.navbar-brand-logo:hover {
+  transform: scale(1.03);
+}
+
+.home-hero-logo {
+  box-shadow: 0 12px 32px rgba(244, 63, 94, 0.25), 0 0 24px rgba(236, 72, 153, 0.3) !important;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.home-hero-logo:hover {
+  transform: scale(1.02);
+}
+
+.user-avatar-mini {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fb7185, #f43f5e);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   Sweet Pink Facebook-Style Login & Register Elements
+   ========================================================================== */
+
+.min-vh-70 {
+  min-height: 70vh;
+}
+
+.text-sweet-pink {
+  background: linear-gradient(135deg, #fb7185 0%, #e11d48 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+.auth-box-sweet {
+  background: rgba(240, 248, 255, 0.95) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(186, 230, 253, 0.85) !important;
+  box-shadow: 0 16px 36px -8px rgba(56, 189, 248, 0.18), 0 0 20px rgba(251, 207, 232, 0.35) !important;
+  animation: cardFadeUp 0.45s ease-out;
+}
+
+@keyframes cardFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.input-sweet {
+  border: 1.5px solid #fecdd3 !important;
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.input-sweet:focus {
+  border-color: #f43f5e !important;
+  box-shadow: 0 0 0 4px var(--sp-sweet-glow) !important;
+  outline: 0;
+}
+
+.btn-sp-sweet {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: var(--sp-radius-md) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.35) !important;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-sp-sweet:hover {
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important;
+  color: #ffffff !important;
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 18px rgba(244, 63, 94, 0.45) !important;
+}
+
+.btn-sp-create {
+  background: #10b981 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: var(--sp-radius-md) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25) !important;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-sp-create:hover {
+  background: #059669 !important;
+  color: #ffffff !important;
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35) !important;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 1rem;
+  z-index: 5;
+}
+
+.toggle-password-btn:hover {
+  color: #f43f5e;
+}
+
+/* ==========================================================================
+   Magnetic Sliding Pill Indicator for Tabs
+   ========================================================================== */
+
+.nav-pills {
+  position: relative !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  padding: 5px !important;
+  border-radius: 30px !important;
+  border: 1.5px solid rgba(254, 205, 211, 0.7) !important;
+  display: inline-flex !important;
+  gap: 3px !important;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.08) !important;
+}
+
+.sliding-pill-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.38);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+}
+
+.nav-pills .nav-link {
+  position: relative !important;
+  z-index: 2 !important;
+  border-radius: 25px !important;
+  font-weight: 700 !important;
+  color: #475569 !important;
+  padding: 0.45rem 1.15rem !important;
+  transition: color 0.2s ease !important;
+  background: transparent !important;
+}
+
+.nav-pills .nav-link:hover {
+  color: #ffffff !important;
+}
+
+.nav-pills .nav-link.active {
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+/* ==========================================================================
+   Bootstrap Global Overrides (No Blue Allowed!)
+   ========================================================================== */
+
+.btn-primary {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: var(--sp-radius-md) !important;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.28) !important;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important;
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 6px 18px rgba(244, 63, 94, 0.4) !important;
+}
+
+.badge.text-bg-primary, .badge.text-bg-secondary {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+  border-radius: 20px;
+}
+
+/* Full Web Cards */
+.card {
+  background: rgba(240, 248, 255, 0.92) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1.5px solid rgba(186, 230, 253, 0.80) !important;
+  border-radius: var(--sp-radius-lg) !important;
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.10), 0 2px 8px rgba(244, 63, 94, 0.06) !important;
+}
+
+.dashboard-banner {
+  background: rgba(240, 248, 255, 0.94) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(186, 230, 253, 0.85) !important;
+  box-shadow: 0 10px 28px rgba(56, 189, 248, 0.12), 0 4px 12px rgba(244, 63, 94, 0.08) !important;
+}
+
+/* ==========================================================================
+   Interactive Table Rows: Smooth Sweet Pink Hover & Micro-Zoom
+   ========================================================================== */
+
+.opportunity-row {
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  cursor: pointer !important;
+  position: relative;
+}
+
+.opportunity-row td {
+  transition: background-color 0.22s ease, transform 0.22s ease !important;
+  background-color: transparent !important;
+}
+
+.opportunity-row:hover {
+  transform: translateY(-2px) scale(1.008) !important;
+  box-shadow: 0 8px 24px rgba(244, 63, 94, 0.16) !important;
+  z-index: 10;
+}
+
+.opportunity-row:hover td {
+  background: rgba(255, 241, 242, 0.96) !important;
+}
+
+.opportunity-row:hover .opportunity-title {
+  color: #e11d48 !important;
+  text-decoration: underline !important;
+}
+
+.badge-degree-phd, .badge-degree-masters {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  padding: 0.35rem 0.75rem !important;
+  border-radius: 20px !important;
+  box-shadow: 0 2px 8px rgba(244, 63, 94, 0.25) !important;
+}
+
+/* ==========================================================================
+   Custom Searchable Autocomplete Dropdown & Filter Card Elevation
+   ========================================================================== */
+
+.filter-card {
+  position: relative !important;
+  z-index: 100 !important;
+}
+
+.custom-autocomplete-wrap {
+  position: relative;
+  z-index: 110;
+}
+
+.custom-autocomplete-wrap:focus-within {
+  z-index: 120;
+}
+
+.autocomplete-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 9999 !important;
+  display: none;
+  max-height: 280px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1.5px solid #fecdd3 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 16px 36px rgba(244, 63, 94, 0.22), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  padding: 6px !important;
+}
+
+.autocomplete-item {
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.885rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  display: flex;
+  align-items: center;
+}
+
+.autocomplete-item:hover {
+  background-color: #fff1f2;
+  color: #e11d48;
+  transform: translateX(3px);
+}
+
+.match-highlight {
+  color: #e11d48;
+  font-weight: 800;
+  text-decoration: underline;
+  background: #ffe4e6;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+/* ==========================================================================
+   Flatpickr Aesthetic Sweet Pink Theme
+   ========================================================================== */
+
+.flatpickr-calendar {
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  border: 1.5px solid #fecdd3 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 16px 36px rgba(244, 63, 94, 0.18) !important;
+  font-family: var(--sp-font-sans) !important;
+  padding: 8px !important;
+}
+
+.flatpickr-months {
+  border-bottom: 1px solid #fecdd3;
+  padding-bottom: 6px;
+}
+
+.flatpickr-current-month {
+  font-weight: 700 !important;
+  color: #1e293b !important;
+}
+
+.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  border-color: #f43f5e !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 10px rgba(244, 63, 94, 0.35) !important;
+}
+
+.flatpickr-day:hover {
+  background: #fff1f2 !important;
+  border-color: #fecdd3 !important;
+  color: #e11d48 !important;
+}
+
+.flatpickr-day.today {
+  border-color: #f43f5e !important;
+  color: #f43f5e !important;
+}
+
+.feature-icon-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: #fff1f2;
+  color: #e11d48;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 1.1rem;
+}
+
+/* ==========================================================================
+   Wooden Hardboard Tilt Physics (ONLY for the 3 Dashboard Cards)
+   ========================================================================== */
+
+.hardboard-tilt-card {
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
+  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+  cursor: pointer;
+}
+
+.hardboard-tilt-card.tilt-resting {
+  transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.45s ease-out !important;
+}
+
+/* Auth Segmented Switcher */
+.auth-switcher-wrap {
+  display: flex;
+  background: rgba(224, 242, 254, 0.5);
+  border: 1.5px solid #bae6fd;
+  border-radius: 14px;
+  padding: 4px;
+  gap: 4px;
+}
+
+[data-theme="dark"] .auth-switcher-wrap {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(244, 63, 94, 0.35);
+}
+
+.auth-switcher-btn {
+  flex: 1;
+  padding: 0.52rem 0.85rem;
+  font-size: 0.925rem;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  border-radius: 10px;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-switcher-btn:hover {
+  color: #0c2340;
+}
+
+.auth-switcher-btn.active {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.35);
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid #bae6fd;
+  background: rgba(255, 255, 255, 0.9);
+  color: #0284c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.18);
+  padding: 0;
+}
+
+.theme-toggle-btn:hover {
+  transform: rotate(20deg) scale(1.08);
+  border-color: #f43f5e;
+  color: #f43f5e;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.25);
+}
+
+.theme-icon-sun {
+  display: none;
+}
+
+[data-theme="dark"] .theme-icon-moon {
+  display: none;
+}
+
+[data-theme="dark"] .theme-icon-sun {
+  display: block;
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .theme-toggle-btn {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(244, 63, 94, 0.4);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   Night Mode (Dark Sakura Theme) - Complete Legibility & High Contrast Overrides
+   ========================================================================== */
+
+[data-theme="dark"] body {
+  background-color: #0b0f19 !important;
+  background-image: 
+    linear-gradient(135deg, rgba(11, 15, 25, 0.82) 0%, rgba(30, 16, 42, 0.78) 100%),
+    url('/static/img/sakura-bg.jpg') !important;
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .sp-navbar {
+  background: rgba(15, 23, 42, 0.92) !important;
+  border-bottom-color: rgba(244, 63, 94, 0.28) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .dashboard-banner,
+[data-theme="dark"] .auth-box-sweet {
+  background: rgba(17, 24, 39, 0.90) !important;
+  border: 1.5px solid rgba(244, 63, 94, 0.25) !important;
+  color: #f1f5f9 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Headings and High-Contrast Typography */
+[data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3,
+[data-theme="dark"] h4, [data-theme="dark"] h5, [data-theme="dark"] h6,
+[data-theme="dark"] .display-5, [data-theme="dark"] .h1, [data-theme="dark"] .h2,
+[data-theme="dark"] .h3, [data-theme="dark"] .h4, [data-theme="dark"] .h5,
+[data-theme="dark"] .h6, [data-theme="dark"] .text-dark {
+  color: #ffffff !important;
+}
+
+/* Secondary & Muted text readable on dark canvas */
+[data-theme="dark"] .text-muted {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .text-secondary {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .form-label,
+[data-theme="dark"] .form-check-label {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .sp-brand-text {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .sp-brand-ai-badge {
+  color: #ff4d88 !important;
+  border-color: #ff4d88 !important;
+  background: rgba(255, 77, 136, 0.18) !important;
+  box-shadow: 0 0 10px rgba(255, 77, 136, 0.45) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Table & Header Dark Mode Legibility (Fixes the white header & white pill bug)
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] .table {
+  --bs-table-bg: transparent !important;
+  --bs-table-color: #f1f5f9 !important;
+  color: #f1f5f9 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Table Header - sleek dark slate with cool crystal silver text */
+[data-theme="dark"] .table thead,
+[data-theme="dark"] .table thead.table-light,
+[data-theme="dark"] thead.table-light,
+[data-theme="dark"] .table-light,
+[data-theme="dark"] th.table-light {
+  background-color: #1e293b !important;
+  --bs-table-bg: #1e293b !important;
+  color: #e2e8f0 !important;
+  border-bottom: 2px solid rgba(244, 63, 94, 0.4) !important;
+}
+
+[data-theme="dark"] .table th {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .table td {
+  background-color: transparent !important;
+  color: #cbd5e1 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Table interactive hover */
+[data-theme="dark"] .opportunity-row:hover td,
+[data-theme="dark"] .table-hover > tbody > tr:hover > * {
+  --bs-table-hover-bg: rgba(244, 63, 94, 0.14) !important;
+  background-color: rgba(244, 63, 94, 0.14) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .opportunity-title,
+[data-theme="dark"] .opportunity-row a {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .opportunity-row:hover .opportunity-title {
+  color: #fb7185 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Badges, Pills, and Deadline Visibility
+   -------------------------------------------------------------------------- */
+/* Deadline badge on dark background - glowing rose tint with crystal white date */
+[data-theme="dark"] .badge.text-bg-light,
+[data-theme="dark"] .text-bg-light {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  color: #fda4af !important;
+  border: 1px solid rgba(244, 63, 94, 0.45) !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="dark"] .badge.text-bg-secondary {
+  background-color: rgba(51, 65, 85, 0.85) !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(148, 163, 184, 0.3) !important;
+}
+
+[data-theme="dark"] .bg-light {
+  background-color: rgba(30, 41, 59, 0.75) !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Form Inputs, Search, Autocomplete & Calendar
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .input-sweet,
+[data-theme="dark"] textarea.form-control {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  color: #f8fafc !important;
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus,
+[data-theme="dark"] .input-sweet:focus {
+  background-color: rgba(15, 23, 42, 0.98) !important;
+  color: #ffffff !important;
+  border-color: #f43f5e !important;
+  box-shadow: 0 0 0 0.25rem rgba(244, 63, 94, 0.25) !important;
+}
+
+[data-theme="dark"] .input-group-text,
+[data-theme="dark"] .input-group-text.bg-white {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  color: #94a3b8 !important;
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+[data-theme="dark"] .form-control::placeholder {
+  color: #64748b !important;
+}
+
+/* Custom Autocomplete dropdown in Dark Mode */
+[data-theme="dark"] .filter-card {
+  position: relative !important;
+  z-index: 100 !important;
+}
+
+[data-theme="dark"] .autocomplete-dropdown {
+  background: rgba(17, 24, 39, 0.98) !important;
+  border: 1.5px solid rgba(244, 63, 94, 0.45) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75), 0 0 20px rgba(244, 63, 94, 0.25) !important;
+  z-index: 9999 !important;
+}
+
+[data-theme="dark"] .autocomplete-item {
+  color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .autocomplete-item:hover {
+  background-color: rgba(244, 63, 94, 0.22) !important;
+  color: #fb7185 !important;
+}
+
+/* Flatpickr Calendar in Dark Mode */
+[data-theme="dark"] .flatpickr-calendar {
+  background: rgba(17, 24, 39, 0.98) !important;
+  border: 1.5px solid rgba(244, 63, 94, 0.45) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .flatpickr-months {
+  border-bottom: 1px solid rgba(244, 63, 94, 0.3) !important;
+}
+
+[data-theme="dark"] .flatpickr-current-month,
+[data-theme="dark"] .flatpickr-current-month input.cur-year,
+[data-theme="dark"] span.flatpickr-weekday {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .flatpickr-day {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .flatpickr-day:hover {
+  background: rgba(244, 63, 94, 0.25) !important;
+  color: #fb7185 !important;
+  border-color: #f43f5e !important;
+}
+
+[data-theme="dark"] .flatpickr-day.prevMonthDay,
+[data-theme="dark"] .flatpickr-day.nextMonthDay {
+  color: #475569 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Tabs, Navigation & Action Buttons
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] .nav-pills {
+  background: rgba(17, 24, 39, 0.92) !important;
+  border: 1px solid rgba(244, 63, 94, 0.3) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .nav-pills .nav-link {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .nav-pills .nav-link:hover,
+[data-theme="dark"] .nav-pills .nav-link.active {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .auth-switcher-wrap {
+  background: rgba(30, 41, 59, 0.85) !important;
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+[data-theme="dark"] .auth-switcher-btn {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .auth-switcher-btn:hover {
+  color: #ffffff !important;
+}
+
+/* Outline Buttons */
+[data-theme="dark"] .btn-outline-secondary {
+  color: #cbd5e1 !important;
+  border-color: rgba(148, 163, 184, 0.4) !important;
+  background-color: rgba(30, 41, 59, 0.6) !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary:hover {
+  color: #ffffff !important;
+  background-color: rgba(244, 63, 94, 0.25) !important;
+  border-color: #f43f5e !important;
+}
+
+[data-theme="dark"] .btn-outline-danger {
+  color: #fb7185 !important;
+  border-color: rgba(244, 63, 94, 0.5) !important;
+  background-color: rgba(30, 41, 59, 0.6) !important;
+}
+
+[data-theme="dark"] .btn-outline-danger:hover {
+  background: linear-gradient(135deg, #fb7185, #f43f5e) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .btn-outline-primary {
+  color: #38bdf8 !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
+  background-color: rgba(30, 41, 59, 0.6) !important;
+}
+
+[data-theme="dark"] .btn-outline-primary:hover {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .btn-outline-success {
+  color: #34d399 !important;
+  border-color: rgba(52, 211, 153, 0.5) !important;
+  background-color: rgba(30, 41, 59, 0.6) !important;
+}
+
+[data-theme="dark"] .btn-outline-success:hover {
+  background-color: #059669 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .bg-white.bg-opacity-75 {
+  background-color: rgba(30, 41, 59, 0.85) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Alerts & Notifications in Dark Mode
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] .alert-info {
+  background-color: rgba(15, 23, 42, 0.92) !important;
+  border: 1px solid rgba(56, 189, 248, 0.4) !important;
+  color: #e0f2fe !important;
+}
+
+[data-theme="dark"] .alert-info strong {
+  color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .alert-warning {
+  background-color: rgba(45, 28, 12, 0.92) !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+  color: #fef3c7 !important;
+}
+
+[data-theme="dark"] .alert-warning strong {
+  color: #fbbf24 !important;
+}
+
+[data-theme="dark"] .alert-danger {
+  background-color: rgba(50, 15, 25, 0.92) !important;
+  border: 1px solid rgba(244, 63, 94, 0.45) !important;
+  color: #ffe4e6 !important;
+}
+
+[data-theme="dark"] .alert-success {
+  background-color: rgba(10, 40, 30, 0.92) !important;
+  border: 1px solid rgba(52, 211, 153, 0.4) !important;
+  color: #d1fae5 !important;
+}
+
+[data-theme="dark"] .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%) !important;
+}
+
+/* Footer & User Pill */
+[data-theme="dark"] .sp-footer {
+  background: rgba(15, 23, 42, 0.94) !important;
+  border-top-color: rgba(244, 63, 94, 0.25) !important;
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .sp-footer .text-dark {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .user-pill {
+  background: rgba(30, 41, 59, 0.92) !important;
+  color: #f1f5f9 !important;
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+[data-theme="dark"] .feature-icon-box {
+  background: rgba(244, 63, 94, 0.18) !important;
+  color: #fb7185 !important;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.sp-footer {
+  margin-top: auto;
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(14px);
+  border-top: 1.5px solid rgba(254, 205, 211, 0.6);
+  padding: 1.8rem 0;
+  color: var(--sp-muted);
+  font-size: 0.875rem;
+}

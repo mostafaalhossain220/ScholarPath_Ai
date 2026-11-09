@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Find matches | ScholarPath AI{% endblock %}
+{% block title %}AI Matchmaking | ScholarPath AI{% endblock %}
+
 {% block content %}
 {% set badge = {
   "satisfied": "success",
@@ -9,110 +10,137 @@
   "needs_verification": "warning"
 } %}
 
-<h1 class="h3 mb-1">Find opportunities that fit you</h1>
-<p class="text-muted">
-  Enter your profile. We rank opportunities by how close they are to your research interests
-  and show which requirements you meet.
-</p>
-
-{% for e in errors %}
-<div class="alert alert-danger py-2">{{ e }}</div>
-{% endfor %}
-
-<form method="post" class="card card-body mb-4">
-  <div class="row g-3">
-    <div class="col-md-3">
-      <label class="form-label" for="target_degree">Degree you want</label>
-      <select class="form-select" id="target_degree" name="target_degree">
-        <option value="">Any</option>
-        <option value="masters" {{ 'selected' if form.target_degree == 'masters' }}>Master's</option>
-        <option value="phd" {{ 'selected' if form.target_degree == 'phd' }}>PhD</option>
-      </select>
-    </div>
-    <div class="col-md-2">
-      <label class="form-label" for="cgpa">CGPA (4.0 scale)</label>
-      <input class="form-control" id="cgpa" name="cgpa" value="{{ form.cgpa }}" placeholder="e.g. 3.4">
-    </div>
-    <div class="col-md-2">
-      <label class="form-label" for="ielts">IELTS overall</label>
-      <input class="form-control" id="ielts" name="ielts" value="{{ form.ielts }}" placeholder="optional">
-    </div>
-    <div class="col-md-5">
-      <label class="form-label" for="preferred_countries">Preferred countries</label>
-      <input class="form-control" id="preferred_countries" name="preferred_countries"
-             value="{{ form.preferred_countries }}" placeholder="e.g. UK; USA; Germany">
-    </div>
-    <div class="col-md-4">
-      <label class="form-label" for="field">Field of study</label>
-      <input class="form-control" id="field" name="field" value="{{ form.field }}"
-             placeholder="e.g. Computer Science">
-    </div>
-    <div class="col-md-8">
-      <label class="form-label" for="research_interests">Research interests</label>
-      <input class="form-control" id="research_interests" name="research_interests"
-             value="{{ form.research_interests }}"
-             placeholder="e.g. natural language processing, machine translation">
-    </div>
-    <div class="col-12">
-      <label class="form-label" for="skills">Skills (optional)</label>
-      <input class="form-control" id="skills" name="skills" value="{{ form.skills }}"
-             placeholder="e.g. Python, PyTorch">
-    </div>
-    <div class="col-12">
-      <button class="btn btn-primary" type="submit">Find matches</button>
-    </div>
+<div class="mb-4">
+  <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-primary-subtle text-primary small fw-semibold mb-2">
+    <i class="bi bi-stars"></i> Semantic Neural Matchmaker
   </div>
-</form>
-
-{% if results is not none %}
-<div class="alert alert-warning">
-  The relevance score only orders opportunities. It is not a chance of admission or funding.
-  Eligibility results are advisory: confirm every requirement on the official source.
+  <h1 class="h3 fw-bold mb-1">Find Opportunities Tailored to You</h1>
+  <p class="text-muted mb-0">
+    Enter your academic credentials and research goals. Our embedding model ranks opportunities by calculating semantic similarity with research descriptions and evaluates eligibility requirements.
+  </p>
 </div>
 
-<h2 class="h5 mb-3">{{ results|length }} opportunities ranked</h2>
+{% for e in errors %}
+<div class="alert alert-danger py-2 px-3 mb-3 small d-flex align-items-center gap-2 rounded-3" role="alert">
+  <i class="bi bi-exclamation-triangle-fill"></i>
+  <div>{{ e }}</div>
+</div>
+{% endfor %}
+
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+  <div class="card-body p-4">
+    <form method="post">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label class="form-label fw-semibold small text-muted" for="target_degree">Target Degree</label>
+          <select class="form-select" id="target_degree" name="target_degree">
+            <option value="">Any Degree Level</option>
+            <option value="masters" {{ 'selected' if form.target_degree == 'masters' }}>Master's</option>
+            <option value="phd" {{ 'selected' if form.target_degree == 'phd' }}>PhD</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-semibold small text-muted" for="cgpa">CGPA (4.0 scale)</label>
+          <input class="form-control" id="cgpa" name="cgpa" value="{{ form.cgpa }}" placeholder="e.g. 3.4">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-semibold small text-muted" for="ielts">IELTS overall</label>
+          <input class="form-control" id="ielts" name="ielts" value="{{ form.ielts }}" placeholder="e.g. 7.0">
+        </div>
+        <div class="col-md-5">
+          <label class="form-label fw-semibold small text-muted" for="preferred_countries">Preferred countries</label>
+          <input class="form-control" id="preferred_countries" name="preferred_countries"
+                 value="{{ form.preferred_countries }}" placeholder="e.g. UK; USA; Germany; Sweden">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold small text-muted" for="field">Field of study</label>
+          <input class="form-control" id="field" name="field" value="{{ form.field }}"
+                 placeholder="e.g. Computer Science, Biotechnology">
+        </div>
+        <div class="col-md-8">
+          <label class="form-label fw-semibold small text-muted" for="research_interests">Research interests</label>
+          <input class="form-control" id="research_interests" name="research_interests"
+                 value="{{ form.research_interests }}"
+                 placeholder="e.g. natural language processing, machine learning, computer vision">
+        </div>
+        <div class="col-12">
+          <label class="form-label fw-semibold small text-muted" for="skills">Skills & Tools (optional)</label>
+          <input class="form-control" id="skills" name="skills" value="{{ form.skills }}"
+                 placeholder="e.g. Python, PyTorch, Docker, Statistical Analysis">
+        </div>
+        <div class="col-12 pt-2">
+          <button class="btn btn-primary px-4 py-2" type="submit">
+            <i class="bi bi-stars me-1"></i> Calculate Matches
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% if results is not none %}
+<div class="alert alert-warning border-0 rounded-4 d-flex align-items-center gap-2 mb-4 p-3 shadow-sm small">
+  <i class="bi bi-info-circle-fill text-warning fs-5"></i>
+  <div>
+    <strong>Advisory Notice:</strong> The relevance score ranks positions by semantic topic overlap and does not guarantee admission or funding. Please confirm every prerequisite on the university portal before applying.
+  </div>
+</div>
+
+<h2 class="h5 fw-bold mb-3 d-flex align-items-center gap-2">
+  <span>Ranked Results</span>
+  <span class="badge text-bg-primary rounded-pill small">{{ results|length }} positions</span>
+</h2>
 
 {% for r in results %}
 {% set o = r.opportunity %}
-<div class="card mb-3">
-  <div class="card-body">
-    <div class="d-flex justify-content-between flex-wrap">
+<div class="card border-0 shadow-sm rounded-4 mb-3">
+  <div class="card-body p-4">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
       <div>
-        <h3 class="h6 mb-1">
-          {{ loop.index }}.
-          <a href="{{ url_for('opportunities.detail', opportunity_id=o.id) }}">{{ o.title }}</a>
+        <h3 class="h6 fw-bold mb-1">
+          <span class="text-primary me-1">#{{ loop.index }}</span>
+          <a href="{{ url_for('opportunities.detail', opportunity_id=o.id) }}" class="text-dark text-decoration-none">
+            {{ o.title }}
+          </a>
         </h3>
         <div class="text-muted small">
-          {{ o.provider }} &middot; {{ o.country or "Country not provided" }} &middot;
-          Deadline: {{ o.deadline or "Not provided" }}
+          <i class="bi bi-building me-1"></i> {{ o.provider }} &middot;
+          <i class="bi bi-geo-alt me-1"></i> {{ o.country or "Country not provided" }} &middot;
+          <i class="bi bi-calendar-event me-1"></i> Deadline: {{ o.deadline or "Not provided" }}
           <span class="badge text-bg-secondary ms-1">{{ o.degree_level }}</span>
         </div>
       </div>
       <div class="text-end">
-        <div class="small text-muted">Relevance score</div>
-        <div class="fs-5">{{ "%.2f"|format(r.final_score) }}</div>
-        <span class="badge text-bg-{{ badge[r.eligibility.overall] }}">
-          {{ r.eligibility.overall.replace("_", " ") }}
+        <div class="small text-muted fw-semibold">Match Score</div>
+        <div class="fs-4 fw-bold text-primary">{{ "%.2f"|format(r.final_score) }}</div>
+        <span class="badge text-bg-{{ badge[r.eligibility.overall] }} rounded-pill px-2">
+          {{ r.eligibility.overall.replace("_", " ")|capitalize }}
         </span>
       </div>
     </div>
 
-    <p class="mt-3 mb-1 fw-semibold small">Why it was recommended</p>
-    <ul class="small mb-2">
-      {% for reason in r.reasons %}
-      <li>{{ reason }}</li>
-      {% endfor %}
-    </ul>
+    <div class="p-3 bg-light rounded-3 mb-3">
+      <div class="fw-semibold small text-dark mb-1"><i class="bi bi-lightbulb text-warning me-1"></i>Why recommended:</div>
+      <ul class="small mb-0 ps-3 text-secondary">
+        {% for reason in r.reasons %}
+        <li>{{ reason }}</li>
+        {% endfor %}
+      </ul>
+    </div>
 
-    <p class="mb-1 fw-semibold small">Requirements</p>
-    <ul class="list-unstyled small mb-0">
-      {% for req in r.eligibility.requirements %}
-      <li>
-        <span class="badge text-bg-{{ badge[req.status] }}">{{ req.status.replace("_", " ") }}</span>
-        <strong>{{ req.requirement }}:</strong> {{ req.reason }}
-      </li>
-      {% endfor %}
-    </ul>
+    <div>
+      <div class="fw-semibold small text-dark mb-2"><i class="bi bi-clipboard-check text-success me-1"></i>Eligibility Checklist:</div>
+      <ul class="list-unstyled small mb-0 d-flex flex-column gap-1">
+        {% for req in r.eligibility.requirements %}
+        <li class="d-flex align-items-center gap-2">
+          <span class="badge text-bg-{{ badge[req.status] }} rounded-pill" style="min-width: 90px;">
+            {{ req.status.replace("_", " ")|capitalize }}
+          </span>
+          <span><strong>{{ req.requirement }}:</strong> {{ req.reason }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
 </div>
 {% endfor %}

@@ -1,35 +1,75 @@
 {% extends "base.html" %}
 {% block title %}{{ o.title }} | ScholarPath AI{% endblock %}
+
 {% block content %}
-<a href="{{ url_for('opportunities.list_opportunities') }}">&larr; Back to opportunities</a>
-
-<h1 class="h3 mt-3 mb-1">{{ o.title }}</h1>
-<p class="text-muted mb-3">
-  {{ o.provider }}
-  <span class="badge text-bg-secondary ms-2">{{ o.degree_level }}</span>
-</p>
-
-<div class="alert alert-warning">
-  This information was collected from the official source on
-  <strong>{{ o.last_checked or "an unknown date" }}</strong> and may have changed.
-  It is advisory only. Please confirm every detail on the official page before applying.
+<div class="mb-3">
+  <a href="{{ url_for('opportunities.list_opportunities') }}" class="text-decoration-none text-muted small">
+    <i class="bi bi-arrow-left me-1"></i> Back to opportunities
+  </a>
 </div>
 
-<table class="table">
-  <tbody>
-    <tr><th style="width: 200px">Country</th><td>{{ o.country or "Not provided" }}</td></tr>
-    <tr><th>Field</th><td>{{ o.field or "Not provided" }}</td></tr>
-    <tr><th>Deadline</th><td>{{ o.deadline or "Not provided" }}</td></tr>
-    <tr><th>Funding</th><td>{{ o.funding or "Not provided" }}</td></tr>
-    <tr><th>Minimum CGPA</th><td>{{ o.min_cgpa if o.min_cgpa is not none else "Not stated on the official page" }}</td></tr>
-    <tr><th>Minimum IELTS</th><td>{{ o.min_ielts if o.min_ielts is not none else "Not stated on the official page" }}</td></tr>
-    <tr><th>Description</th><td>{{ o.description or "Not provided" }}</td></tr>
-    <tr><th>Requirements</th><td>{{ o.requirements_text or "Not provided" }}</td></tr>
-    <tr><th>Last checked</th><td>{{ o.last_checked or "Not provided" }}</td></tr>
-  </tbody>
-</table>
+<div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-3">
+    <div>
+      <span class="badge {{ 'text-bg-primary' if o.degree_level == 'phd' else 'text-bg-info text-white' }} rounded-pill mb-2 px-3 py-1">
+        {{ o.degree_level|upper }}
+      </span>
+      <h1 class="h3 fw-bold mb-1">{{ o.title }}</h1>
+      <p class="text-muted mb-0 fs-6">
+        <i class="bi bi-building me-1"></i> {{ o.provider }}
+        <span class="badge text-bg-secondary ms-2">{{ o.degree_level }}</span>
+      </p>
+    </div>
+    <div class="d-flex gap-2 align-items-center flex-wrap">
+      <a class="btn btn-primary px-3" href="{{ o.source_url }}" target="_blank" rel="noopener noreferrer">
+        <i class="bi bi-box-arrow-up-right me-1"></i> Open official source
+      </a>
 
-<a class="btn btn-primary" href="{{ o.source_url }}" target="_blank" rel="noopener noreferrer">
-  Open official source
-</a>
+      {% if g.user %}
+        {% if saved %}
+          <span class="badge text-bg-success ms-2 fs-6 py-2 px-3">Saved · {{ saved.status|capitalize }}</span>
+          <a class="btn btn-outline-success ms-2 btn-sm" href="{{ url_for('saved.tracker') }}">
+            <i class="bi bi-bookmark-check me-1"></i> Open my tracker
+          </a>
+        {% else %}
+          <form method="post" action="{{ url_for('saved.add', opportunity_id=o.id) }}" class="d-inline ms-2">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn btn-outline-primary" type="submit">
+              <i class="bi bi-bookmark-plus me-1"></i> Save to my tracker
+            </button>
+          </form>
+        {% endif %}
+      {% else %}
+        <a class="btn btn-outline-secondary ms-2" href="{{ url_for('auth.login', next=request.path) }}">
+          <i class="bi bi-lock me-1"></i> Log in to save
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="alert alert-warning border-0 rounded-3 d-flex align-items-center gap-2 mb-4 py-2 px-3 small">
+    <i class="bi bi-shield-exclamation fs-5 text-warning"></i>
+    <div>
+      This information was collected from the official source on
+      <strong>{{ o.last_checked or "an unknown date" }}</strong> and may have changed.
+      It is advisory only. Please confirm every detail on the official page before applying.
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <tbody>
+        <tr><th class="table-light" style="width: 220px">Country</th><td>{{ o.country or "Not provided" }}</td></tr>
+        <tr><th class="table-light">Field of Study</th><td>{{ o.field or "Not provided" }}</td></tr>
+        <tr><th class="table-light">Application Deadline</th><td>{{ o.deadline or "Not provided" }}</td></tr>
+        <tr><th class="table-light">Funding Details</th><td>{{ o.funding or "Not provided" }}</td></tr>
+        <tr><th class="table-light">Minimum CGPA</th><td>{{ o.min_cgpa if o.min_cgpa is not none else "Not stated on the official page" }}</td></tr>
+        <tr><th class="table-light">Minimum IELTS</th><td>{{ o.min_ielts if o.min_ielts is not none else "Not stated on the official page" }}</td></tr>
+        <tr><th class="table-light">Full Description</th><td>{{ o.description or "Not provided" }}</td></tr>
+        <tr><th class="table-light">Key Requirements</th><td>{{ o.requirements_text or "Not provided" }}</td></tr>
+        <tr><th class="table-light">Last checked</th><td>{{ o.last_checked or "Not provided" }}</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}

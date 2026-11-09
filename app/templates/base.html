@@ -3,21 +3,130 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}ScholarPath AI{% endblock %}</title>
+  <title>{% block title %}ScholarPath AI | Smart Scholarship & PhD Matching{% endblock %}</title>
+  
+  {# Google Fonts & Bootstrap Icons #}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  {# Flatpickr Aesthetic Calendar #}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  
+  {# Custom Modern Stylesheet #}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_head %}{% endblock %}
 </head>
 <body>
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
+  {# Full-Site Interactive Sakura Petals & Cursor Trail Canvas #}
+  <canvas id="sakura-canvas"></canvas>
+
+  <nav class="navbar navbar-expand-lg sp-navbar">
     <div class="container">
-      <a class="navbar-brand" href="/">ScholarPath AI</a>
-      <div class="navbar-nav">
-        <a class="nav-link" href="{{ url_for('opportunities.list_opportunities') }}">Opportunities</a>
-        <a class="nav-link" href="{{ url_for('matching.match') }}">Find matches</a>
+      <a class="navbar-brand sp-brand d-flex align-items-center gap-2" href="/">
+        <img src="{{ url_for('static', filename='img/scholarpath-icon.png') }}" alt="ScholarPath" class="sp-brand-icon-img" style="height: 28px; width: 28px; object-fit: contain;">
+        <span class="sp-brand-text">ScholarPath <span class="sp-brand-ai-badge">AI</span></span>
+      </a>
+
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#spNav" aria-controls="spNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="spNav">
+        <ul class="navbar-nav me-auto ms-lg-4 mb-2 mb-lg-0">
+          {% if g.user and matching_enabled %}
+          <li class="nav-item">
+            <a class="nav-link sp-nav-link" href="{{ url_for('matching.match') }}">
+              <i class="bi bi-stars text-danger"></i> Find matches
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+
+        <ul class="navbar-nav ms-auto align-items-center gap-2">
+          {# Night Mode / Theme Toggle #}
+          <li class="nav-item">
+            <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle Night Mode" title="Toggle Light / Night Mode">
+              <i class="bi bi-moon-stars-fill theme-icon-moon"></i>
+              <i class="bi bi-sun-fill theme-icon-sun"></i>
+            </button>
+          </li>
+
+          {% if g.user %}
+          {# Opportunities Pill Button (Only When Logged In) #}
+          <li class="nav-item">
+            <a class="nav-opportunities-pill text-decoration-none" href="{{ url_for('opportunities.list_opportunities') }}" title="Browse Opportunities">
+              <i class="bi bi-grid-3x3-gap-fill"></i> Opportunities
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ url_for('profile.edit') }}" class="user-pill text-decoration-none" title="View & Edit Academic Profile">
+              <div class="user-avatar-mini">{{ g.user.name[0]|upper }}</div>
+              <span>Hi, {{ g.user.name }}</span>
+              <i class="bi bi-chevron-right text-muted ms-1" style="font-size: 0.72rem;"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <form method="post" action="{{ url_for('auth.logout') }}" class="d-inline m-0">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-1" type="submit">
+                <i class="bi bi-box-arrow-right"></i> Log out
+              </button>
+            </form>
+          </li>
+          {% endif %}
+        </ul>
       </div>
     </div>
   </nav>
-  <main class="container mt-4">
+
+  {% block auth_layout %}
+  <main class="container my-4 flex-grow-1">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="mb-4">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show shadow-sm border-0 d-flex align-items-center gap-2 alert-auto-dismiss" role="alert">
+          {% if category == 'success' %}
+            <i class="bi bi-check-circle-fill text-success fs-5"></i>
+          {% elif category == 'danger' or category == 'error' %}
+            <i class="bi bi-exclamation-triangle-fill text-danger fs-5"></i>
+          {% elif category == 'warning' %}
+            <i class="bi bi-exclamation-circle-fill text-warning fs-5"></i>
+          {% else %}
+            <i class="bi bi-info-circle-fill text-primary fs-5"></i>
+          {% endif %}
+          <div class="flex-grow-1">{{ message }}</div>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+
     {% block content %}{% endblock %}
   </main>
+  {% endblock %}
+
+  <footer class="sp-footer">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div class="d-flex align-items-center gap-2">
+        <span class="fw-bold text-dark">ScholarPath AI</span>
+        <span>&middot;</span>
+        <span>Intelligent scholarship & funded PhD matchmaking</span>
+      </div>
+      <div>
+        <span>Built with care for international students &middot; &copy; 2026</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/sakura.js') }}"></script>
+  {% block extra_scripts %}{% endblock %}
 </body>
 </html>

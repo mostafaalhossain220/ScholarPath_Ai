@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, g, render_template, request
 
 from app.db import get_db
+from app.routes.auth import login_required
 from app.services.ranking import rank_opportunities
 
 bp = Blueprint("matching", __name__, url_prefix="/matching")
@@ -26,10 +27,21 @@ def parse_number(value, low, high, label):
 
 
 @bp.route("/", methods=["GET", "POST"])
+@login_required
 def match():
     form = {name: "" for name in FORM_FIELDS}
     errors = []
     results = None
+
+    if request.method == "GET" and g.user:
+        db = get_db()
+        db_profile = db.execute(
+            "SELECT * FROM profiles WHERE user_id = ?", (g.user["id"],)
+        ).fetchone()
+        if db_profile:
+            for field in FORM_FIELDS:
+                val = db_profile[field]
+                form[field] = "" if val is None else str(val)
 
     if request.method == "POST":
         form = {name: request.form.get(name, "").strip() for name in FORM_FIELDS}
