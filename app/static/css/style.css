@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ScholarPath AI - Sweet Pink & Sakura Design System
+   ScholarPath AI - Sweet Pink & Sakura Ultra-Smooth Design System
    ========================================================================== */
 
 :root {
@@ -7,7 +7,7 @@
   --sp-sweet-rose: #fb7185;
   --sp-sweet-soft: #fff1f2;
   --sp-sweet-border: #fecdd3;
-  --sp-sweet-glow: rgba(244, 63, 94, 0.22);
+  --sp-sweet-glow: rgba(244, 63, 94, 0.25);
   
   --sp-success: #10b981;
   --sp-success-hover: #059669;
@@ -22,6 +22,10 @@
   --sp-radius-xl: 24px;
 }
 
+/* ==========================================================================
+   Body: Clear & Vivid Sakura Background
+   ========================================================================== */
+
 body {
   font-family: var(--sp-font-sans);
   color: var(--sp-dark);
@@ -31,7 +35,7 @@ body {
   -webkit-font-smoothing: antialiased;
   background-color: #fff1f2;
   background-image: 
-    linear-gradient(135deg, rgba(255, 245, 247, 0.88) 0%, rgba(254, 240, 242, 0.82) 50%, rgba(255, 241, 242, 0.90) 100%),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 0%, rgba(255, 245, 248, 0.18) 100%),
     url('/static/img/sakura-bg.jpg');
   background-size: cover;
   background-position: center;
@@ -60,11 +64,11 @@ nav, main, footer {
    ========================================================================== */
 
 .sp-navbar {
-  background: rgba(255, 255, 255, 0.92) !important;
+  background: rgba(255, 255, 255, 0.90) !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1.5px solid rgba(254, 205, 211, 0.6);
-  box-shadow: 0 4px 18px rgba(244, 63, 94, 0.06);
+  border-bottom: 1.5px solid rgba(254, 205, 211, 0.7);
+  box-shadow: 0 4px 18px rgba(244, 63, 94, 0.08);
   padding: 0.85rem 0;
   position: sticky;
   top: 0;
@@ -80,6 +84,11 @@ nav, main, footer {
   gap: 0.55rem;
   letter-spacing: -0.02em;
   text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.sp-brand:hover {
+  transform: scale(1.02);
 }
 
 .sp-brand-icon {
@@ -111,9 +120,9 @@ nav, main, footer {
 .sp-nav-link {
   font-weight: 600;
   color: #475569 !important;
-  padding: 0.5rem 0.9rem !important;
-  border-radius: var(--sp-radius-sm);
-  transition: all 0.18s ease-in-out;
+  padding: 0.5rem 0.95rem !important;
+  border-radius: 20px;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -121,22 +130,34 @@ nav, main, footer {
 }
 
 .sp-nav-link:hover, .sp-nav-link.active {
-  color: #e11d48 !important;
-  background-color: #fff1f2;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.28);
 }
 
+/* Clickable User Pill (Takes to Profile) */
 .user-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.95);
-  padding: 0.4rem 0.85rem;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 0.4rem 0.95rem;
   border-radius: 30px;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #1e293b;
-  border: 1px solid #fecdd3;
-  box-shadow: 0 2px 8px rgba(244, 63, 94, 0.1);
+  border: 1.5px solid #fecdd3;
+  box-shadow: 0 2px 10px rgba(244, 63, 94, 0.12);
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: pointer;
+}
+
+.user-pill:hover {
+  background: #fff1f2;
+  border-color: #f43f5e;
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.25);
+  color: #e11d48 !important;
 }
 
 .user-avatar-mini {
@@ -168,18 +189,18 @@ nav, main, footer {
 }
 
 .auth-box-sweet {
-  background: rgba(255, 255, 255, 0.96) !important;
+  background: rgba(255, 255, 255, 0.94) !important;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1.5px solid rgba(254, 205, 211, 0.8) !important;
   box-shadow: 0 16px 36px -8px rgba(244, 63, 94, 0.18), 0 0 20px rgba(251, 207, 232, 0.4) !important;
-  animation: cardFadeUp 0.5s ease-out;
+  animation: cardFadeUp 0.45s ease-out;
 }
 
 @keyframes cardFadeUp {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -191,7 +212,7 @@ nav, main, footer {
   border: 1.5px solid #fecdd3 !important;
   background-color: #ffffff !important;
   color: #1e293b !important;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .input-sweet:focus {
@@ -207,7 +228,7 @@ nav, main, footer {
   border-radius: var(--sp-radius-md) !important;
   font-weight: 700 !important;
   box-shadow: 0 4px 14px rgba(244, 63, 94, 0.35) !important;
-  transition: all 0.18s ease-in-out;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
   text-decoration: none;
   display: inline-block;
 }
@@ -215,7 +236,7 @@ nav, main, footer {
 .btn-sp-sweet:hover {
   background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important;
   color: #ffffff !important;
-  transform: translateY(-1px);
+  transform: translateY(-1.5px);
   box-shadow: 0 6px 18px rgba(244, 63, 94, 0.45) !important;
 }
 
@@ -226,7 +247,7 @@ nav, main, footer {
   border-radius: var(--sp-radius-md) !important;
   font-weight: 700 !important;
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25) !important;
-  transition: all 0.18s ease-in-out;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
   text-decoration: none;
   display: inline-block;
 }
@@ -234,7 +255,7 @@ nav, main, footer {
 .btn-sp-create:hover {
   background: #059669 !important;
   color: #ffffff !important;
-  transform: translateY(-1px);
+  transform: translateY(-1.5px);
   box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35) !important;
 }
 
@@ -257,16 +278,128 @@ nav, main, footer {
 }
 
 /* ==========================================================================
-   Full Web Cards & UI Elements
+   Magnetic Sliding Pill Indicator for Tabs
    ========================================================================== */
 
+.nav-pills {
+  position: relative !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  padding: 5px !important;
+  border-radius: 30px !important;
+  border: 1.5px solid rgba(254, 205, 211, 0.7) !important;
+  display: inline-flex !important;
+  gap: 3px !important;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.08) !important;
+}
+
+.sliding-pill-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.38);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+}
+
+.nav-pills .nav-link {
+  position: relative !important;
+  z-index: 2 !important;
+  border-radius: 25px !important;
+  font-weight: 700 !important;
+  color: #475569 !important;
+  padding: 0.45rem 1.15rem !important;
+  transition: color 0.2s ease !important;
+  background: transparent !important;
+}
+
+.nav-pills .nav-link:hover {
+  color: #ffffff !important;
+}
+
+.nav-pills .nav-link.active {
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+/* ==========================================================================
+   Bootstrap Global Overrides (No Blue Allowed!)
+   ========================================================================== */
+
+.btn-primary {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: var(--sp-radius-md) !important;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.28) !important;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important;
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 6px 18px rgba(244, 63, 94, 0.4) !important;
+}
+
+.badge.text-bg-primary, .badge.text-bg-secondary {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+  border-radius: 20px;
+}
+
+/* Full Web Cards */
 .card {
-  background: rgba(255, 255, 255, 0.94) !important;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1.5px solid rgba(254, 205, 211, 0.6) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1.5px solid rgba(254, 205, 211, 0.7) !important;
   border-radius: var(--sp-radius-lg) !important;
-  box-shadow: 0 6px 18px rgba(244, 63, 94, 0.06) !important;
+  box-shadow: 0 8px 24px rgba(244, 63, 94, 0.08) !important;
+}
+
+/* ==========================================================================
+   Interactive Table Rows: Smooth Sweet Pink Hover & Micro-Zoom
+   ========================================================================== */
+
+.opportunity-row {
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  cursor: pointer !important;
+  position: relative;
+}
+
+.opportunity-row td {
+  transition: background-color 0.22s ease, transform 0.22s ease !important;
+  background-color: transparent !important;
+}
+
+.opportunity-row:hover {
+  transform: translateY(-2px) scale(1.008) !important;
+  box-shadow: 0 8px 24px rgba(244, 63, 94, 0.16) !important;
+  z-index: 10;
+}
+
+.opportunity-row:hover td {
+  background: rgba(255, 241, 242, 0.96) !important;
+}
+
+.opportunity-row:hover .opportunity-title {
+  color: #e11d48 !important;
+  text-decoration: underline !important;
+}
+
+.badge-degree-phd, .badge-degree-masters {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  padding: 0.35rem 0.75rem !important;
+  border-radius: 20px !important;
+  box-shadow: 0 2px 8px rgba(244, 63, 94, 0.25) !important;
 }
 
 .feature-icon-box {
@@ -288,7 +421,7 @@ nav, main, footer {
 
 .sp-footer {
   margin-top: auto;
-  background: rgba(255, 255, 255, 0.90) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
   backdrop-filter: blur(14px);
   border-top: 1.5px solid rgba(254, 205, 211, 0.6);
   padding: 1.8rem 0;

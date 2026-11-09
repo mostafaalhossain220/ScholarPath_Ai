@@ -95,15 +95,15 @@
       </thead>
       <tbody>
         {% for o in opportunities %}
-        <tr>
+        <tr class="opportunity-row" onclick="window.location='{{ url_for('opportunities.detail', opportunity_id=o.id) }}'">
           <td class="ps-4">
-            <a href="{{ url_for('opportunities.detail', opportunity_id=o.id) }}" class="fw-bold text-decoration-none text-dark">
+            <a href="{{ url_for('opportunities.detail', opportunity_id=o.id) }}" class="fw-bold text-decoration-none text-dark opportunity-title">
               {{ o.title }}
             </a>
           </td>
           <td class="text-secondary small">{{ o.provider }}</td>
           <td>
-            <span class="badge {{ 'text-bg-primary' if o.degree_level == 'phd' else 'text-bg-info text-white' }} rounded-pill">
+            <span class="badge badge-degree-phd rounded-pill">
               {{ o.degree_level|upper }}
             </span>
           </td>
