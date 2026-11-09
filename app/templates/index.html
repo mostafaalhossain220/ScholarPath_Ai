@@ -3,7 +3,7 @@
 
 {% block content %}
 {% if g.user %}
-<!-- ================= LOGGED IN DASHBOARD ================= -->
+{# ================= LOGGED IN DASHBOARD ================= #}
 <div class="row mb-4">
   <div class="col-12">
     <div class="p-4 p-md-5 rounded-4 dashboard-banner shadow-sm d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
@@ -84,9 +84,9 @@
 </div>
 
 {% else %}
-<!-- ================= LOGGED OUT: CLEAN FACEBOOK-STYLE SWEET PINK LOGIN ================= -->
+{# ================= LOGGED OUT: CLEAN AUTHENTICATION PORTAL ================= #}
 <div class="row align-items-center justify-content-center min-vh-70 py-4 py-md-5">
-  <!-- Left Side: Clean Sweet Brand -->
+  {# Left Side: Clean Sweet Brand #}
   <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0 pe-lg-4">
     <h1 class="display-5 fw-bold text-dark mb-3" style="letter-spacing: -0.03em;">
       Find Your Dream <span class="text-sweet-pink">Scholarship</span> & Funded PhD.
@@ -96,10 +96,10 @@
     </p>
   </div>
 
-  <!-- Right Side: Compact Clean Auth Card with Integrated Switcher -->
+  {# Right Side: Compact Clean Auth Card with Integrated Switcher #}
   <div class="col-md-7 col-lg-5 col-xl-4">
     <div class="card border-0 shadow-lg rounded-4 p-4 auth-box-sweet">
-      <!-- Top Segmented Switcher for Login / Sign Up -->
+      {# Top Segmented Switcher for Login / Sign Up #}
       <div class="auth-switcher-wrap mb-3">
         <button type="button" class="auth-switcher-btn active" id="btn-show-login">
           <i class="bi bi-box-arrow-in-right me-1"></i> Log In
@@ -109,7 +109,7 @@
         </button>
       </div>
 
-      <!-- LOGIN PANEL (Active by default) -->
+      {# LOGIN PANEL (Active by default) #}
       <div id="auth-login-panel">
         <form method="post" action="{{ url_for('auth.login') }}" novalidate>
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -137,7 +137,7 @@
         </form>
       </div>
 
-      <!-- SIGN UP PANEL (Hidden by default, slides in seamlessly) -->
+      {# SIGN UP PANEL (Hidden by default, slides in seamlessly) #}
       <div id="auth-signup-panel" style="display: none;">
         <form method="post" action="{{ url_for('auth.register') }}" novalidate>
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

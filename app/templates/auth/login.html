@@ -4,7 +4,7 @@
 {% block auth_layout %}
 <div class="container min-vh-75 d-flex align-items-center justify-content-center py-5">
   <div class="row w-100 justify-content-center align-items-center">
-    <!-- Left Side: Brand -->
+    {# Left Side: Brand #}
     <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0 pe-lg-4">
       <h1 class="display-5 fw-bold text-dark mb-3" style="letter-spacing: -0.03em;">
         Welcome Back to <span class="text-sweet-pink">ScholarPath</span>
@@ -14,10 +14,10 @@
       </p>
     </div>
 
-    <!-- Right Side: Compact Facebook-Style Login Card -->
+    {# Right Side: Compact Login Card #}
     <div class="col-md-7 col-lg-5 col-xl-4">
       <div class="card border-0 shadow-lg rounded-4 p-4 auth-box-sweet">
-        <!-- Error Alert if wrong email or password -->
+        {# Error Alert if wrong email or password #}
         {% if error %}
         <div class="alert alert-danger py-2 px-3 mb-3 small d-flex align-items-center gap-2 rounded-3" role="alert">
           <i class="bi bi-exclamation-triangle-fill text-danger"></i>
