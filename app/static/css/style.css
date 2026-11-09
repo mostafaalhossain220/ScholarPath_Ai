@@ -1,0 +1,424 @@
+/* ==========================================================================
+   ScholarPath AI - Modern Professional Design System
+   ========================================================================== */
+
+:root {
+  --sp-primary: #4f46e5;
+  --sp-primary-hover: #4338ca;
+  --sp-primary-light: #eef2ff;
+  --sp-secondary: #0ea5e9;
+  --sp-success: #10b981;
+  --sp-warning: #f59e0b;
+  --sp-danger: #ef4444;
+  --sp-dark: #0f172a;
+  --sp-muted: #64748b;
+  --sp-light: #f8fafc;
+  --sp-border: #e2e8f0;
+  
+  --sp-sakura-pink: #f472b6;
+  --sp-sakura-soft: #fdf2f8;
+  --sp-sakura-glow: rgba(244, 114, 182, 0.25);
+  
+  --sp-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --sp-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --sp-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --sp-shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+  --sp-shadow-glass: 0 20px 40px -15px rgba(236, 72, 153, 0.18), 0 0 25px rgba(251, 207, 232, 0.35);
+  --sp-radius-sm: 8px;
+  --sp-radius-md: 12px;
+  --sp-radius-lg: 18px;
+  --sp-radius-xl: 24px;
+}
+
+body {
+  font-family: var(--sp-font-sans);
+  color: var(--sp-dark);
+  background-color: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   Navigation Bar
+   ========================================================================== */
+
+.sp-navbar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--sp-border);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+  padding: 0.85rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+
+.sp-brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--sp-dark) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.sp-brand-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.15rem;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+}
+
+.sp-brand-badge {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--sp-primary-light);
+  color: var(--sp-primary);
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+.sp-nav-link {
+  font-weight: 500;
+  color: #475569 !important;
+  padding: 0.5rem 0.85rem !important;
+  border-radius: var(--sp-radius-sm);
+  transition: all 0.15s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sp-nav-link:hover, .sp-nav-link.active {
+  color: var(--sp-primary) !important;
+  background-color: var(--sp-primary-light);
+}
+
+.user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f1f5f9;
+  padding: 0.35rem 0.75rem;
+  border-radius: 30px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+}
+
+.user-avatar-mini {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   Sakura Auth Page Layout & Glassmorphism
+   ========================================================================== */
+
+.sakura-auth-container {
+  position: relative;
+  min-height: calc(100vh - 75px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+  overflow: hidden;
+  background-color: #fff1f2;
+  background-image: 
+    radial-gradient(at 10% 20%, rgba(253, 242, 248, 0.95) 0px, transparent 50%),
+    radial-gradient(at 90% 80%, rgba(254, 205, 211, 0.85) 0px, transparent 50%),
+    linear-gradient(135deg, #fff5f7 0%, #ffe4e6 50%, #fce7f3 100%),
+    url('/static/img/sakura-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#sakura-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.auth-glass-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 460px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: var(--sp-radius-xl);
+  box-shadow: var(--sp-shadow-glass);
+  padding: 2.5rem;
+  animation: cardFloatUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cardFloatUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.75rem;
+  box-shadow: 0 8px 18px rgba(236, 72, 153, 0.35);
+}
+
+.auth-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--sp-dark);
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.02em;
+}
+
+.auth-subtitle {
+  font-size: 0.875rem;
+  color: var(--sp-muted);
+}
+
+.auth-tabs {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.auth-tab-link {
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 9px;
+  color: var(--sp-muted);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.auth-tab-link.active {
+  background: #ffffff;
+  color: var(--sp-dark);
+  box-shadow: var(--sp-shadow-sm);
+}
+
+/* Form Controls with Enhanced Modern Styling */
+.form-floating-custom {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.form-label-custom {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-icon-left {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 1rem;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.form-control-custom {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.6rem;
+  font-size: 0.935rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #1e293b;
+  background-color: #ffffff;
+  background-clip: padding-box;
+  border: 1.5px solid #cbd5e1;
+  border-radius: var(--sp-radius-md);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control-custom:focus {
+  border-color: #ec4899;
+  outline: 0;
+  box-shadow: 0 0 0 4px var(--sp-sakura-glow);
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 1rem;
+  z-index: 5;
+}
+
+.toggle-password-btn:hover {
+  color: #ec4899;
+}
+
+.btn-sp-primary {
+  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+  color: #ffffff;
+  border: none;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--sp-radius-md);
+  box-shadow: 0 4px 14px rgba(219, 39, 119, 0.3);
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.btn-sp-primary:hover {
+  background: linear-gradient(135deg, #db2777 0%, #be185d 100%);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(219, 39, 119, 0.4);
+}
+
+.btn-sp-primary:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   General Cards & UI Components
+   ========================================================================== */
+
+.sp-card {
+  background: #ffffff;
+  border: 1px solid var(--sp-border);
+  border-radius: var(--sp-radius-lg);
+  box-shadow: var(--sp-shadow-md);
+  transition: all 0.2s ease-in-out;
+}
+
+.sp-card:hover {
+  box-shadow: var(--sp-shadow-lg);
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4338ca 100%);
+  color: #ffffff;
+  padding: 4.5rem 1.5rem;
+  border-radius: var(--sp-radius-xl);
+  margin-bottom: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--sp-shadow-lg);
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+}
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: #cbd5e1;
+  max-width: 650px;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.feature-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--sp-primary-light);
+  color: var(--sp-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.sp-footer {
+  margin-top: auto;
+  background: #ffffff;
+  border-top: 1px solid var(--sp-border);
+  padding: 2rem 0;
+  color: var(--sp-muted);
+  font-size: 0.875rem;
+}

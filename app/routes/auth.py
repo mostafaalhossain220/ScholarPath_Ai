@@ -33,12 +33,12 @@ def check_csrf():
 
 
 def login_required(view):
-    """Decorator for pages that need a logged-in user (use it on the dashboard later)."""
+    """Decorator for pages that need a logged-in user."""
     @wraps(view)
     def wrapped(*args, **kwargs):
         if g.user is None:
             flash("Please log in first.", "warning")
-            return redirect(url_for("auth.login"))
+            return redirect(url_for("auth.login", next=request.path))
         return view(*args, **kwargs)
     return wrapped
 
@@ -123,6 +123,7 @@ def login():
 
     email = ""
     error = None
+    next_page = request.args.get("next") or request.form.get("next") or ""
 
     if request.method == "POST":
         check_csrf()
@@ -139,9 +140,11 @@ def login():
         else:
             session.clear()
             session["user_id"] = user["id"]
+            if next_page and next_page.startswith("/") and not next_page.startswith("//"):
+                return redirect(next_page)
             return redirect(url_for("index"))
 
-    return render_template("auth/login.html", email=email, error=error)
+    return render_template("auth/login.html", email=email, error=error, next=next_page)
 
 
 @bp.route("/logout", methods=("POST",))

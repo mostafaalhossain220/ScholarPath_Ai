@@ -53,3 +53,14 @@ def test_wrong_password_and_unknown_email_same_message(client):
 def test_post_without_csrf_token_is_rejected(client):
     response = client.post("/auth/login", data={"email": "a@b.com", "password": "x"})
     assert response.status_code == 400
+
+
+def test_login_redirects_to_next_url(client):
+    register(client)
+    response = client.post("/auth/login?next=/profile/", data={
+        "email": "rafi@example.com", "password": "secret123",
+        "csrf_token": token(client, "/auth/login")
+    })
+    assert response.status_code == 302
+    assert response.headers["Location"] == "/profile/"
+
