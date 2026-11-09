@@ -6,21 +6,28 @@
 <!-- ================= LOGGED IN DASHBOARD ================= -->
 <div class="row mb-4">
   <div class="col-12">
-    <div class="p-4 p-md-5 rounded-4 bg-white bg-opacity-95 shadow-sm border border-danger-subtle d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 tilt-press-card">
+    <div class="p-4 p-md-5 rounded-4 dashboard-banner shadow-sm d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 tilt-press-card">
       <div>
-        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-danger-subtle text-danger small fw-semibold mb-2">
-          <i class="bi bi-stars text-danger"></i> Welcome back, {{ g.user.name }}! 👋
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <img src="{{ url_for('static', filename='img/scholarpath-logo.png') }}" alt="ScholarPath AI"
+               class="rounded-3 shadow-sm" style="height: 48px; width: auto; object-fit: contain; background: #0b0718; padding: 4px 8px;">
+          <span class="badge bg-danger-subtle text-danger rounded-pill px-3 py-1 fw-semibold">
+            <i class="bi bi-stars text-danger"></i> Welcome back, {{ g.user.name }}! 👋
+          </span>
         </div>
         <h1 class="h2 fw-bold mb-1">ScholarPath AI Dashboard</h1>
-        <p class="text-muted mb-0">Explore scholarship deadlines and find faculty positions tailored for you.</p>
+        <p class="text-muted mb-0">Explore scholarship deadlines, find faculty positions, and manage saved applications.</p>
       </div>
       <div class="d-flex gap-2 flex-wrap">
         <a href="{{ url_for('opportunities.list_opportunities') }}" class="btn btn-sp-sweet px-3 py-2">
           <i class="bi bi-search me-1"></i> Browse Opportunities
         </a>
+        <a href="{{ url_for('saved.tracker') }}" class="btn btn-outline-danger px-3 py-2 rounded-3 bg-white bg-opacity-75">
+          <i class="bi bi-bookmark-heart-fill text-danger me-1"></i> My Saved
+        </a>
         {% if matching_enabled %}
-        <a href="{{ url_for('matching.match') }}" class="btn btn-outline-danger px-3 py-2 rounded-3">
-          <i class="bi bi-stars me-1"></i> AI Match
+        <a href="{{ url_for('matching.match') }}" class="btn btn-outline-secondary px-3 py-2 rounded-3 bg-white bg-opacity-75">
+          <i class="bi bi-stars text-danger me-1"></i> AI Match
         </a>
         {% endif %}
       </div>
@@ -84,8 +91,10 @@
 <div class="row align-items-center justify-content-center min-vh-70 py-4 py-md-5">
   <!-- Left Side: Clean Sweet Brand -->
   <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0 pe-lg-4">
-    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-white bg-opacity-80 text-danger small fw-bold mb-3 shadow-sm border border-danger-subtle">
-      <i class="bi bi-flower1"></i> ScholarPath AI
+    <div class="mb-4">
+      <img src="{{ url_for('static', filename='img/scholarpath-logo.png') }}" alt="ScholarPath AI"
+           class="img-fluid rounded-4 shadow-lg border border-danger-subtle home-hero-logo"
+           style="max-height: 95px; width: auto; object-fit: contain; background: #0b0718; padding: 6px 14px;">
     </div>
     <h1 class="display-5 fw-bold text-dark mb-3" style="letter-spacing: -0.03em;">
       Find Your Dream <span class="text-sweet-pink">Scholarship</span> & Funded PhD.
