@@ -32,4 +32,18 @@
 <a class="btn btn-primary" href="{{ o.source_url }}" target="_blank" rel="noopener noreferrer">
   Open official source
 </a>
+
+{% if g.user %}
+  {% if saved %}
+    <span class="badge text-bg-success ms-2 fs-6">Saved · {{ saved.status|capitalize }}</span>
+    <a class="ms-2" href="{{ url_for('saved.tracker') }}">Open my tracker</a>
+  {% else %}
+    <form method="post" action="{{ url_for('saved.add', opportunity_id=o.id) }}" class="d-inline ms-2">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-outline-primary" type="submit">Save to my tracker</button>
+    </form>
+  {% endif %}
+{% else %}
+  <a class="btn btn-outline-secondary ms-2" href="{{ url_for('auth.login') }}">Log in to save</a>
+{% endif %}
 {% endblock %}

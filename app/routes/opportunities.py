@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, render_template, request
+from flask import Blueprint, abort, g, render_template, request
 
 from app.db import get_db
 
@@ -67,4 +67,12 @@ def detail(opportunity_id):
     ).fetchone()
     if opportunity is None:
         abort(404)
-    return render_template("opportunities/detail.html", o=opportunity)
+
+    # Has the logged-in user already saved this opportunity?
+    saved = None
+    if g.user:
+        saved = db.execute(
+            "SELECT id, status FROM saved_opportunities WHERE user_id = ? AND opportunity_id = ?",
+            (g.user["id"], opportunity_id),
+        ).fetchone()
+    return render_template("opportunities/detail.html", o=opportunity, saved=saved)

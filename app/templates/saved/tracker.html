@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}My saved opportunities | ScholarPath AI{% endblock %}
+{% block content %}
+<h1 class="h3 mb-1">My saved opportunities</h1>
+<p class="text-muted">Track where you are with each application.</p>
+
+<ul class="nav nav-pills mb-4">
+  <li class="nav-item">
+    <a class="nav-link {{ 'active' if not current }}" href="{{ url_for('saved.tracker') }}">
+      All <span class="badge text-bg-light">{{ counts.values()|sum }}</span>
+    </a>
+  </li>
+  {% for s in statuses %}
+  <li class="nav-item">
+    <a class="nav-link {{ 'active' if current == s }}" href="{{ url_for('saved.tracker', status=s) }}">
+      {{ s|capitalize }} <span class="badge text-bg-light">{{ counts[s] }}</span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+
+{% for item in items %}
+<div class="card shadow-sm border-0 mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between flex-wrap gap-2">
+      <div>
+        <a class="h5 text-decoration-none" href="{{ url_for('opportunities.detail', opportunity_id=item.opportunity_id) }}">{{ item.title }}</a>
+        <div class="text-muted">
+          {{ item.provider }}
+          <span class="badge text-bg-secondary ms-1">{{ item.degree_level }}</span>
+          · {{ item.country or "Country not provided" }}
+        </div>
+      </div>
+      <div class="text-md-end">
+        <div class="small text-muted">Deadline</div>
+        <strong>{{ item.deadline or "Not provided" }}</strong>
+      </div>
+    </div>
+
+    <form method="post" action="{{ url_for('saved.update', saved_id=item.id) }}" class="row g-2 mt-2 align-items-end">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="col-md-3">
+        <label class="form-label small mb-1" for="status-{{ item.id }}">Status</label>
+        <select class="form-select" id="status-{{ item.id }}" name="status">
+          {% for s in statuses %}
+          <option value="{{ s }}" {{ 'selected' if item.status == s }}>{{ s|capitalize }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-7">
+        <label class="form-label small mb-1" for="note-{{ item.id }}">Note</label>
+        <input class="form-control" id="note-{{ item.id }}" name="note" maxlength="500"
+               value="{{ item.note or '' }}" placeholder="e.g. Ask professor for recommendation letter">
+      </div>
+      <div class="col-md-2 d-flex gap-2">
+        <button class="btn btn-primary btn-sm" type="submit">Update</button>
+      </div>
+    </form>
+
+    <form method="post" action="{{ url_for('saved.remove', saved_id=item.id) }}" class="mt-2">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-link btn-sm text-danger p-0" type="submit">Remove</button>
+    </form>
+  </div>
+</div>
+{% else %}
+<div class="text-center text-muted py-5">
+  Nothing here yet.
+  <a href="{{ url_for('opportunities.list_opportunities') }}">Browse opportunities</a> and save the ones you like.
+</div>
+{% endfor %}
+{% endblock %}

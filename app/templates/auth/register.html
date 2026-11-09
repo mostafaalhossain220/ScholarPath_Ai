@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Create account | ScholarPath AI{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-1">Create your account</h1>
+        <p class="text-muted mb-4">Find scholarships and funded PhD positions that fit you.</p>
+
+        <form method="post" novalidate>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <div class="mb-3">
+            <label class="form-label" for="name">Full name</label>
+            <input class="form-control {{ 'is-invalid' if errors.name }}" id="name" name="name"
+                   value="{{ form.name }}" maxlength="100" autocomplete="name" required>
+            {% if errors.name %}<div class="invalid-feedback">{{ errors.name }}</div>{% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="email">Email</label>
+            <input class="form-control {{ 'is-invalid' if errors.email }}" type="email" id="email" name="email"
+                   value="{{ form.email }}" autocomplete="email" required>
+            {% if errors.email %}<div class="invalid-feedback">{{ errors.email }}</div>{% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="password">Password</label>
+            <input class="form-control {{ 'is-invalid' if errors.password }}" type="password" id="password"
+                   name="password" autocomplete="new-password" required>
+            {% if errors.password %}
+              <div class="invalid-feedback">{{ errors.password }}</div>
+            {% else %}
+              <div class="form-text">At least 8 characters, with a letter and a number.</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label" for="confirm">Confirm password</label>
+            <input class="form-control {{ 'is-invalid' if errors.confirm }}" type="password" id="confirm"
+                   name="confirm" autocomplete="new-password" required>
+            {% if errors.confirm %}<div class="invalid-feedback">{{ errors.confirm }}</div>{% endif %}
+          </div>
+
+          <button class="btn btn-primary w-100" type="submit">Create account</button>
+        </form>
+      </div>
+    </div>
+    <p class="text-center mt-3 text-muted">
+      Already have an account? <a href="{{ url_for('auth.login') }}">Log in</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

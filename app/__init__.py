@@ -10,7 +10,7 @@ def create_app():
 
     secret_key = os.environ.get("SECRET_KEY")
     if not secret_key:
-        raise RuntimeError("SECRET_KEY .env file-এ পাওয়া যায়নি")
+        raise RuntimeError("SECRET_KEY was not found in the .env file")
     app.config["SECRET_KEY"] = secret_key
 
     os.makedirs(app.instance_path, exist_ok=True)
@@ -19,9 +19,14 @@ def create_app():
     from . import db
     db.init_app(app)
 
-    from .routes import opportunities, matching
+    from .routes import auth, opportunities, profile, saved
+    app.register_blueprint(auth.bp)
     app.register_blueprint(opportunities.bp)
-    app.register_blueprint(matching.bp)
+    app.register_blueprint(profile.bp)
+    app.register_blueprint(saved.bp)
+
+    # Lets templates write {{ csrf_token() }} inside forms
+    app.jinja_env.globals["csrf_token"] = auth.get_csrf_token
 
     @app.route("/")
     def index():
