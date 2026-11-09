@@ -6,10 +6,10 @@
 <!-- ================= LOGGED IN DASHBOARD ================= -->
 <div class="row mb-4">
   <div class="col-12">
-    <div class="p-4 p-md-5 rounded-4 bg-white bg-opacity-95 shadow-sm border border-danger-subtle d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+    <div class="p-4 p-md-5 rounded-4 bg-white bg-opacity-95 shadow-sm border border-danger-subtle d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 tilt-press-card">
       <div>
         <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-danger-subtle text-danger small fw-semibold mb-2">
-          <i class="bi bi-person-check-fill"></i> Welcome, {{ g.user.name }}
+          <i class="bi bi-stars text-danger"></i> Welcome back, {{ g.user.name }}! 👋
         </div>
         <h1 class="h2 fw-bold mb-1">ScholarPath AI Dashboard</h1>
         <p class="text-muted mb-0">Explore scholarship deadlines and find faculty positions tailored for you.</p>
@@ -30,14 +30,14 @@
 
 <div class="row g-4 mb-4">
   <div class="col-md-4">
-    <div class="card h-100 border-0 shadow-sm rounded-4 p-3">
+    <div class="card h-100 border-0 shadow-sm rounded-4 p-3 tilt-press-card">
       <div class="card-body">
         <div class="feature-icon-box mb-3 text-danger bg-danger-subtle rounded-3 d-inline-flex p-3">
           <i class="bi bi-mortarboard fs-3"></i>
         </div>
         <h3 class="h5 fw-bold mb-2">Opportunities Directory</h3>
         <p class="text-muted small mb-3">Browse and search through curated, fully-funded Masters and PhD openings.</p>
-        <a href="{{ url_for('opportunities.list_opportunities') }}" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+        <a href="{{ url_for('opportunities.list_opportunities') }}" class="btn btn-sm btn-sp-sweet rounded-pill px-3">
           Explore List &rarr;
         </a>
       </div>
@@ -45,7 +45,7 @@
   </div>
 
   <div class="col-md-4">
-    <div class="card h-100 border-0 shadow-sm rounded-4 p-3">
+    <div class="card h-100 border-0 shadow-sm rounded-4 p-3 tilt-press-card">
       <div class="card-body">
         <div class="feature-icon-box mb-3 text-danger bg-danger-subtle rounded-3 d-inline-flex p-3">
           <i class="bi bi-stars fs-3"></i>
@@ -53,7 +53,7 @@
         <h3 class="h5 fw-bold mb-2">AI Matchmaking</h3>
         <p class="text-muted small mb-3">Compute semantic similarity between your research profile and faculty requirements.</p>
         {% if matching_enabled %}
-        <a href="{{ url_for('matching.match') }}" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+        <a href="{{ url_for('matching.match') }}" class="btn btn-sm btn-sp-sweet rounded-pill px-3">
           Run Match &rarr;
         </a>
         {% else %}
@@ -64,14 +64,14 @@
   </div>
 
   <div class="col-md-4">
-    <div class="card h-100 border-0 shadow-sm rounded-4 p-3">
+    <div class="card h-100 border-0 shadow-sm rounded-4 p-3 tilt-press-card">
       <div class="card-body">
         <div class="feature-icon-box mb-3 text-danger bg-danger-subtle rounded-3 d-inline-flex p-3">
           <i class="bi bi-bookmark-check fs-3"></i>
         </div>
         <h3 class="h5 fw-bold mb-2">Application Tracker</h3>
         <p class="text-muted small mb-3">Manage your saved scholarships, keep application notes, and monitor deadlines.</p>
-        <a href="{{ url_for('saved.tracker') }}" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+        <a href="{{ url_for('saved.tracker') }}" class="btn btn-sm btn-sp-sweet rounded-pill px-3">
           View Tracker &rarr;
         </a>
       </div>

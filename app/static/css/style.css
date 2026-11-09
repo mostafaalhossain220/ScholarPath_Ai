@@ -402,6 +402,104 @@ nav, main, footer {
   box-shadow: 0 2px 8px rgba(244, 63, 94, 0.25) !important;
 }
 
+/* ==========================================================================
+   Custom Searchable Autocomplete Dropdown
+   ========================================================================== */
+
+.custom-autocomplete-wrap {
+  position: relative;
+}
+
+.autocomplete-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  display: none;
+  max-height: 240px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid #fecdd3;
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(244, 63, 94, 0.16);
+  padding: 4px;
+}
+
+.autocomplete-item {
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.885rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  display: flex;
+  align-items: center;
+}
+
+.autocomplete-item:hover {
+  background-color: #fff1f2;
+  color: #e11d48;
+  transform: translateX(3px);
+}
+
+.match-highlight {
+  color: #e11d48;
+  font-weight: 800;
+  text-decoration: underline;
+  background: #ffe4e6;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+/* ==========================================================================
+   Flatpickr Aesthetic Sweet Pink Theme
+   ========================================================================== */
+
+.flatpickr-calendar {
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  border: 1.5px solid #fecdd3 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 16px 36px rgba(244, 63, 94, 0.18) !important;
+  font-family: var(--sp-font-sans) !important;
+  padding: 8px !important;
+}
+
+.flatpickr-months {
+  border-bottom: 1px solid #fecdd3;
+  padding-bottom: 6px;
+}
+
+.flatpickr-current-month {
+  font-weight: 700 !important;
+  color: #1e293b !important;
+}
+
+.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%) !important;
+  border-color: #f43f5e !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 10px rgba(244, 63, 94, 0.35) !important;
+}
+
+.flatpickr-day:hover {
+  background: #fff1f2 !important;
+  border-color: #fecdd3 !important;
+  color: #e11d48 !important;
+}
+
+.flatpickr-day.today {
+  border-color: #f43f5e !important;
+  color: #f43f5e !important;
+}
+
 .feature-icon-box {
   width: 50px;
   height: 50px;
@@ -413,6 +511,39 @@ nav, main, footer {
   justify-content: center;
   font-size: 1.4rem;
   margin-bottom: 1.1rem;
+}
+
+/* ==========================================================================
+   3D Hardboard Depth Tilt ("Hardbord e jata deoa") Physics
+   ========================================================================== */
+
+.tilt-press-card {
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+}
+
+.tilt-press-card .card-sheen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  border-radius: inherit;
+  z-index: 2;
+}
+
+.tilt-press-card:hover .card-sheen {
+  opacity: 1;
+}
+
+.tilt-press-card.tilt-resting {
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s ease-out !important;
 }
 
 /* ==========================================================================
