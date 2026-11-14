@@ -1,0 +1,153 @@
+profile_id,opportunity_id,opportunity,relevant
+P01,1,SI Scholarship for Global Professionals | Swedish Institute | masters | Sweden,0
+P01,2,PhD in Computer Science | Vanderbilt University | phd | USA,1
+P01,3,PhD in Data Science | NYU Center for Data Science | phd | USA,1
+P01,4,PhD in Computer Science | Stony Brook University | phd | USA,1
+P01,5,Computing PhD Studentships | Imperial College London | phd | UK,1
+P01,6,PhD in Computer Science (Gates Cambridge and other trusts) | University of Cambridge | phd | UK,1
+P01,7,Erasmus Mundus Joint Master in Data Engineering and Artificial Intelligence (DEAI) | DEAI Consortium (coordinated by Université libre de Bruxelles) | masters | Belgium; Spain; Austria; France; Italy,0
+P01,8,Citizen-Centred Artificial Intelligence (CCAI) PhD | Northumbria University / CCAI UKRI Centre for Doctoral Training | phd | UK,1
+P01,9,"Funded PhD Studentship in Computer Science, IT and Software Engineering | The Open University | phd | UK",1
+P01,10,Computing Science PhD Studentships 2027 | University of Glasgow | phd | UK,1
+P01,11,International Graduate Admission in Computer Science 2027 | Peking University | masters | China,0
+P01,12,International Graduate Admission in Computer Science 2027 | Peking University | phd | China,1
+P01,13,MSc Computing Science – Cyber Security and AI specialisation | Radboud University | masters | Netherlands,0
+P01,14,Master in Analytics and Artificial Intelligence (September 2027 intake) | ESMT Berlin | masters | Germany,0
+P01,15,Erasmus Mundus Joint Master in Artificial Intelligence (EMAI) – self-funded application | EMAI Consortium (UPF and partner universities) | masters | Spain; Netherlands; Slovenia; Czech Republic (consortium mobility; confirm partner locations),0
+P01,16,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | masters | South Korea",0
+P01,17,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | phd | South Korea",0
+P01,18,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | masters | Japan",0
+P01,19,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | phd | Japan",0
+P02,1,SI Scholarship for Global Professionals | Swedish Institute | masters | Sweden,0
+P02,2,PhD in Computer Science | Vanderbilt University | phd | USA,0
+P02,3,PhD in Data Science | NYU Center for Data Science | phd | USA,0
+P02,4,PhD in Computer Science | Stony Brook University | phd | USA,0
+P02,5,Computing PhD Studentships | Imperial College London | phd | UK,0
+P02,6,PhD in Computer Science (Gates Cambridge and other trusts) | University of Cambridge | phd | UK,0
+P02,7,Erasmus Mundus Joint Master in Data Engineering and Artificial Intelligence (DEAI) | DEAI Consortium (coordinated by Université libre de Bruxelles) | masters | Belgium; Spain; Austria; France; Italy,1
+P02,8,Citizen-Centred Artificial Intelligence (CCAI) PhD | Northumbria University / CCAI UKRI Centre for Doctoral Training | phd | UK,0
+P02,9,"Funded PhD Studentship in Computer Science, IT and Software Engineering | The Open University | phd | UK",0
+P02,10,Computing Science PhD Studentships 2027 | University of Glasgow | phd | UK,0
+P02,11,International Graduate Admission in Computer Science 2027 | Peking University | masters | China,1
+P02,12,International Graduate Admission in Computer Science 2027 | Peking University | phd | China,0
+P02,13,MSc Computing Science – Cyber Security and AI specialisation | Radboud University | masters | Netherlands,1
+P02,14,Master in Analytics and Artificial Intelligence (September 2027 intake) | ESMT Berlin | masters | Germany,1
+P02,15,Erasmus Mundus Joint Master in Artificial Intelligence (EMAI) – self-funded application | EMAI Consortium (UPF and partner universities) | masters | Spain; Netherlands; Slovenia; Czech Republic (consortium mobility; confirm partner locations),1
+P02,16,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | masters | South Korea",0
+P02,17,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | phd | South Korea",0
+P02,18,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | masters | Japan",0
+P02,19,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | phd | Japan",0
+P03,1,SI Scholarship for Global Professionals | Swedish Institute | masters | Sweden,0
+P03,2,PhD in Computer Science | Vanderbilt University | phd | USA,1
+P03,3,PhD in Data Science | NYU Center for Data Science | phd | USA,1
+P03,4,PhD in Computer Science | Stony Brook University | phd | USA,1
+P03,5,Computing PhD Studentships | Imperial College London | phd | UK,1
+P03,6,PhD in Computer Science (Gates Cambridge and other trusts) | University of Cambridge | phd | UK,1
+P03,7,Erasmus Mundus Joint Master in Data Engineering and Artificial Intelligence (DEAI) | DEAI Consortium (coordinated by Université libre de Bruxelles) | masters | Belgium; Spain; Austria; France; Italy,0
+P03,8,Citizen-Centred Artificial Intelligence (CCAI) PhD | Northumbria University / CCAI UKRI Centre for Doctoral Training | phd | UK,0
+P03,9,"Funded PhD Studentship in Computer Science, IT and Software Engineering | The Open University | phd | UK",1
+P03,10,Computing Science PhD Studentships 2027 | University of Glasgow | phd | UK,1
+P03,11,International Graduate Admission in Computer Science 2027 | Peking University | masters | China,0
+P03,12,International Graduate Admission in Computer Science 2027 | Peking University | phd | China,1
+P03,13,MSc Computing Science – Cyber Security and AI specialisation | Radboud University | masters | Netherlands,0
+P03,14,Master in Analytics and Artificial Intelligence (September 2027 intake) | ESMT Berlin | masters | Germany,0
+P03,15,Erasmus Mundus Joint Master in Artificial Intelligence (EMAI) – self-funded application | EMAI Consortium (UPF and partner universities) | masters | Spain; Netherlands; Slovenia; Czech Republic (consortium mobility; confirm partner locations),0
+P03,16,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | masters | South Korea",0
+P03,17,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | phd | South Korea",0
+P03,18,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | masters | Japan",0
+P03,19,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | phd | Japan",0
+P04,1,SI Scholarship for Global Professionals | Swedish Institute | masters | Sweden,0
+P04,2,PhD in Computer Science | Vanderbilt University | phd | USA,0
+P04,3,PhD in Data Science | NYU Center for Data Science | phd | USA,0
+P04,4,PhD in Computer Science | Stony Brook University | phd | USA,0
+P04,5,Computing PhD Studentships | Imperial College London | phd | UK,0
+P04,6,PhD in Computer Science (Gates Cambridge and other trusts) | University of Cambridge | phd | UK,0
+P04,7,Erasmus Mundus Joint Master in Data Engineering and Artificial Intelligence (DEAI) | DEAI Consortium (coordinated by Université libre de Bruxelles) | masters | Belgium; Spain; Austria; France; Italy,1
+P04,8,Citizen-Centred Artificial Intelligence (CCAI) PhD | Northumbria University / CCAI UKRI Centre for Doctoral Training | phd | UK,0
+P04,9,"Funded PhD Studentship in Computer Science, IT and Software Engineering | The Open University | phd | UK",0
+P04,10,Computing Science PhD Studentships 2027 | University of Glasgow | phd | UK,0
+P04,11,International Graduate Admission in Computer Science 2027 | Peking University | masters | China,1
+P04,12,International Graduate Admission in Computer Science 2027 | Peking University | phd | China,0
+P04,13,MSc Computing Science – Cyber Security and AI specialisation | Radboud University | masters | Netherlands,1
+P04,14,Master in Analytics and Artificial Intelligence (September 2027 intake) | ESMT Berlin | masters | Germany,1
+P04,15,Erasmus Mundus Joint Master in Artificial Intelligence (EMAI) – self-funded application | EMAI Consortium (UPF and partner universities) | masters | Spain; Netherlands; Slovenia; Czech Republic (consortium mobility; confirm partner locations),1
+P04,16,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | masters | South Korea",0
+P04,17,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | phd | South Korea",0
+P04,18,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | masters | Japan",0
+P04,19,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | phd | Japan",0
+P05,1,SI Scholarship for Global Professionals | Swedish Institute | masters | Sweden,0
+P05,2,PhD in Computer Science | Vanderbilt University | phd | USA,1
+P05,3,PhD in Data Science | NYU Center for Data Science | phd | USA,1
+P05,4,PhD in Computer Science | Stony Brook University | phd | USA,1
+P05,5,Computing PhD Studentships | Imperial College London | phd | UK,1
+P05,6,PhD in Computer Science (Gates Cambridge and other trusts) | University of Cambridge | phd | UK,1
+P05,7,Erasmus Mundus Joint Master in Data Engineering and Artificial Intelligence (DEAI) | DEAI Consortium (coordinated by Université libre de Bruxelles) | masters | Belgium; Spain; Austria; France; Italy,0
+P05,8,Citizen-Centred Artificial Intelligence (CCAI) PhD | Northumbria University / CCAI UKRI Centre for Doctoral Training | phd | UK,1
+P05,9,"Funded PhD Studentship in Computer Science, IT and Software Engineering | The Open University | phd | UK",1
+P05,10,Computing Science PhD Studentships 2027 | University of Glasgow | phd | UK,1
+P05,11,International Graduate Admission in Computer Science 2027 | Peking University | masters | China,0
+P05,12,International Graduate Admission in Computer Science 2027 | Peking University | phd | China,1
+P05,13,MSc Computing Science – Cyber Security and AI specialisation | Radboud University | masters | Netherlands,0
+P05,14,Master in Analytics and Artificial Intelligence (September 2027 intake) | ESMT Berlin | masters | Germany,0
+P05,15,Erasmus Mundus Joint Master in Artificial Intelligence (EMAI) – self-funded application | EMAI Consortium (UPF and partner universities) | masters | Spain; Netherlands; Slovenia; Czech Republic (consortium mobility; confirm partner locations),0
+P05,16,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | masters | South Korea",0
+P05,17,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | phd | South Korea",0
+P05,18,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | masters | Japan",0
+P05,19,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | phd | Japan",0
+P06,1,SI Scholarship for Global Professionals | Swedish Institute | masters | Sweden,0
+P06,2,PhD in Computer Science | Vanderbilt University | phd | USA,0
+P06,3,PhD in Data Science | NYU Center for Data Science | phd | USA,0
+P06,4,PhD in Computer Science | Stony Brook University | phd | USA,0
+P06,5,Computing PhD Studentships | Imperial College London | phd | UK,0
+P06,6,PhD in Computer Science (Gates Cambridge and other trusts) | University of Cambridge | phd | UK,0
+P06,7,Erasmus Mundus Joint Master in Data Engineering and Artificial Intelligence (DEAI) | DEAI Consortium (coordinated by Université libre de Bruxelles) | masters | Belgium; Spain; Austria; France; Italy,1
+P06,8,Citizen-Centred Artificial Intelligence (CCAI) PhD | Northumbria University / CCAI UKRI Centre for Doctoral Training | phd | UK,0
+P06,9,"Funded PhD Studentship in Computer Science, IT and Software Engineering | The Open University | phd | UK",0
+P06,10,Computing Science PhD Studentships 2027 | University of Glasgow | phd | UK,0
+P06,11,International Graduate Admission in Computer Science 2027 | Peking University | masters | China,1
+P06,12,International Graduate Admission in Computer Science 2027 | Peking University | phd | China,0
+P06,13,MSc Computing Science – Cyber Security and AI specialisation | Radboud University | masters | Netherlands,1
+P06,14,Master in Analytics and Artificial Intelligence (September 2027 intake) | ESMT Berlin | masters | Germany,1
+P06,15,Erasmus Mundus Joint Master in Artificial Intelligence (EMAI) – self-funded application | EMAI Consortium (UPF and partner universities) | masters | Spain; Netherlands; Slovenia; Czech Republic (consortium mobility; confirm partner locations),1
+P06,16,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | masters | South Korea",0
+P06,17,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | phd | South Korea",0
+P06,18,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | masters | Japan",0
+P06,19,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | phd | Japan",0
+P07,1,SI Scholarship for Global Professionals | Swedish Institute | masters | Sweden,0
+P07,2,PhD in Computer Science | Vanderbilt University | phd | USA,1
+P07,3,PhD in Data Science | NYU Center for Data Science | phd | USA,1
+P07,4,PhD in Computer Science | Stony Brook University | phd | USA,1
+P07,5,Computing PhD Studentships | Imperial College London | phd | UK,1
+P07,6,PhD in Computer Science (Gates Cambridge and other trusts) | University of Cambridge | phd | UK,1
+P07,7,Erasmus Mundus Joint Master in Data Engineering and Artificial Intelligence (DEAI) | DEAI Consortium (coordinated by Université libre de Bruxelles) | masters | Belgium; Spain; Austria; France; Italy,0
+P07,8,Citizen-Centred Artificial Intelligence (CCAI) PhD | Northumbria University / CCAI UKRI Centre for Doctoral Training | phd | UK,1
+P07,9,"Funded PhD Studentship in Computer Science, IT and Software Engineering | The Open University | phd | UK",1
+P07,10,Computing Science PhD Studentships 2027 | University of Glasgow | phd | UK,1
+P07,11,International Graduate Admission in Computer Science 2027 | Peking University | masters | China,0
+P07,12,International Graduate Admission in Computer Science 2027 | Peking University | phd | China,1
+P07,13,MSc Computing Science – Cyber Security and AI specialisation | Radboud University | masters | Netherlands,0
+P07,14,Master in Analytics and Artificial Intelligence (September 2027 intake) | ESMT Berlin | masters | Germany,0
+P07,15,Erasmus Mundus Joint Master in Artificial Intelligence (EMAI) – self-funded application | EMAI Consortium (UPF and partner universities) | masters | Spain; Netherlands; Slovenia; Czech Republic (consortium mobility; confirm partner locations),0
+P07,16,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | masters | South Korea",0
+P07,17,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | phd | South Korea",0
+P07,18,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | masters | Japan",0
+P07,19,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | phd | Japan",0
+P08,1,SI Scholarship for Global Professionals | Swedish Institute | masters | Sweden,0
+P08,2,PhD in Computer Science | Vanderbilt University | phd | USA,0
+P08,3,PhD in Data Science | NYU Center for Data Science | phd | USA,0
+P08,4,PhD in Computer Science | Stony Brook University | phd | USA,0
+P08,5,Computing PhD Studentships | Imperial College London | phd | UK,0
+P08,6,PhD in Computer Science (Gates Cambridge and other trusts) | University of Cambridge | phd | UK,0
+P08,7,Erasmus Mundus Joint Master in Data Engineering and Artificial Intelligence (DEAI) | DEAI Consortium (coordinated by Université libre de Bruxelles) | masters | Belgium; Spain; Austria; France; Italy,1
+P08,8,Citizen-Centred Artificial Intelligence (CCAI) PhD | Northumbria University / CCAI UKRI Centre for Doctoral Training | phd | UK,0
+P08,9,"Funded PhD Studentship in Computer Science, IT and Software Engineering | The Open University | phd | UK",0
+P08,10,Computing Science PhD Studentships 2027 | University of Glasgow | phd | UK,0
+P08,11,International Graduate Admission in Computer Science 2027 | Peking University | masters | China,1
+P08,12,International Graduate Admission in Computer Science 2027 | Peking University | phd | China,0
+P08,13,MSc Computing Science – Cyber Security and AI specialisation | Radboud University | masters | Netherlands,1
+P08,14,Master in Analytics and Artificial Intelligence (September 2027 intake) | ESMT Berlin | masters | Germany,1
+P08,15,Erasmus Mundus Joint Master in Artificial Intelligence (EMAI) – self-funded application | EMAI Consortium (UPF and partner universities) | masters | Spain; Netherlands; Slovenia; Czech Republic (consortium mobility; confirm partner locations),1
+P08,16,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | masters | South Korea",0
+P08,17,"Global Korea Scholarship for Graduate Degrees (GKS-G) | NIIED, Ministry of Education (South Korea) | phd | South Korea",0
+P08,18,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | masters | Japan",0
+P08,19,"Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | MEXT, Government of Japan | phd | Japan",0
