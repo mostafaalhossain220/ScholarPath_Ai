@@ -1,6 +1,7 @@
 from flask import Blueprint, abort, g, render_template, request
 
 from app.db import get_db
+from app.services.eligibility import check_eligibility
 
 bp = Blueprint("opportunities", __name__, url_prefix="/opportunities")
 
@@ -70,9 +71,24 @@ def detail(opportunity_id):
 
     # Has the logged-in user already saved this opportunity?
     saved = None
+    # Requirement-by-requirement check against the user's saved profile (rule-based).
+    eligibility = None
+    has_profile = False
     if g.user:
         saved = db.execute(
             "SELECT id, status FROM saved_opportunities WHERE user_id = ? AND opportunity_id = ?",
             (g.user["id"], opportunity_id),
         ).fetchone()
-    return render_template("opportunities/detail.html", o=opportunity, saved=saved)
+        profile = db.execute(
+            "SELECT * FROM profiles WHERE user_id = ?", (g.user["id"],)
+        ).fetchone()
+        if profile is not None:
+            has_profile = True
+            eligibility = check_eligibility(profile, opportunity)
+    return render_template(
+        "opportunities/detail.html",
+        o=opportunity,
+        saved=saved,
+        eligibility=eligibility,
+        has_profile=has_profile,
+    )

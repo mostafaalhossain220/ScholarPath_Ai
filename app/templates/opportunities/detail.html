@@ -2,74 +2,174 @@
 {% block title %}{{ o.title }} | ScholarPath AI{% endblock %}
 
 {% block content %}
-<div class="mb-3">
-  <a href="{{ url_for('opportunities.list_opportunities') }}" class="text-decoration-none text-muted small">
-    <i class="bi bi-arrow-left me-1"></i> Back to opportunities
-  </a>
-</div>
+<a href="{{ url_for('opportunities.list_opportunities') }}" class="stat-link d-inline-flex align-items-center gap-1 mb-3">
+  <i class="bi bi-arrow-left"></i> Back to opportunities
+</a>
 
-<div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
-  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-3">
-    <div>
-      <span class="badge {{ 'text-bg-primary' if o.degree_level == 'phd' else 'text-bg-info text-white' }} rounded-pill mb-2 px-3 py-1">
-        {{ o.degree_level|upper }}
-      </span>
-      <h1 class="h3 fw-bold mb-1">{{ o.title }}</h1>
-      <p class="text-muted mb-0 fs-6">
-        <i class="bi bi-building me-1"></i> {{ o.provider }}
-        <span class="badge text-bg-secondary ms-2">{{ o.degree_level }}</span>
-      </p>
+{% set left = o.deadline|days_left %}
+<section class="card detail-hero mb-4 reveal">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-4">
+    <div class="min-w-0">
+      <div class="d-flex flex-wrap gap-2">
+        <span class="chip chip-brand">{{ "PhD" if o.degree_level == "phd" else "Master's" }}</span>
+        {% if left is not none %}
+          {% if left < 0 %}<span class="chip chip-closed"><i class="bi bi-x-circle"></i> Closed</span>
+          {% elif left <= 14 %}<span class="chip chip-urgent"><i class="bi bi-alarm"></i> {{ left }} {{ "day" if left == 1 else "days" }} left</span>
+          {% else %}<span class="chip chip-soon"><i class="bi bi-hourglass-split"></i> {{ left }} days left</span>{% endif %}
+        {% endif %}
+        {% if saved %}<span class="chip"><i class="bi bi-bookmark-check-fill text-success"></i> Saved · {{ saved.status|capitalize }}</span>{% endif %}
+      </div>
+      <h1 class="detail-title">{{ o.title }}</h1>
+      <div class="opp-provider"><i class="bi bi-building me-1"></i>{{ o.provider }}</div>
     </div>
-    <div class="d-flex gap-2 align-items-center flex-wrap">
-      <a class="btn btn-primary px-3" href="{{ o.source_url }}" target="_blank" rel="noopener noreferrer">
+
+    <div class="d-flex gap-2 flex-wrap flex-shrink-0">
+      <a class="btn btn-sp-sweet px-3" href="{{ o.source_url }}" target="_blank" rel="noopener noreferrer">
         <i class="bi bi-box-arrow-up-right me-1"></i> Open official source
       </a>
-
       {% if g.user %}
         {% if saved %}
-          <span class="badge text-bg-success ms-2 fs-6 py-2 px-3">Saved · {{ saved.status|capitalize }}</span>
-          <a class="btn btn-outline-success ms-2 btn-sm" href="{{ url_for('saved.tracker') }}">
+          <a class="btn btn-ghost px-3" href="{{ url_for('saved.tracker') }}">
             <i class="bi bi-bookmark-check me-1"></i> Open my tracker
           </a>
         {% else %}
-          <form method="post" action="{{ url_for('saved.add', opportunity_id=o.id) }}" class="d-inline ms-2">
+          <form method="post" action="{{ url_for('saved.add', opportunity_id=o.id) }}" class="m-0">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <button class="btn btn-outline-primary" type="submit">
+            <button class="btn btn-ghost px-3" type="submit" data-loading-text="Saving…">
               <i class="bi bi-bookmark-plus me-1"></i> Save to my tracker
             </button>
           </form>
         {% endif %}
       {% else %}
-        <a class="btn btn-outline-secondary ms-2" href="{{ url_for('auth.login', next=request.path) }}">
+        <a class="btn btn-ghost px-3" href="{{ url_for('auth.login', next=request.path) }}">
           <i class="bi bi-lock me-1"></i> Log in to save
         </a>
       {% endif %}
     </div>
   </div>
 
-  <div class="alert alert-warning border-0 rounded-3 d-flex align-items-center gap-2 mb-4 py-2 px-3 small">
-    <i class="bi bi-shield-exclamation fs-5 text-warning"></i>
+  <div class="fact-grid mt-4">
+    <div class="fact"><div class="fact-label"><i class="bi bi-geo-alt"></i> Country</div><div class="fact-value">{{ o.country or "Not provided" }}</div></div>
+    <div class="fact"><div class="fact-label"><i class="bi bi-journal-bookmark"></i> Field</div><div class="fact-value">{{ o.field or "Not provided" }}</div></div>
+    <div class="fact"><div class="fact-label"><i class="bi bi-calendar-event"></i> Deadline</div><div class="fact-value">{{ o.deadline or "Not provided" }}</div></div>
+    <div class="fact"><div class="fact-label"><i class="bi bi-mortarboard"></i> Minimum CGPA</div><div class="fact-value">{{ o.min_cgpa if o.min_cgpa is not none else "Not stated on the official page" }}</div></div>
+    <div class="fact"><div class="fact-label"><i class="bi bi-translate"></i> Minimum IELTS</div><div class="fact-value">{{ o.min_ielts if o.min_ielts is not none else "Not stated on the official page" }}</div></div>
+    <div class="fact"><div class="fact-label"><i class="bi bi-clock-history"></i> Last checked</div><div class="fact-value">{{ o.last_checked or "Not provided" }}</div></div>
+  </div>
+
+  <div class="row g-3 mt-1">
+    <div class="col-lg-5">
+      <div class="fact h-100"><div class="fact-label"><i class="bi bi-cash-coin"></i> Funding details</div><div class="desc-block">{{ o.funding or "Not provided" }}</div></div>
+    </div>
+    <div class="col-lg-7">
+      <div class="fact h-100"><div class="fact-label"><i class="bi bi-card-text"></i> Full description</div><div class="desc-block">{{ o.description or "Not provided" }}</div></div>
+    </div>
+  </div>
+
+  <div class="alert alert-warning d-flex align-items-start gap-2 mt-4 mb-0 py-2 px-3 small">
+    <i class="bi bi-shield-exclamation fs-5"></i>
     <div>
       This information was collected from the official source on
       <strong>{{ o.last_checked or "an unknown date" }}</strong> and may have changed.
       It is advisory only. Please confirm every detail on the official page before applying.
     </div>
   </div>
+</section>
 
-  <div class="table-responsive">
-    <table class="table table-bordered align-middle">
-      <tbody>
-        <tr><th class="table-light" style="width: 220px">Country</th><td>{{ o.country or "Not provided" }}</td></tr>
-        <tr><th class="table-light">Field of Study</th><td>{{ o.field or "Not provided" }}</td></tr>
-        <tr><th class="table-light">Application Deadline</th><td>{{ o.deadline or "Not provided" }}</td></tr>
-        <tr><th class="table-light">Funding Details</th><td>{{ o.funding or "Not provided" }}</td></tr>
-        <tr><th class="table-light">Minimum CGPA</th><td>{{ o.min_cgpa if o.min_cgpa is not none else "Not stated on the official page" }}</td></tr>
-        <tr><th class="table-light">Minimum IELTS</th><td>{{ o.min_ielts if o.min_ielts is not none else "Not stated on the official page" }}</td></tr>
-        <tr><th class="table-light">Full Description</th><td>{{ o.description or "Not provided" }}</td></tr>
-        <tr><th class="table-light">Key Requirements</th><td>{{ o.requirements_text or "Not provided" }}</td></tr>
-        <tr><th class="table-light">Last checked</th><td>{{ o.last_checked or "Not provided" }}</td></tr>
-      </tbody>
-    </table>
+{# ================= Eligibility & Evidence ================= #}
+{% set status_meta = {
+  "satisfied":     {"label": "Satisfied",     "icon": "bi-check-circle-fill"},
+  "not_satisfied": {"label": "Not satisfied", "icon": "bi-x-circle-fill"},
+  "unclear":       {"label": "Unclear",       "icon": "bi-question-circle-fill"},
+  "not_provided":  {"label": "Not provided",  "icon": "bi-dash-circle-fill"},
+} %}
+{% set overall_meta = {
+  "satisfied":          {"label": "Meets the listed checks", "cls": "status-satisfied", "icon": "bi-patch-check-fill"},
+  "not_satisfied":      {"label": "Does not meet a listed requirement", "cls": "status-not-satisfied", "icon": "bi-x-octagon-fill"},
+  "needs_verification": {"label": "Needs verification", "cls": "status-unclear", "icon": "bi-search"},
+} %}
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-6 reveal" style="--reveal-delay: 80ms">
+    <div class="card sp-panel h-100" id="eligibility">
+      <div class="d-flex justify-content-between align-items-start gap-2 mb-3">
+        <h2 class="sp-panel-title"><span class="sp-icon-badge is-green"><i class="bi bi-clipboard2-check"></i></span> Your eligibility check</h2>
+        {% if eligibility %}
+          {% set om = overall_meta[eligibility.overall] %}
+          <span class="status-chip {{ om.cls }}"><i class="bi {{ om.icon }}"></i> {{ om.label }}</span>
+        {% endif %}
+      </div>
+
+      {% if not g.user %}
+        <div class="empty-state">
+          <i class="bi bi-lock"></i>
+          <p class="mb-2">Log in and fill in your profile to check this opportunity's requirements against your degree, CGPA and IELTS.</p>
+          <a class="btn btn-sm btn-sp-sweet rounded-pill px-3" href="{{ url_for('auth.login', next=request.path) }}">Log in</a>
+        </div>
+      {% elif not has_profile %}
+        <div class="empty-state">
+          <i class="bi bi-person-vcard"></i>
+          <p class="mb-2">Add your academic profile to see a requirement-by-requirement check here.</p>
+          <a class="btn btn-sm btn-sp-sweet rounded-pill px-3" href="{{ url_for('profile.edit') }}">Complete profile</a>
+        </div>
+      {% else %}
+        <ul class="req-list list-unstyled mb-3">
+          {% for req in eligibility.requirements %}
+          {% set sm = status_meta[req.status] %}
+          <li class="req-item req-{{ req.status }}">
+            <i class="bi {{ sm.icon }} req-icon"></i>
+            <div class="flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <span class="req-name">{{ req.requirement[:1]|upper }}{{ req.requirement[1:] }}</span>
+                <span class="status-chip status-{{ req.status|replace('_', '-') }}">{{ sm.label }}</span>
+              </div>
+              <div class="req-reason">{{ req.reason }}</div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        <div class="status-legend">
+          {% for key, sm in status_meta.items() %}
+          <span><i class="bi {{ sm.icon }} req-{{ key }}"></i> {{ sm.label }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-6 reveal" style="--reveal-delay: 160ms">
+    <div class="card sp-panel h-100">
+      <h2 class="sp-panel-title mb-3"><span class="sp-icon-badge is-violet"><i class="bi bi-file-earmark-text"></i></span> Official requirements (evidence)</h2>
+      {% if o.requirements_text %}
+        <blockquote class="evidence-quote mb-3">{{ o.requirements_text }}</blockquote>
+      {% else %}
+        <div class="empty-state">
+          <i class="bi bi-file-earmark-x"></i>
+          <p class="mb-0">No requirement text was collected for this opportunity. Please read the official page.</p>
+        </div>
+      {% endif %}
+      <div class="evidence-source">
+        <div class="min-w-0">
+          <div class="pick-meta">Source</div>
+          <a href="{{ o.source_url }}" target="_blank" rel="noopener noreferrer" class="evidence-link text-truncate d-block">
+            <i class="bi bi-link-45deg"></i> {{ o.source_url }}
+          </a>
+        </div>
+        <div class="text-end flex-shrink-0">
+          <div class="pick-meta">Last checked</div>
+          <b>{{ o.last_checked or "Unknown" }}</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sp-verify-banner reveal">
+  <i class="bi bi-shield-check"></i>
+  <div>
+    <strong>Please verify before applying.</strong>
+    This check only compares degree level, CGPA and IELTS from your profile with the values we collected.
+    It does not predict admission or funding, and the provider's official page is always the final authority.
   </div>
 </div>
 {% endblock %}

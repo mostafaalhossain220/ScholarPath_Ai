@@ -2,6 +2,7 @@ import re
 import secrets
 import sqlite3
 from functools import wraps
+from urllib.parse import urlparse
 
 from flask import (
     Blueprint, abort, flash, g, redirect, render_template, request, session, url_for,
@@ -9,6 +10,17 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.db import get_db
+
+
+def is_safe_next(target):
+    """Only allow redirects to a plain path on this site (blocks open redirects
+    such as '//evil.com', '/\\evil.com' or '/<TAB>/evil.com')."""
+    if not target or not target.startswith("/") or target.startswith("//"):
+        return False
+    if "\\" in target or any(ch.isspace() or ord(ch) < 32 or ord(ch) == 127 for ch in target):
+        return False
+    parsed = urlparse(target)
+    return not parsed.scheme and not parsed.netloc
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -140,7 +152,7 @@ def login():
         else:
             session.clear()
             session["user_id"] = user["id"]
-            if next_page and next_page.startswith("/") and not next_page.startswith("//"):
+            if is_safe_next(next_page):
                 return redirect(next_page)
             return redirect(url_for("index"))
 

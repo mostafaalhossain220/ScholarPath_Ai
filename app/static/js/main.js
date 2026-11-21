@@ -1,7 +1,9 @@
 /**
  * ScholarPath AI - Ultra-Smooth Interactions, Autocomplete & Flatpickr Calendar
  */
-document.addEventListener("DOMContentLoaded", function () {
+/* Runs on first load (firstRun = true) and again after every smooth page swap.
+   Global, once-only behaviour is guarded by `if (firstRun)`. */
+function initPage(firstRun) {
   // =========================================================================
   // 1. Password reveal toggle
   // =========================================================================
@@ -76,10 +78,15 @@ document.addEventListener("DOMContentLoaded", function () {
       indicator.style.width = `${width}px`;
       indicator.style.height = `${height}px`;
       indicator.style.opacity = "1";
+      // Only the tab under the slider gets white text
+      items.forEach((el) => el.classList.toggle("is-lit", el === target));
     }
 
     if (activeItem) {
-      setTimeout(() => moveTo(activeItem, true), 50);
+      container.classList.add("has-indicator");
+      moveTo(activeItem, true);
+      // Re-measure once fonts/layout settle
+      setTimeout(() => moveTo(activeItem, true), 60);
     }
 
     items.forEach((item) => {
@@ -141,6 +148,80 @@ document.addEventListener("DOMContentLoaded", function () {
     "UK", "USA"
   ];
 
+  // -------------------------------------------------------------------------
+  // Shared country search
+  // Listing countries (from the database, e.g. "UK", "USA") come first so the
+  // student picks the same spelling the opportunities use. World names that
+  // mean the same place are folded into them through search aliases.
+  // -------------------------------------------------------------------------
+  const COUNTRY_ALIASES = {
+    "UK": ["United Kingdom", "Britain", "Great Britain", "England", "Scotland", "Wales"],
+    "USA": ["United States", "United States of America", "America", "US"],
+    "South Korea": ["Korea"],
+    "Czech Republic": ["Czechia"],
+  };
+
+  function readListing(el) {
+    try { return JSON.parse(el.getAttribute("data-listing") || "[]"); } catch (e) { return []; }
+  }
+
+  function buildCountryOptions(listing) {
+    const options = [];
+    const seen = new Set();
+    const add = (name, inListings) => {
+      const key = name.toLowerCase();
+      if (seen.has(key)) return;
+      seen.add(key);
+      const aliases = COUNTRY_ALIASES[name] || [];
+      aliases.forEach((a) => seen.add(a.toLowerCase())); // hide duplicate world names
+      options.push({ name, aliases, inListings });
+    };
+    listing.forEach((name) => add(name, true));
+    COUNTRIES.forEach((name) => add(name, false));
+    return options;
+  }
+
+  // Trie-style ranking: exact > prefix > word prefix > alias prefix > anywhere
+  function searchCountries(options, query, limit) {
+    const q = query.trim().toLowerCase();
+    if (!q) return options.filter((o) => o.inListings).concat(options.filter((o) => !o.inListings)).slice(0, limit);
+    const scored = [];
+    options.forEach((o) => {
+      const name = o.name.toLowerCase();
+      let score = -1;
+      if (name === q) score = 0;
+      else if (name.startsWith(q)) score = 1;
+      else if (name.split(/[\s-]+/).some((w) => w.startsWith(q))) score = 2;
+      else if (o.aliases.some((a) => a.toLowerCase().startsWith(q))) score = 3;
+      else if (name.includes(q) || o.aliases.some((a) => a.toLowerCase().includes(q))) score = 4;
+      if (score >= 0) scored.push({ o, score });
+    });
+    scored.sort((a, b) => a.score - b.score || (b.o.inListings - a.o.inListings) || a.o.name.localeCompare(b.o.name));
+    return scored.slice(0, limit).map((s) => s.o);
+  }
+
+  function escapeHtml(text) {
+    return text.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  function highlight(text, query) {
+    const q = query.trim();
+    const safe = escapeHtml(text);
+    if (!q) return safe;
+    const idx = text.toLowerCase().indexOf(q.toLowerCase());
+    if (idx === -1) return safe;
+    return escapeHtml(text.slice(0, idx)) + '<span class="match-highlight">' +
+      escapeHtml(text.slice(idx, idx + q.length)) + "</span>" + escapeHtml(text.slice(idx + q.length));
+  }
+
+  function optionHtml(o, query) {
+    const alias = o.aliases.find((a) => query.trim() && a.toLowerCase().includes(query.trim().toLowerCase()) &&
+                                        !o.name.toLowerCase().includes(query.trim().toLowerCase()));
+    return `<i class="bi bi-geo-alt-fill me-2"></i><span class="flex-grow-1">${highlight(o.name, query)}` +
+      (alias ? ` <span class="opt-alias">(${escapeHtml(alias)})</span>` : "") + "</span>" +
+      (o.inListings ? '<span class="opt-badge">In listings</span>' : "");
+  }
+
   const countryInput = document.getElementById("country");
   const countryDropdown = document.getElementById("country-dropdown");
 
@@ -158,16 +239,13 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     }
 
+    const filterOptions = buildCountryOptions(readListing(countryInput));
+
     function renderCountries(query) {
       query = (query || "").trim();
       countryDropdown.innerHTML = "";
 
-      let matches = [];
-      if (!query) {
-        matches = ["United Kingdom", "United States", "Germany", "Canada", "Australia", "Sweden", "Japan", "South Korea"];
-      } else {
-        matches = COUNTRIES.filter((c) => c.toLowerCase().includes(query.toLowerCase())).slice(0, 10);
-      }
+      const matches = searchCountries(filterOptions, query, 10);
 
       if (matches.length === 0) {
         countryDropdown.innerHTML = '<div class="autocomplete-item text-muted small py-2 px-3">No matching country</div>';
@@ -175,12 +253,12 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      matches.forEach((country) => {
+      matches.forEach((o) => {
         const item = document.createElement("div");
         item.className = "autocomplete-item";
-        item.innerHTML = `<i class="bi bi-geo-alt-fill text-danger me-2"></i>${highlightMatch(country, query)}`;
+        item.innerHTML = optionHtml(o, query);
         item.addEventListener("click", function () {
-          countryInput.value = country;
+          countryInput.value = o.name;
           countryDropdown.style.display = "none";
         });
         countryDropdown.appendChild(item);
@@ -203,6 +281,111 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  // =========================================================================
+  // 4b. Multi-country chip picker (profile + AI match "Preferred countries")
+  //     Search, then Enter/click to add. Stored in a hidden input as
+  //     "UK, Germany, USA" so the server receives the same text as before.
+  // =========================================================================
+  document.querySelectorAll("[data-tag-input]").forEach((root) => {
+    const hidden = root.querySelector("input[type='hidden']");
+    const box = root.querySelector(".tag-input-box");
+    const field = root.querySelector(".tag-input-field");
+    const dropdown = root.querySelector(".autocomplete-dropdown");
+    if (!hidden || !box || !field || !dropdown) return;
+
+    const options = buildCountryOptions(readListing(root));
+    const byKey = new Map();
+    options.forEach((o) => {
+      byKey.set(o.name.toLowerCase(), o);
+      o.aliases.forEach((a) => byKey.set(a.toLowerCase(), o));
+    });
+
+    // Start from what is already saved (unknown spellings are kept but flagged)
+    let tags = hidden.value.replace(/;/g, ",").split(",").map((s) => s.trim()).filter(Boolean)
+      .map((raw) => {
+        const match = byKey.get(raw.toLowerCase());
+        return { name: match ? match.name : raw, known: Boolean(match) };
+      })
+      .filter((t, i, arr) => arr.findIndex((x) => x.name.toLowerCase() === t.name.toLowerCase()) === i);
+
+    let results = [];
+    let active = 0;
+
+    function sync() {
+      hidden.value = tags.map((t) => t.name).join(", ");
+      box.querySelectorAll(".tag-chip").forEach((chip) => chip.remove());
+      tags.forEach((t, i) => {
+        const chip = document.createElement("span");
+        chip.className = "tag-chip" + (t.known ? "" : " is-unknown");
+        if (!t.known) chip.title = "Not in the country list. Remove it and pick from the suggestions.";
+        chip.innerHTML = `${t.known ? "" : '<i class="bi bi-exclamation-triangle-fill"></i>'}<span>${escapeHtml(t.name)}</span>` +
+          `<button type="button" aria-label="Remove ${escapeHtml(t.name)}"><i class="bi bi-x"></i></button>`;
+        chip.querySelector("button").addEventListener("click", (e) => {
+          e.stopPropagation();
+          tags.splice(i, 1);
+          sync();
+          field.focus();
+        });
+        box.insertBefore(chip, field);
+      });
+      field.placeholder = tags.length ? "Add another…" : "Search and add countries…";
+    }
+
+    function render() {
+      const chosen = new Set(tags.map((t) => t.name.toLowerCase()));
+      results = searchCountries(options.filter((o) => !chosen.has(o.name.toLowerCase())), field.value, 8);
+      active = Math.min(active, Math.max(results.length - 1, 0));
+      dropdown.innerHTML = "";
+      if (!results.length) {
+        dropdown.innerHTML = '<div class="autocomplete-item text-muted small">No matching country</div>';
+      }
+      results.forEach((o, i) => {
+        const item = document.createElement("div");
+        item.className = "autocomplete-item" + (i === active ? " is-active" : "");
+        item.setAttribute("role", "option");
+        item.innerHTML = optionHtml(o, field.value);
+        item.addEventListener("mousedown", (e) => { e.preventDefault(); add(o); });
+        item.addEventListener("mouseenter", () => { active = i; highlightActive(); });
+        dropdown.appendChild(item);
+      });
+      dropdown.style.display = "block";
+    }
+
+    function highlightActive() {
+      dropdown.querySelectorAll(".autocomplete-item").forEach((el, i) => el.classList.toggle("is-active", i === active));
+      const el = dropdown.children[active];
+      if (el && el.scrollIntoView) el.scrollIntoView({ block: "nearest" });
+    }
+
+    function add(o) {
+      if (!tags.some((t) => t.name.toLowerCase() === o.name.toLowerCase())) tags.push({ name: o.name, known: true });
+      field.value = "";
+      active = 0;
+      sync();
+      render();
+    }
+
+    field.addEventListener("focus", () => { root.classList.add("is-focused"); render(); });
+    field.addEventListener("input", () => { active = 0; render(); });
+    field.addEventListener("blur", () => {
+      root.classList.remove("is-focused");
+      setTimeout(() => { dropdown.style.display = "none"; }, 120);
+    });
+    field.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown") { e.preventDefault(); active = Math.min(active + 1, results.length - 1); highlightActive(); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); active = Math.max(active - 1, 0); highlightActive(); }
+      else if (e.key === "Enter" || e.key === "," || e.key === "Tab") {
+        if (field.value.trim() && results[active]) { e.preventDefault(); add(results[active]); }
+        else if (e.key === "Enter") e.preventDefault(); // never submit the form by accident
+      }
+      else if (e.key === "Backspace" && !field.value && tags.length) { tags.pop(); sync(); render(); }
+      else if (e.key === "Escape") { dropdown.style.display = "none"; }
+    });
+    box.addEventListener("click", () => field.focus());
+
+    sync();
+  });
 
   // =========================================================================
   // 5. Degree Level Contiguous Searchable Autocomplete
@@ -266,7 +449,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // 6. Aesthetic Sweet Pink Flatpickr Calendar Initialization
   // =========================================================================
   if (window.flatpickr) {
-    flatpickr(".flatpickr-sweet", {
+    // Clean up calendars from the previous page (smooth navigation re-runs this)
+    (window.__spPickers || []).forEach((fp) => { try { fp.destroy(); } catch (e) { /* already gone */ } });
+    const created = flatpickr(".flatpickr-sweet", {
       dateFormat: "Y-m-d",
       altInput: true,
       altFormat: "F j, Y",
@@ -276,25 +461,34 @@ document.addEventListener("DOMContentLoaded", function () {
       nextArrow: '<i class="bi bi-chevron-right text-danger"></i>',
       prevArrow: '<i class="bi bi-chevron-left text-danger"></i>',
     });
+    window.__spPickers = created ? [].concat(created) : [];
   }
 
   // =========================================================================
   // 7. Night Mode Theme Toggle (Persisted in localStorage)
   // =========================================================================
+  if (firstRun) {
   const themeToggleBtn = document.getElementById("theme-toggle-btn");
-  const savedTheme = localStorage.getItem("sp-theme") || "light";
+  let savedTheme = "light";
+  try { savedTheme = localStorage.getItem("sp-theme") || "light"; } catch (e) { /* storage blocked */ }
   if (savedTheme === "dark") {
     document.documentElement.setAttribute("data-theme", "dark");
+    document.documentElement.setAttribute("data-bs-theme", "dark");
   }
 
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener("click", function () {
       const isDark = document.documentElement.getAttribute("data-theme") === "dark";
       const nextTheme = isDark ? "light" : "dark";
+      // Briefly enable colour transitions so the theme crossfades instead of snapping
+      document.documentElement.classList.add("theme-transition");
       document.documentElement.setAttribute("data-theme", nextTheme);
-      localStorage.setItem("sp-theme", nextTheme);
+      document.documentElement.setAttribute("data-bs-theme", nextTheme);
+      try { localStorage.setItem("sp-theme", nextTheme); } catch (e) { /* storage blocked */ }
+      setTimeout(() => document.documentElement.classList.remove("theme-transition"), 500);
     });
   }
+  } // end firstRun (theme)
 
   // =========================================================================
   // 8. Wooden Hardboard Depth Tilt - ONLY on the 3 Dashboard Cards
@@ -365,4 +559,161 @@ document.addEventListener("DOMContentLoaded", function () {
       if (nameInput) nameInput.focus();
     });
   }
+
+  // =========================================================================
+  // 10. Motion layer: scroll reveal, count-up numbers, navbar shadow, parallax
+  // =========================================================================
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // 10a. Reveal cards as they scroll into view (staggered with --reveal-delay)
+  const revealEls = document.querySelectorAll(".reveal");
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    revealEls.forEach((el) => el.classList.add("is-visible"));
+  } else {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    revealEls.forEach((el) => revealObserver.observe(el));
+  }
+
+  // 10b. Count numbers up from 0 (dashboard stat tiles)
+  document.querySelectorAll("[data-count-to]").forEach((el) => {
+    const target = parseInt(el.getAttribute("data-count-to"), 10);
+    if (reduceMotion || !Number.isFinite(target) || target <= 0) return;
+    const duration = 900;
+    const start = performance.now();
+    el.textContent = "0";
+    function tick(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = String(Math.round(target * eased));
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+
+  // 10c. Animate progress rings / score orbs from 0 to their value
+  document.querySelectorAll(".progress-ring, .score-orb").forEach((ring) => {
+    if (reduceMotion) return;
+    const value = ring.style.getPropertyValue("--value");
+    ring.style.setProperty("--value", "0");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => ring.style.setProperty("--value", value));
+    });
+  });
+
+  if (firstRun) {
+  // 10d. Navbar gets a deeper shadow once the page is scrolled
+  const navbar = document.querySelector(".sp-navbar");
+  if (navbar) {
+    const onScroll = () => navbar.classList.toggle("is-scrolled", window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  // 10e. Very gentle background parallax following the mouse (desktop only)
+  const bgLayer = document.querySelector(".sp-bg");
+  if (bgLayer && !reduceMotion && window.matchMedia("(pointer: fine)").matches) {
+    let parallaxRaf = null;
+    window.addEventListener("mousemove", (e) => {
+      if (parallaxRaf) return;
+      parallaxRaf = requestAnimationFrame(() => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 2;
+        const y = (e.clientY / window.innerHeight - 0.5) * 2;
+        bgLayer.style.setProperty("--mx", x.toFixed(3));
+        bgLayer.style.setProperty("--my", y.toFixed(3));
+        parallaxRaf = null;
+      });
+    });
+  }
+
+  // =========================================================================
+  // 11. Mobile menu (smooth height animation via CSS grid rows)
+  // =========================================================================
+  const navToggle = document.getElementById("sp-nav-toggle");
+  const navCollapse = document.getElementById("sp-nav-collapse");
+  if (navToggle && navCollapse) {
+    navToggle.addEventListener("click", () => {
+      const open = navCollapse.classList.toggle("is-open");
+      navToggle.setAttribute("aria-expanded", String(open));
+      const icon = navToggle.querySelector("i");
+      if (icon) icon.className = open ? "bi bi-x-lg" : "bi bi-list";
+    });
+  }
+  } // end firstRun (navbar, parallax, mobile menu)
+
+  // =========================================================================
+  // 12. Toast notifications (flash messages): auto-dismiss, pause on hover
+  // =========================================================================
+  document.querySelectorAll(".sp-toast").forEach((toast, index) => {
+    let timer = null;
+    let remaining = 5500 + index * 400;
+    let startedAt = 0;
+
+    const dismiss = () => {
+      if (toast.classList.contains("is-leaving")) return;
+      toast.classList.add("is-leaving");
+      toast.addEventListener("animationend", () => toast.remove(), { once: true });
+    };
+    const start = () => { startedAt = Date.now(); timer = setTimeout(dismiss, remaining); };
+    const pause = () => { clearTimeout(timer); remaining -= Date.now() - startedAt; };
+
+    toast.style.animationDelay = `${index * 90}ms`;
+    toast.addEventListener("mouseenter", pause);
+    toast.addEventListener("mouseleave", start);
+    const closeBtn = toast.querySelector(".btn-close");
+    if (closeBtn) closeBtn.addEventListener("click", dismiss);
+    start();
+  });
+
+  // =========================================================================
+  // 13. Button ripple + loading spinner on form submit
+  // =========================================================================
+  if (firstRun) document.addEventListener("pointerdown", (e) => {
+    const btn = e.target.closest(".btn");
+    if (!btn || reduceMotion) return;
+    const rect = btn.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const ripple = document.createElement("span");
+    ripple.className = "sp-ripple";
+    ripple.style.width = ripple.style.height = `${size}px`;
+    ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+    ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+    btn.appendChild(ripple);
+    ripple.addEventListener("animationend", () => ripple.remove(), { once: true });
+  });
+
+  // Buttons with data-loading-text show a spinner while the form submits
+  document.querySelectorAll("form").forEach((form) => {
+    form.addEventListener("submit", (e) => {
+      const btn = e.submitter || form.querySelector("button[type='submit'][data-loading-text]");
+      if (!btn || !btn.hasAttribute("data-loading-text")) return;
+      // Defer so the submitter's value is still sent with the form
+      setTimeout(() => {
+        btn.dataset.originalHtml = btn.innerHTML;
+        btn.classList.add("is-loading");
+        btn.innerHTML = `<span class="sp-spinner" aria-hidden="true"></span>${btn.getAttribute("data-loading-text")}`;
+      }, 0);
+    });
+  });
+
+  // Restore buttons if the page is shown again from the back/forward cache
+  if (firstRun) window.addEventListener("pageshow", (e) => {
+    if (e.persisted) {
+      document.querySelectorAll(".btn.is-loading").forEach((b) => {
+        b.classList.remove("is-loading");
+        if (b.dataset.originalHtml) b.innerHTML = b.dataset.originalHtml;
+      });
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initPage(true);
+  if (window.SPNav) window.SPNav.start();
 });

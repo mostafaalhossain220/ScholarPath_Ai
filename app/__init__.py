@@ -42,6 +42,15 @@ def create_app():
     # Lets templates write {{ csrf_token() }} inside forms
     app.jinja_env.globals["csrf_token"] = auth.get_csrf_token
 
+    # {{ o.deadline|days_left }} -> days from today, or None if missing/invalid
+    from datetime import date
+    from .services.dashboard import days_until
+    app.jinja_env.filters["days_left"] = lambda deadline: days_until(deadline, date.today())
+
+    # {{ listing_countries() }} -> country names used in the listings (for pickers)
+    from .services.countries import listing_countries
+    app.jinja_env.globals["listing_countries"] = listing_countries
+
     @app.after_request
     def set_security_headers(response):
         response.headers["X-Content-Type-Options"] = "nosniff"
@@ -77,6 +86,13 @@ def create_app():
 
     @app.route("/")
     def index():
-        return render_template("index.html")
+        from flask import g
+        from .db import get_db
+        from .services.dashboard import build_dashboard
+
+        dashboard = None
+        if g.user:
+            dashboard = build_dashboard(get_db(), g.user["id"])
+        return render_template("index.html", dashboard=dashboard)
 
     return app

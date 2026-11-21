@@ -1,212 +1,295 @@
 /**
- * ScholarPath AI - Enhanced Cherry Blossom (Sakura) Particle & Cursor Engine
- * Vivid, organic notched petals with natural flutter, 3D spin, and interactive cursor physics.
+ * ScholarPath AI — Sakura petal engine
+ *
+ * - Ambient petals drift down in three depth layers with gentle wind gusts.
+ * - Moving the cursor releases an evenly spaced stream of petals that inherit
+ *   the cursor's motion, then float, flutter and fade out.
+ * - Clicking releases a small burst with a soft ring.
+ *
+ * Smoothness: petals are pre-rendered once into sprites (no gradients per frame),
+ * the canvas is scaled for retina screens, motion is time-based (same speed on
+ * 60/120/144 Hz screens), and the loop pauses when the tab is hidden.
+ * Respects the "reduce motion" system setting.
  */
 (function () {
-  function initSakura() {
-    let canvas = document.getElementById("sakura-canvas");
-    if (!canvas) {
-      canvas = document.createElement("canvas");
-      canvas.id = "sakura-canvas";
-      document.body.prepend(canvas);
-    }
+  "use strict";
 
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function init() {
+    const canvas = document.getElementById("sakura-canvas");
+    if (!canvas || reduceMotion) return;
     const ctx = canvas.getContext("2d");
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
 
-    window.addEventListener("resize", function () {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    });
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
 
-    // Rich, vibrant cherry blossom petal colors
-    const petalPalettes = [
-      { base: "#ff4071", highlight: "#ffa6c1", shadow: "#e61a53" }, // deep sakura pink
-      { base: "#ff5c8a", highlight: "#ffccd8", shadow: "#db2777" }, // vibrant blossom
-      { base: "#ff7597", highlight: "#ffe4ec", shadow: "#e11d48" }, // sweet cherry rose
-      { base: "#f43f5e", highlight: "#fecdd3", shadow: "#be123c" }, // rich rose
-      { base: "#fb7185", highlight: "#fff1f2", shadow: "#e11d48" }, // soft pastel blossom
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    // ------------------------------------------------------------------
+    // Petal sprites (drawn once per colour, reused every frame)
+    // ------------------------------------------------------------------
+    const PALETTES = [
+      ["#ffc2d4", "#ff6b93", "#e11d58"],
+      ["#ffe0ea", "#ff86a8", "#ec4880"],
+      ["#fff1f5", "#ffa3bd", "#f05d8a"],
+      ["#ffd6e2", "#fb7185", "#e11d48"],
+      ["#fde2f3", "#f9a8d4", "#db2777"],
     ];
+    const SPRITE = 48; // logical px
 
-    // Sparse, delicate ambient cherry blossom count
-    const TOTAL_AMBIENT = Math.min(14, Math.max(7, Math.floor(width / 130)));
-    const ambientPetals = [];
-    const cursorPetals = [];
+    function makeSprite([light, mid, deep]) {
+      const c = document.createElement("canvas");
+      const scale = 2; // keep sprites crisp on retina
+      c.width = c.height = SPRITE * scale;
+      const g = c.getContext("2d");
+      g.scale(scale, scale);
+      g.translate(SPRITE / 2, SPRITE / 2);
+      const s = SPRITE * 0.42;
 
-    // Helper to create an ambient falling petal
-    function createAmbientPetal(startY) {
-      const palette = petalPalettes[Math.floor(Math.random() * petalPalettes.length)];
-      return {
-        x: Math.random() * (width + 60) - 30,
-        y: startY !== undefined ? startY : Math.random() * -height * 0.4,
-        size: 9 + Math.random() * 10,
-        speedY: 0.5 + Math.random() * 0.65, // slow, gentle falling speed
-        speedX: -0.25 + Math.random() * 0.55,
-        oscillationSpeed: 0.01 + Math.random() * 0.014, // gentle graceful side sway
-        oscillationAngle: Math.random() * Math.PI * 2,
-        flipSpeed: 0.014 + Math.random() * 0.018, // slow realistic 3D tumbling
-        flipAngle: Math.random() * Math.PI * 2,
-        rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 0.8,
-        opacity: 0.82 + Math.random() * 0.18,
-        palette: palette,
-      };
+      g.beginPath();
+      g.moveTo(0, s * 0.85);
+      g.bezierCurveTo(-s * 0.7, s * 0.45, -s * 0.8, -s * 0.38, -s * 0.3, -s * 0.82);
+      g.quadraticCurveTo(-s * 0.12, -s * 0.72, 0, -s * 0.6);
+      g.quadraticCurveTo(s * 0.12, -s * 0.72, s * 0.3, -s * 0.82);
+      g.bezierCurveTo(s * 0.8, -s * 0.38, s * 0.7, s * 0.45, 0, s * 0.85);
+      g.closePath();
+
+      const grad = g.createLinearGradient(-s * 0.4, -s * 0.85, s * 0.4, s * 0.85);
+      grad.addColorStop(0, light);
+      grad.addColorStop(0.55, mid);
+      grad.addColorStop(1, deep);
+      g.fillStyle = grad;
+      g.shadowColor = "rgba(225, 29, 72, 0.25)";
+      g.shadowBlur = 3;
+      g.fill();
+      g.shadowBlur = 0;
+
+      // Soft sheen + vein
+      const sheen = g.createRadialGradient(-s * 0.2, -s * 0.3, 0, -s * 0.2, -s * 0.3, s * 0.7);
+      sheen.addColorStop(0, "rgba(255,255,255,0.55)");
+      sheen.addColorStop(1, "rgba(255,255,255,0)");
+      g.fillStyle = sheen;
+      g.fill();
+
+      g.strokeStyle = "rgba(255,255,255,0.5)";
+      g.lineWidth = 0.9;
+      g.beginPath();
+      g.moveTo(0, s * 0.7);
+      g.quadraticCurveTo(s * 0.05, 0, 0, -s * 0.45);
+      g.stroke();
+      return c;
     }
 
-    for (let i = 0; i < TOTAL_AMBIENT; i++) {
-      ambientPetals.push(createAmbientPetal(Math.random() * height));
-    }
+    const sprites = PALETTES.map(makeSprite);
+    const randomSprite = () => sprites[(Math.random() * sprites.length) | 0];
 
-    // Draw realistic notched sakura petal
-    function drawSakuraPetal(p, alphaMultiplier) {
-      const alpha = (p.opacity || 1) * (alphaMultiplier !== undefined ? alphaMultiplier : 1);
+    function drawPetal(p, alpha) {
       if (alpha <= 0.01) return;
-
+      const flip = Math.cos(p.flip);
+      const size = p.size * (p.grow !== undefined ? p.grow : 1);
       ctx.save();
+      ctx.globalAlpha = alpha * themeAlpha;
       ctx.translate(p.x, p.y);
-      ctx.rotate((p.rotation * Math.PI) / 180);
-      const scaleX = Math.cos(p.flipAngle || 0);
-      ctx.scale(scaleX, 1);
-
-      ctx.beginPath();
-      const s = p.size;
-      
-      // Bottom stem tip
-      ctx.moveTo(0, s * 0.8);
-      
-      // Left curve
-      ctx.bezierCurveTo(-s * 0.65, s * 0.4, -s * 0.75, -s * 0.4, -s * 0.28, -s * 0.8);
-      
-      // Top iconic notched cleft of sakura petal
-      ctx.lineTo(0, -s * 0.62);
-      ctx.lineTo(s * 0.28, -s * 0.8);
-      
-      // Right curve back to stem tip
-      ctx.bezierCurveTo(s * 0.75, -s * 0.4, s * 0.65, s * 0.4, 0, s * 0.8);
-      ctx.closePath();
-
-      // Vibrant 2-tone gradient
-      const grad = ctx.createLinearGradient(0, -s * 0.8, 0, s * 0.8);
-      grad.addColorStop(0, p.palette.highlight);
-      grad.addColorStop(0.5, p.palette.base);
-      grad.addColorStop(1, p.palette.shadow);
-
-      ctx.globalAlpha = alpha;
-      ctx.fillStyle = grad;
-      ctx.fill();
-
-      // Subtle translucent petal vein
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.45)";
-      ctx.lineWidth = 0.8;
-      ctx.beginPath();
-      ctx.moveTo(0, s * 0.7);
-      ctx.lineTo(0, -s * 0.45);
-      ctx.stroke();
-
+      ctx.rotate(p.rot);
+      ctx.scale(flip * (size / SPRITE) * 2.1, (size / SPRITE) * 2.1);
+      ctx.drawImage(p.sprite, -SPRITE / 2, -SPRITE / 2, SPRITE, SPRITE);
       ctx.restore();
     }
 
-    // Cursor interaction (sparse and subtle)
-    let lastX = 0, lastY = 0;
-    let throttleTimer = 0;
+    // ------------------------------------------------------------------
+    // Ambient petals
+    // ------------------------------------------------------------------
+    const ambient = [];
+    const ambientCount = () => Math.round(Math.min(22, Math.max(8, (width * height) / 85000)));
 
-    function spawnCursorPetals(x, y, count, isBurst) {
-      if (cursorPetals.length >= 22) return; // Strict cap so it never clusters
-
-      for (let i = 0; i < count; i++) {
-        const palette = petalPalettes[Math.floor(Math.random() * petalPalettes.length)];
-        const angle = isBurst ? Math.random() * Math.PI * 2 : (Math.PI / 2) + (Math.random() - 0.5) * 1.2;
-        const speed = isBurst ? 1.2 + Math.random() * 1.8 : 0.55 + Math.random() * 0.9;
-
-        cursorPetals.push({
-          x: x + (Math.random() - 0.5) * 8,
-          y: y + (Math.random() - 0.5) * 8,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          size: 7 + Math.random() * 8,
-          rotation: Math.random() * 360,
-          rotationSpeed: (Math.random() - 0.5) * 1.6,
-          flipAngle: Math.random() * Math.PI * 2,
-          flipSpeed: 0.02 + Math.random() * 0.03,
-          life: 1.0,
-          decay: isBurst ? 0.01 + Math.random() * 0.008 : 0.014 + Math.random() * 0.01,
-          opacity: 0.9,
-          palette: palette,
-        });
-      }
+    function newAmbient(spawnAnywhere) {
+      const z = 0.45 + Math.random() * 0.75; // depth: small/slow/faint → big/fast/bright
+      return {
+        sprite: randomSprite(),
+        z,
+        x: Math.random() * (width + 120) - 60,
+        y: spawnAnywhere ? Math.random() * height : -30 - Math.random() * 80,
+        size: 7 + z * 11,
+        vy: 0.35 + z * 0.55,
+        sway: 0.6 + Math.random() * 0.9,
+        phase: Math.random() * Math.PI * 2,
+        phaseSpeed: 0.012 + Math.random() * 0.014,
+        rot: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.025,
+        flip: Math.random() * Math.PI * 2,
+        flipSpeed: 0.015 + Math.random() * 0.025,
+        alpha: 0.45 + z * 0.45,
+      };
     }
 
-    window.addEventListener("mousemove", function (e) {
-      const now = Date.now();
-      const dist = Math.hypot(e.clientX - lastX, e.clientY - lastY);
+    for (let i = 0; i < ambientCount(); i++) ambient.push(newAmbient(true));
 
-      if (dist > 40 && now - throttleTimer > 100) {
-        throttleTimer = now;
-        lastX = e.clientX;
-        lastY = e.clientY;
-        spawnCursorPetals(e.clientX, e.clientY, 1, false);
+    // ------------------------------------------------------------------
+    // Cursor trail + click bursts
+    // ------------------------------------------------------------------
+    const trail = [];
+    const rings = [];
+    const MAX_TRAIL = 14; // keep the cursor effect very light
+    const pointer = { x: -1, y: -1, vx: 0, vy: 0, has: false, carry: 0 };
+
+    function spawnTrail(x, y, vx, vy, burst) {
+      if (trail.length >= MAX_TRAIL) trail.shift();
+      const angle = burst ? Math.random() * Math.PI * 2 : 0;
+      const speed = burst ? 1 + Math.random() * 1.4 : 0;
+      trail.push({
+        sprite: randomSprite(),
+        x: x + (Math.random() - 0.5) * 6,
+        y: y + (Math.random() - 0.5) * 6,
+        vx: burst ? Math.cos(angle) * speed : vx * 0.12 + (Math.random() - 0.5) * 0.7,
+        vy: burst ? Math.sin(angle) * speed - 1 : vy * 0.12 + (Math.random() - 0.2) * 0.6,
+        size: (burst ? 6 : 5) + Math.random() * 4,
+        rot: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.09,
+        flip: Math.random() * Math.PI * 2,
+        flipSpeed: 0.04 + Math.random() * 0.05,
+        age: 0,
+        life: burst ? 1000 + Math.random() * 400 : 800 + Math.random() * 400, // ms
+        grow: 0,
+      });
+    }
+
+    function onMove(e) {
+      const x = e.clientX;
+      const y = e.clientY;
+      const touch = e.pointerType === "touch";
+      if (!pointer.has) {
+        pointer.x = x; pointer.y = y; pointer.has = true;
+        return;
       }
-    });
+      const dx = x - pointer.x;
+      const dy = y - pointer.y;
+      const dist = Math.hypot(dx, dy);
+      pointer.vx = pointer.vx * 0.6 + dx * 0.4;
+      pointer.vy = pointer.vy * 0.6 + dy * 0.4;
 
-    window.addEventListener("click", function (e) {
-      spawnCursorPetals(e.clientX, e.clientY, 5, true);
-    });
-
-    window.addEventListener("touchmove", function (e) {
-      if (e.touches && e.touches[0]) {
-        spawnCursorPetals(e.touches[0].clientX, e.touches[0].clientY, 1, false);
+      // Evenly spaced along the path, so fast flicks still give a smooth stream
+      const spacing = touch ? 120 : 85;
+      pointer.carry += dist;
+      while (pointer.carry >= spacing && dist > 0) {
+        pointer.carry -= spacing;
+        const t = 1 - pointer.carry / dist;
+        spawnTrail(pointer.x + dx * t, pointer.y + dy * t, pointer.vx, pointer.vy, false);
       }
+      pointer.x = x;
+      pointer.y = y;
+    }
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerdown", (e) => {
+      const n = e.pointerType === "touch" ? 2 : 4;
+      for (let i = 0; i < n; i++) spawnTrail(e.clientX, e.clientY, 0, 0, true);
+      rings.push({ x: e.clientX, y: e.clientY, age: 0 });
     }, { passive: true });
+    document.addEventListener("pointerleave", () => { pointer.has = false; });
 
-    // Main animation loop
-    function update() {
+    // ------------------------------------------------------------------
+    // Loop
+    // ------------------------------------------------------------------
+    let themeAlpha = 1;
+    let last = performance.now();
+    let running = true;
+    let windTime = 0;
+
+    const easeOutBack = (t) => 1 + 2.2 * Math.pow(t - 1, 3) + 1.2 * Math.pow(t - 1, 2);
+
+    function frame(now) {
+      if (!running) return;
+      const ms = Math.min(now - last, 50);
+      last = now;
+      const k = ms / 16.667; // 1.0 at 60 fps
+      windTime += ms;
+
+      themeAlpha = document.documentElement.getAttribute("data-theme") === "dark" ? 0.82 : 1;
       ctx.clearRect(0, 0, width, height);
 
-      // 1. Draw ambient falling sakura petals
-      for (let i = 0; i < ambientPetals.length; i++) {
-        const p = ambientPetals[i];
-        p.oscillationAngle += p.oscillationSpeed;
-        p.flipAngle += p.flipSpeed;
-        p.rotation += p.rotationSpeed;
+      // Layered sine "wind" with occasional gusts
+      const wind = Math.sin(windTime * 0.00023) * 0.45 + Math.sin(windTime * 0.0011) * 0.18 +
+                   Math.max(0, Math.sin(windTime * 0.00009)) * 0.5;
 
-        p.y += p.speedY;
-        p.x += Math.sin(p.oscillationAngle) * 0.85 + p.speedX;
+      // Ambient
+      const target = ambientCount();
+      while (ambient.length < target) ambient.push(newAmbient(false));
+      if (ambient.length > target) ambient.length = target;
 
-        if (p.y > height + 30 || p.x < -40 || p.x > width + 40) {
-          ambientPetals[i] = createAmbientPetal();
-        }
-
-        drawSakuraPetal(p, 1);
+      for (let i = 0; i < ambient.length; i++) {
+        const p = ambient[i];
+        p.phase += p.phaseSpeed * k;
+        p.flip += p.flipSpeed * k;
+        p.rot += (p.rotSpeed + wind * 0.004) * k;
+        p.y += p.vy * k;
+        p.x += (Math.sin(p.phase) * p.sway + wind * (0.6 + p.z)) * k;
+        if (p.y > height + 40 || p.x < -80 || p.x > width + 80) ambient[i] = newAmbient(false);
+        drawPetal(p, p.alpha);
       }
 
-      // 2. Draw interactive cursor trail petals
-      for (let i = cursorPetals.length - 1; i >= 0; i--) {
-        const cp = cursorPetals[i];
-        cp.x += cp.vx;
-        cp.y += cp.vy;
-        cp.vy += 0.022; // gentle floaty gravity
-        cp.vx *= 0.96;  // smooth air drag
-        cp.rotation += cp.rotationSpeed;
-        cp.flipAngle += cp.flipSpeed;
-        cp.life -= cp.decay;
-
-        if (cp.life <= 0) {
-          cursorPetals.splice(i, 1);
-        } else {
-          drawSakuraPetal(cp, cp.life);
-        }
+      // Click rings
+      for (let i = rings.length - 1; i >= 0; i--) {
+        const r = rings[i];
+        r.age += ms;
+        const t = r.age / 550;
+        if (t >= 1) { rings.splice(i, 1); continue; }
+        ctx.save();
+        ctx.globalAlpha = (1 - t) * 0.22 * themeAlpha;
+        ctx.strokeStyle = "#fb7185";
+        ctx.lineWidth = 2 * (1 - t) + 0.5;
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, 4 + t * 18, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
       }
 
-      requestAnimationFrame(update);
+      // Trail
+      for (let i = trail.length - 1; i >= 0; i--) {
+        const p = trail[i];
+        p.age += ms;
+        const t = p.age / p.life;
+        if (t >= 1) { trail.splice(i, 1); continue; }
+        p.vx = p.vx * Math.pow(0.965, k) + wind * 0.02 * k;
+        p.vy = p.vy * Math.pow(0.975, k) + 0.028 * k; // light, floaty gravity
+        p.x += (p.vx + Math.sin(p.age * 0.006 + p.flip) * 0.35) * k;
+        p.y += p.vy * k;
+        p.rot += p.rotSpeed * k;
+        p.flip += p.flipSpeed * k;
+        p.grow = easeOutBack(Math.min(1, p.age / 260));
+        const fade = t < 0.6 ? 1 : 1 - (t - 0.6) / 0.4;
+        drawPetal(p, 0.6 * fade * fade);
+      }
+
+      requestAnimationFrame(frame);
     }
 
-    update();
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        running = false;
+      } else if (!running) {
+        running = true;
+        last = performance.now();
+        requestAnimationFrame(frame);
+      }
+    });
+
+    requestAnimationFrame(frame);
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initSakura);
+    document.addEventListener("DOMContentLoaded", init);
   } else {
-    initSakura();
+    init();
   }
 })();

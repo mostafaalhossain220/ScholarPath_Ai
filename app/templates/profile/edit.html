@@ -2,78 +2,112 @@
 {% block title %}My profile | ScholarPath AI{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
-  <div class="col-lg-8">
-    <h1 class="h3 mb-1">My academic profile</h1>
-    <p class="text-muted">Used to match you with suitable scholarships and funded PhD positions. All fields are optional.</p>
+  <div class="col-lg-9 col-xl-8">
+    <header class="page-head reveal">
+      <span class="page-eyebrow"><i class="bi bi-person-vcard"></i> Academic profile</span>
+      <h1 class="page-title">My academic profile</h1>
+      <p class="page-sub">Used to match you with suitable scholarships and funded PhD positions. All fields are optional, and the more you add, the better the checks.</p>
+    </header>
 
-    <form method="post" class="card card-body shadow-sm border-0" novalidate>
+    <form method="post" novalidate>
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-      <div class="row g-3 mb-3">
-        <div class="col-md-4">
-          <label class="form-label" for="cgpa">CGPA (out of 4.00)</label>
-          <input class="form-control {{ 'is-invalid' if errors.cgpa }}" id="cgpa" name="cgpa"
-                 value="{{ form.cgpa }}" inputmode="decimal" placeholder="e.g. 3.45">
-          {% if errors.cgpa %}<div class="invalid-feedback">{{ errors.cgpa }}</div>{% endif %}
-        </div>
-        <div class="col-md-4">
-          <label class="form-label" for="ielts">IELTS overall</label>
-          <input class="form-control {{ 'is-invalid' if errors.ielts }}" id="ielts" name="ielts"
-                 value="{{ form.ielts }}" inputmode="decimal" placeholder="e.g. 6.5">
-          {% if errors.ielts %}<div class="invalid-feedback">{{ errors.ielts }}</div>{% endif %}
-        </div>
-        <div class="col-md-4">
-          <label class="form-label" for="target_degree">Target degree</label>
-          <select class="form-select {{ 'is-invalid' if errors.target_degree }}" id="target_degree" name="target_degree">
-            <option value="">Not decided</option>
-            <option value="masters" {{ 'selected' if form.target_degree == 'masters' }}>Master's</option>
-            <option value="phd" {{ 'selected' if form.target_degree == 'phd' }}>PhD</option>
-          </select>
-          {% if errors.target_degree %}<div class="invalid-feedback">{{ errors.target_degree }}</div>{% endif %}
-        </div>
+      <div class="card reveal" style="--reveal-delay: 60ms">
+        <section class="form-section">
+          <div class="form-section-head">
+            <span class="sp-icon-badge"><i class="bi bi-mortarboard"></i></span>
+            <div><h2>Academic results</h2><p>Compared with each opportunity's minimum requirements.</p></div>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label" for="cgpa">CGPA (out of 4.00)</label>
+              <input class="form-control {{ 'is-invalid' if errors.cgpa }}" id="cgpa" name="cgpa"
+                     value="{{ form.cgpa }}" inputmode="decimal" placeholder="e.g. 3.45">
+              {% if errors.cgpa %}<div class="invalid-feedback">{{ errors.cgpa }}</div>{% endif %}
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="ielts">IELTS overall</label>
+              <input class="form-control {{ 'is-invalid' if errors.ielts }}" id="ielts" name="ielts"
+                     value="{{ form.ielts }}" inputmode="decimal" placeholder="e.g. 6.5">
+              {% if errors.ielts %}<div class="invalid-feedback">{{ errors.ielts }}</div>{% endif %}
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="target_degree">Target degree</label>
+              <select class="form-select {{ 'is-invalid' if errors.target_degree }}" id="target_degree" name="target_degree">
+                <option value="">Not decided</option>
+                <option value="masters" {{ 'selected' if form.target_degree == 'masters' }}>Master's</option>
+                <option value="phd" {{ 'selected' if form.target_degree == 'phd' }}>PhD</option>
+              </select>
+              {% if errors.target_degree %}<div class="invalid-feedback">{{ errors.target_degree }}</div>{% endif %}
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <div class="form-section-head">
+            <span class="sp-icon-badge is-sky"><i class="bi bi-globe2"></i></span>
+            <div><h2>Preferences</h2><p>Where and what you want to study, and how much funding you need.</p></div>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="field">Field of study</label>
+              <input class="form-control {{ 'is-invalid' if errors.field }}" id="field" name="field"
+                     value="{{ form.field }}" placeholder="e.g. Computer Science">
+              {% if errors.field %}<div class="invalid-feedback">{{ errors.field }}</div>{% endif %}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="preferred_countries_search">Preferred countries</label>
+              <div class="tag-input {{ 'is-invalid' if errors.preferred_countries }}" data-tag-input
+                   data-listing='{{ listing_countries()|tojson }}'>
+                <input type="hidden" id="preferred_countries" name="preferred_countries" value="{{ form.preferred_countries }}">
+                <div class="tag-input-box">
+                  <input class="tag-input-field" id="preferred_countries_search" autocomplete="off"
+                         placeholder="Search and add countries…" aria-describedby="countries-hint">
+                </div>
+                <div class="autocomplete-dropdown" role="listbox"></div>
+              </div>
+              <div class="sp-fineprint mt-1" id="countries-hint">Type to search, then press Enter or click to add. Backspace removes the last one.</div>
+              {% if errors.preferred_countries %}<div class="text-danger small mt-1 fw-semibold">{{ errors.preferred_countries }}</div>{% endif %}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="funding_need">Funding need</label>
+              <select class="form-select {{ 'is-invalid' if errors.funding_need }}" id="funding_need" name="funding_need">
+                <option value="">Not decided</option>
+                {% for value, label in funding_choices.items() %}
+                <option value="{{ value }}" {{ 'selected' if form.funding_need == value }}>{{ label }}</option>
+                {% endfor %}
+              </select>
+              {% if errors.funding_need %}<div class="invalid-feedback">{{ errors.funding_need }}</div>{% endif %}
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <div class="form-section-head">
+            <span class="sp-icon-badge is-violet"><i class="bi bi-lightbulb"></i></span>
+            <div><h2>Research &amp; skills</h2><p>Helps rank PhD projects that fit your interests.</p></div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="research_interests">Research interests</label>
+            <textarea class="form-control {{ 'is-invalid' if errors.research_interests }}" id="research_interests"
+                      name="research_interests" rows="3" placeholder="e.g. machine learning, cybersecurity">{{ form.research_interests }}</textarea>
+            {% if errors.research_interests %}<div class="invalid-feedback">{{ errors.research_interests }}</div>{% endif %}
+          </div>
+          <div>
+            <label class="form-label" for="skills">Skills</label>
+            <textarea class="form-control {{ 'is-invalid' if errors.skills }}" id="skills" name="skills" rows="2"
+                      placeholder="e.g. Python, Flask, SQL">{{ form.skills }}</textarea>
+            {% if errors.skills %}<div class="invalid-feedback">{{ errors.skills }}</div>{% endif %}
+          </div>
+        </section>
       </div>
 
-      <div class="row g-3 mb-3">
-        <div class="col-md-6">
-          <label class="form-label" for="field">Field of study</label>
-          <input class="form-control {{ 'is-invalid' if errors.field }}" id="field" name="field"
-                 value="{{ form.field }}" placeholder="e.g. Computer Science">
-          {% if errors.field %}<div class="invalid-feedback">{{ errors.field }}</div>{% endif %}
-        </div>
-        <div class="col-md-6">
-          <label class="form-label" for="preferred_countries">Preferred countries</label>
-          <input class="form-control {{ 'is-invalid' if errors.preferred_countries }}" id="preferred_countries"
-                 name="preferred_countries" value="{{ form.preferred_countries }}" placeholder="e.g. Sweden, Germany, USA">
-          {% if errors.preferred_countries %}<div class="invalid-feedback">{{ errors.preferred_countries }}</div>{% endif %}
-        </div>
+      <div class="sticky-actions">
+        <span><i class="bi bi-shield-lock me-1"></i>Only you can see your profile.</span>
+        <button class="btn btn-sp-sweet px-4 py-2" type="submit" data-loading-text="Saving…">
+          <i class="bi bi-check2-circle me-1"></i> Save profile
+        </button>
       </div>
-
-      <div class="mb-3">
-        <label class="form-label" for="research_interests">Research interests</label>
-        <textarea class="form-control {{ 'is-invalid' if errors.research_interests }}" id="research_interests"
-                  name="research_interests" rows="3" placeholder="e.g. machine learning, cybersecurity">{{ form.research_interests }}</textarea>
-        {% if errors.research_interests %}<div class="invalid-feedback">{{ errors.research_interests }}</div>{% endif %}
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label" for="skills">Skills</label>
-        <textarea class="form-control {{ 'is-invalid' if errors.skills }}" id="skills" name="skills" rows="2"
-                  placeholder="e.g. Python, Flask, SQL">{{ form.skills }}</textarea>
-        {% if errors.skills %}<div class="invalid-feedback">{{ errors.skills }}</div>{% endif %}
-      </div>
-
-      <div class="mb-4">
-        <label class="form-label" for="funding_need">Funding need</label>
-        <select class="form-select {{ 'is-invalid' if errors.funding_need }}" id="funding_need" name="funding_need">
-          <option value="">Not decided</option>
-          {% for value, label in funding_choices.items() %}
-          <option value="{{ value }}" {{ 'selected' if form.funding_need == value }}>{{ label }}</option>
-          {% endfor %}
-        </select>
-        {% if errors.funding_need %}<div class="invalid-feedback">{{ errors.funding_need }}</div>{% endif %}
-      </div>
-
-      <div><button class="btn btn-primary" type="submit">Save profile</button></div>
     </form>
   </div>
 </div>
