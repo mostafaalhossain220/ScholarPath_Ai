@@ -20,6 +20,7 @@ ScholarPath AI is advisory only. It does **not** predict admission or funding, a
 | **Find opportunities** | Keyword search and filters for degree, country, field and deadline. Shows provider, funding, deadline, source and last-checked date. |
 | **Opportunity & evidence screen** | Full details, a requirement-by-requirement **eligibility check** (Satisfied / Not satisfied / Unclear / Not provided), the official requirement text as evidence, the source URL, last-checked date and a verification warning. |
 | **AI matching** *(optional)* | Ranks opportunities with Sentence Transformers semantic similarity plus a keyword baseline. Only enabled when `sentence-transformers` is installed. |
+| **Source monitoring** | `flask --app run check-sources` re-downloads the official pages (respecting robots.txt), compares them with the stored copy and records deadline / eligibility / funding / status changes. Changes on saved opportunities are listed on the **Updates** page and on each detail page. |
 | **Saved & tracking** | Save opportunities, set status (saved / preparing / applied / dropped) and keep notes. |
 | **UI** | Light and night mode, soft animated sakura background, scroll-reveal and count-up animations. Respects the system "reduce motion" setting. |
 | **Smooth navigation** | Main pages are preloaded in the background; clicking a link or applying filters swaps only the content area with a fade (`app/static/js/nav.js`), with no full page reload. Forms that change data still do a normal load. |
@@ -27,8 +28,8 @@ ScholarPath AI is advisory only. It does **not** predict admission or funding, a
 ### Planned (not built yet)
 - RAG retrieval of official-source passages (FAISS/Chroma + LLM)
 - PhD research-fit explanation
-- Scheduled monitoring of source pages and change detection
-- Email alerts and an email-preferences page
+- Email alerts for detected changes (the `source_changes.notified` column is ready for it)
+- Email-preferences page
 - Admin / source management page
 
 ---
@@ -140,3 +141,25 @@ Only collect data from official sources, and respect each site's terms, robots r
 - Eligibility currently checks only degree level, CGPA and IELTS. Other conditions (nationality, work experience, documents) appear only as the official text.
 - The opportunity collection is a small, manually verified set. Information can change after the last-checked date.
 - Match scores show relevance, not admission probability.
+
+---
+
+## Source monitoring (change detection)
+
+```bash
+# one-time: add the new tables to an existing database (safe, keeps your data)
+flask --app run init-db
+
+# check every opportunity (waits 2 s between different websites)
+flask --app run check-sources
+
+# only opportunities that some user has saved / one opportunity by id
+flask --app run check-sources --saved-only
+flask --app run check-sources --id 5
+```
+
+* The first run only stores a **baseline** copy of each page. Changes can be detected from the second run on.
+* Pages that cannot be read (blocked by robots.txt, network error, JavaScript-only page) are logged in `source_checks` and shown as "could not read the page".
+* Uncategorised changes are marked **Needs manual review**. Detections are advisory, so always confirm on the official page.
+* To run it automatically, schedule the same command (cron, or a PythonAnywhere *Scheduled task*), e.g. once a day.
+

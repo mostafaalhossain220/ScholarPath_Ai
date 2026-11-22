@@ -2,6 +2,8 @@ from flask import Blueprint, abort, g, render_template, request
 
 from app.db import get_db
 from app.services.eligibility import check_eligibility
+from app.services.monitoring import (
+    CHANGE_LABELS, last_check_for_opportunity, recent_changes_for_opportunity)
 
 bp = Blueprint("opportunities", __name__, url_prefix="/opportunities")
 
@@ -91,4 +93,7 @@ def detail(opportunity_id):
         saved=saved,
         eligibility=eligibility,
         has_profile=has_profile,
+        recent_changes=recent_changes_for_opportunity(db, opportunity_id),
+        last_check=last_check_for_opportunity(db, opportunity_id),
+        change_labels=CHANGE_LABELS,
     )

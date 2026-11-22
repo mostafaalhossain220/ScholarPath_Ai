@@ -164,6 +164,29 @@
   </div>
 </div>
 
+{# ================= Source monitoring (change detection) ================= #}
+<div class="card sp-panel mb-4 reveal" id="monitoring">
+  <h2 class="sp-panel-title mb-3"><span class="sp-icon-badge is-violet"><i class="bi bi-arrow-repeat"></i></span> Official page monitoring</h2>
+  {% if last_check and last_check.outcome in ("baseline", "unchanged", "changed", "minor") %}
+    <p class="mb-2 small">Last automatic check of the official page: <strong>{{ last_check.checked_at }} UTC</strong>.</p>
+  {% elif last_check %}
+    <p class="mb-2 small">The last automatic check on {{ last_check.checked_at }} UTC could not read the page
+      ({{ last_check.detail or last_check.outcome }}). Please check the official page yourself.</p>
+  {% else %}
+    <p class="mb-2 small">This page has not been checked automatically yet.</p>
+  {% endif %}
+  {% if recent_changes %}
+    <ul class="list-unstyled mb-0">
+      {% for c in recent_changes %}
+      <li class="mb-2"><span class="chip chip-brand">{{ change_labels[c.change_type] }}</span>
+        <span class="small ms-1">{{ c.detected_at }} UTC. {{ c.summary }}</span></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="mb-0 small text-muted">No changes detected since monitoring started.</p>
+  {% endif %}
+</div>
+
 <div class="sp-verify-banner reveal">
   <i class="bi bi-shield-check"></i>
   <div>

@@ -66,6 +66,7 @@
                 <li><a class="sp-nav-link {{ 'active' if ep.startswith('matching.') }}" href="{{ url_for('matching.match') }}"><i class="bi bi-stars"></i> Find matches</a></li>
                 {% endif %}
                 <li><a class="sp-nav-link {{ 'active' if ep.startswith('saved.') }}" href="{{ url_for('saved.tracker') }}"><i class="bi bi-bookmark-heart"></i> Tracker</a></li>
+                <li><a class="sp-nav-link {{ 'active' if ep.startswith('changes.') }}" href="{{ url_for('changes.updates') }}"><i class="bi bi-arrow-repeat"></i> Updates</a></li>
               </ul>
               {% else %}
               <ul class="sp-nav-links">
