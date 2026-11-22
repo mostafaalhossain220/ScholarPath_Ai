@@ -2,7 +2,7 @@ opportunity_id,title,requirement,method,sentence,verdict
 1,SI Scholarship for Global Professionals,CGPA,semantic,Applicants must also meet the applicable tuition-fee conditions.,weak
 1,SI Scholarship for Global Professionals,IELTS,keyword,and meet the programme's admission and English-language requirements.,ok
 1,SI Scholarship for Global Professionals,degree level,keyword,apply to an eligible full-time master's programme in Sweden;,ok
-1,SI Scholarship for Global Professionals,funding,keyword,Fully funded: monthly allowance and travel grant (subject to scholarship terms),wrong
+1,SI Scholarship for Global Professionals,funding,keyword,Fully funded: monthly allowance and travel grant (subject to scholarship terms),ok
 2,PhD in Computer Science,CGPA,keyword,No universal minimum CGPA or IELTS score is entered here;,weak
 2,PhD in Computer Science,IELTS,keyword,English-proficiency requirements depend on the university's current policy and any applicable waiver.,weak
 2,PhD in Computer Science,degree level,keyword,"Prepare academic transcripts, CV, statement of purpose and recommendation letters as required by the graduate application.",ok
