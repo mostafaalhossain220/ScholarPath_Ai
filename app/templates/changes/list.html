@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Source updates | ScholarPath AI{% endblock %}
+{% block content %}
+<header class="page-head reveal">
+  <span class="page-eyebrow"><i class="bi bi-arrow-repeat"></i> Source monitoring</span>
+  <h1 class="page-title">Updates on your saved opportunities</h1>
+  <p class="page-sub">We re-check the official pages of opportunities you saved and list what changed.
+    These are automatic detections and may be wrong, so always confirm on the official page.</p>
+</header>
+
+{% if changes %}
+<div class="d-flex flex-column gap-3">
+  {% for c in changes %}
+  <article class="card sp-panel reveal" style="--reveal-delay: {{ (loop.index0 % 6) * 60 }}ms">
+    <div class="d-flex flex-wrap gap-2 mb-2">
+      <span class="chip chip-brand">{{ labels[c.change_type] }}</span>
+      {% if c.needs_review %}<span class="chip chip-urgent"><i class="bi bi-eye"></i> Needs manual review</span>{% endif %}
+      <span class="chip">Your status: {{ c.saved_status|capitalize }}</span>
+    </div>
+    <a class="track-title" href="{{ url_for('opportunities.detail', opportunity_id=c.opportunity_id) }}">{{ c.title }}</a>
+    <div class="pick-meta mt-1"><i class="bi bi-building me-1"></i>{{ c.provider }}
+      <span class="mx-1">·</span>Detected {{ c.detected_at }} UTC</div>
+    <p class="mt-2 mb-2">{{ c.summary }}</p>
+    <div class="row g-3">
+      {% if c.old_text %}
+      <div class="col-lg-6"><div class="pick-meta">Before</div>
+        <blockquote class="evidence-quote mb-0">{{ c.old_text }}</blockquote></div>
+      {% endif %}
+      {% if c.new_text %}
+      <div class="col-lg-6"><div class="pick-meta">After</div>
+        <blockquote class="evidence-quote mb-0">{{ c.new_text }}</blockquote></div>
+      {% endif %}
+    </div>
+    <a href="{{ c.source_url }}" target="_blank" rel="noopener noreferrer" class="evidence-link mt-3 d-inline-block">
+      <i class="bi bi-box-arrow-up-right"></i> Check the official page
+    </a>
+  </article>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state card sp-panel reveal">
+  <i class="bi bi-check2-circle"></i>
+  <p class="mb-2">No changes detected yet on your saved opportunities.</p>
+  <a class="btn btn-sm btn-sp-sweet rounded-pill px-3" href="{{ url_for('opportunities.list_opportunities') }}">Browse opportunities</a>
+</div>
+{% endif %}
+{% endblock %}

@@ -23,11 +23,16 @@ def create_app():
     from . import db
     db.init_app(app)
 
-    from .routes import auth, opportunities, profile, saved
+    from .routes import auth, changes, opportunities, profile, saved
     app.register_blueprint(auth.bp)
     app.register_blueprint(opportunities.bp)
     app.register_blueprint(profile.bp)
     app.register_blueprint(saved.bp)
+    app.register_blueprint(changes.bp)
+
+    # `flask check-sources` command (source monitoring / change detection)
+    from .services import monitoring
+    monitoring.init_app(app)
 
     # The matching page needs the heavy 'sentence-transformers' package. If it is not
     # installed (e.g. small free hosting) skip that page instead of crashing the whole app.
