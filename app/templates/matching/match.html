@@ -149,11 +149,36 @@
         <div class="d-flex flex-column gap-2 mt-2">
           {% for req in r.eligibility.requirements %}
           {% set rm = req_meta[req.status] %}
-          <div class="mini-req">
-            <span class="status-chip {{ rm.cls }}" style="min-width: 98px; justify-content: center;">{{ rm.label }}</span>
-            <span><strong>{{ req.requirement[:1]|upper }}{{ req.requirement[1:] }}:</strong> {{ req.reason }}</span>
+          {% set ev = req.evidence %}
+          <div>
+            <div class="mini-req">
+              <span class="status-chip {{ rm.cls }}" style="min-width: 98px; justify-content: center;">{{ rm.label }}</span>
+              <span><strong>{{ req.requirement[:1]|upper }}{{ req.requirement[1:] }}:</strong> {{ req.reason }}</span>
+            </div>
+            {% if ev and ev.sentence %}
+            <div class="pick-meta mt-1">
+              <i class="bi bi-quote me-1"></i>{{ "Official text" if ev.method == "keyword" else "Possibly related (automatic match)" }}:
+              &ldquo;{{ ev.sentence }}&rdquo;
+            </div>
+            {% elif ev %}
+            <div class="pick-meta mt-1"><i class="bi bi-dash-circle me-1"></i>No supporting sentence found in the stored official text.</div>
+            {% endif %}
           </div>
           {% endfor %}
+
+          {% if r.evidence and r.evidence.funding and r.evidence.funding.sentence %}
+          <div class="pick-meta mt-1">
+            <strong>Funding:</strong> {{ "Official text" if r.evidence.funding.method == "keyword" else "Possibly related (automatic match)" }}:
+            &ldquo;{{ r.evidence.funding.sentence }}&rdquo;
+          </div>
+          {% endif %}
+
+          {% if r.evidence %}
+          <div class="pick-meta mt-1">
+            These sentences come from the stored text of this opportunity and may not cover every condition.
+            <a href="{{ o.source_url }}" target="_blank" rel="noopener noreferrer">Check the official page</a>.
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>
