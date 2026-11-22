@@ -1,0 +1,77 @@
+opportunity_id,title,requirement,method,sentence,verdict
+1,SI Scholarship for Global Professionals,CGPA,semantic,Applicants must also meet the applicable tuition-fee conditions.,weak
+1,SI Scholarship for Global Professionals,IELTS,keyword,and meet the programme's admission and English-language requirements.,ok
+1,SI Scholarship for Global Professionals,degree level,keyword,apply to an eligible full-time master's programme in Sweden;,ok
+1,SI Scholarship for Global Professionals,funding,keyword,Fully funded: monthly allowance and travel grant (subject to scholarship terms),wrong
+2,PhD in Computer Science,CGPA,keyword,No universal minimum CGPA or IELTS score is entered here;,weak
+2,PhD in Computer Science,IELTS,keyword,English-proficiency requirements depend on the university's current policy and any applicable waiver.,weak
+2,PhD in Computer Science,degree level,keyword,"Prepare academic transcripts, CV, statement of purpose and recommendation letters as required by the graduate application.",ok
+2,PhD in Computer Science,funding,keyword,"Full tuition waiver, stipend and health insurance (confirm package and conditions with the department)",weak
+3,PhD in Data Science,CGPA,semantic,"IELTS 7.0 was previously identified as a recommended score, not a confirmed universal minimum;",ok
+3,PhD in Data Science,IELTS,keyword,"IELTS 7.0 was previously identified as a recommended score, not a confirmed universal minimum;",ok
+3,PhD in Data Science,degree level,semantic,Doctoral programme in data science for Fall 2027 admission.,ok
+3,PhD in Data Science,funding,keyword,"Tuition and fees, health insurance and stipend (subject to the programme's funding terms)",ok
+4,PhD in Computer Science,CGPA,keyword,A 3.0 GPA figure should not be treated as a confirmed current programme cutoff without checking the official admissions page.,weak
+4,PhD in Computer Science,IELTS,keyword,International applicants must satisfy the university's English-proficiency rules unless exempt.,weak
+4,PhD in Computer Science,degree level,semantic,"Applicants need a relevant academic background and should submit academic transcripts, statement of purpose, CV and recommendation letters as specified by the department.",weak
+4,PhD in Computer Science,funding,keyword,PhD financial support may include a stipend and tuition scholarship/waiver;,weak
+5,Computing PhD Studentships,CGPA,keyword,Applicants are normally expected to have a first-class bachelor's degree or a distinction-level master's degree (or equivalent) in a relevant scientific or technical discipline.,ok
+5,Computing PhD Studentships,IELTS,keyword,Applicants must meet Imperial's English-language requirement at the level applicable to the programme.,ok
+5,Computing PhD Studentships,degree level,keyword,Applicants are normally expected to have a first-class bachelor's degree or a distinction-level master's degree (or equivalent) in a relevant scientific or technical discipline.,ok
+5,Computing PhD Studentships,funding,keyword,"The Department of Computing offers fully funded PhD studentships to home and overseas students, awarded on academic excellence and research potential.",weak
+6,PhD in Computer Science (Gates Cambridge and other trusts),CGPA,semantic,Applicants should have a strong academic record and meet the Department of Computer Science and Technology's PhD admission requirements.,weak
+6,PhD in Computer Science (Gates Cambridge and other trusts),IELTS,keyword,Applicants should identify a suitable research area/supervisor and satisfy the University of Cambridge's English-language requirements.,ok
+6,PhD in Computer Science (Gates Cambridge and other trusts),degree level,keyword,"A research proposal, CV, transcripts, degree certificates and academic references may be required.",ok
+6,PhD in Computer Science (Gates Cambridge and other trusts),funding,keyword,Funding applications have separate eligibility and deadline rules;,wrong
+7,Erasmus Mundus Joint Master in Data Engineering and Artifici,CGPA,semantic,Applicants must hold a bachelor's degree equivalent to 180 ECTS from an accredited university meeting the programme's stated recognition criteria.,weak
+7,Erasmus Mundus Joint Master in Data Engineering and Artifici,IELTS,keyword,English proficiency at CEFR B2 is required;,wrong
+7,Erasmus Mundus Joint Master in Data Engineering and Artifici,degree level,keyword,Applicants must hold a bachelor's degree equivalent to 180 ECTS from an accredited university meeting the programme's stated recognition criteria.,wrong
+7,Erasmus Mundus Joint Master in Data Engineering and Artifici,funding,keyword,"Full scholarship: participation costs covered plus €1,400/month stipend;",weak
+8,Citizen-Centred Artificial Intelligence (CCAI) PhD,CGPA,none,,none
+8,Citizen-Centred Artificial Intelligence (CCAI) PhD,IELTS,keyword,"Applicants submit a two-page CV, research proposal, EDI data/optional personal statement, degree certificates and transcripts, and English-language evidence where required.",weak
+8,Citizen-Centred Artificial Intelligence (CCAI) PhD,degree level,keyword,"Applicants submit a two-page CV, research proposal, EDI data/optional personal statement, degree certificates and transcripts, and English-language evidence where required.",weak
+8,Citizen-Centred Artificial Intelligence (CCAI) PhD,funding,keyword,"Fully funded: tuition fees, stipend and research training grant;",ok
+9,"Funded PhD Studentship in Computer Science, IT and Software ",CGPA,keyword,Applicants must hold an upper second-class honours degree or a master's degree in a relevant subject;,wrong
+9,"Funded PhD Studentship in Computer Science, IT and Software ",IELTS,keyword,Non-UK/Irish applicants must demonstrate English-language competency.,ok
+9,"Funded PhD Studentship in Computer Science, IT and Software ",degree level,keyword,Applicants must hold an upper second-class honours degree or a master's degree in a relevant subject;,ok
+9,"Funded PhD Studentship in Computer Science, IT and Software ",funding,keyword,"Fully funded for 3 years and 3 months: course fees covered, stipend of at least £21,805/year, plus research training/support grant",ok
+10,Computing Science PhD Studentships 2027,CGPA,keyword,"Normally requires an upper second-class honours undergraduate degree or equivalent, or a master's degree, in Computing Science or a related discipline.",weak
+10,Computing Science PhD Studentships 2027,IELTS,keyword,check each studentship's international-fee coverage and English-language requirements.,weak
+10,Computing Science PhD Studentships 2027,degree level,keyword,"Normally requires an upper second-class honours undergraduate degree or equivalent, or a master's degree, in Computing Science or a related discipline.",ok
+10,Computing Science PhD Studentships 2027,funding,keyword,Applicants should identify a suitable project/supervisor and select 'Univ of Glasgow Scholarship' as the funding source in the application.,ok
+11,International Graduate Admission in Computer Science 2027,CGPA,semantic,Master's applicants need a bachelor's degree;,ok
+11,International Graduate Admission in Computer Science 2027,IELTS,keyword,"For English-taught programmes, non-native English speakers must submit IELTS above 6.5, TOEFL or other accepted evidence.",ok
+11,International Graduate Admission in Computer Science 2027,degree level,keyword,Master's applicants need a bachelor's degree;,ok
+11,International Graduate Admission in Computer Science 2027,funding,keyword,"Chinese Government Scholarship, Beijing Government Scholarship and Peking University scholarships may cover tuition, accommodation, living expenses and/or insurance depending on award.",ok
+12,International Graduate Admission in Computer Science 2027,CGPA,semantic,Master's applicants need a bachelor's degree;,ok
+12,International Graduate Admission in Computer Science 2027,IELTS,keyword,"For English-taught programmes, non-native English speakers must submit IELTS above 6.5, TOEFL or other accepted evidence.",ok
+12,International Graduate Admission in Computer Science 2027,degree level,keyword,Master's applicants need a bachelor's degree;,ok
+12,International Graduate Admission in Computer Science 2027,funding,keyword,"Chinese Government Scholarship, Beijing Government Scholarship and Peking University scholarships may cover tuition, accommodation, living expenses and/or insurance depending on award.",wrong
+13,MSc Computing Science – Cyber Security and AI specialisation,CGPA,semantic,Exact admission period depends on nationality and previous education;,weak
+13,MSc Computing Science – Cyber Security and AI specialisation,IELTS,none,,none
+13,MSc Computing Science – Cyber Security and AI specialisation,degree level,keyword,"The page lists a relevant research-university bachelor's degree in Computing Science or a related field such as AI/Mathematics, with additional requirements possible.",weak
+13,MSc Computing Science – Cyber Security and AI specialisation,funding,keyword,Apply by 31 January 2027 for Radboud Scholarship consideration where eligible.,ok
+14,Master in Analytics and Artificial Intelligence (September 2,CGPA,semantic,Check the programme's admission requirements and current scholarship criteria before applying.,weak
+14,Master in Analytics and Artificial Intelligence (September 2,IELTS,keyword,Applicants must satisfy ESMT's academic and English-language admission requirements for the Master in Analytics and Artificial Intelligence.,weak
+14,Master in Analytics and Artificial Intelligence (September 2,degree level,keyword,Applicants must satisfy ESMT's academic and English-language admission requirements for the Master in Analytics and Artificial Intelligence.,weak
+14,Master in Analytics and Artificial Intelligence (September 2,funding,keyword,"The €1,000 award is a tuition reduction, not full funding.",weak
+15,Erasmus Mundus Joint Master in Artificial Intelligence (EMAI,CGPA,semantic,Check the consortium's current admission and language requirements before applying.,weak
+15,Erasmus Mundus Joint Master in Artificial Intelligence (EMAI,IELTS,keyword,Check the consortium's current admission and language requirements before applying.,weak
+15,Erasmus Mundus Joint Master in Artificial Intelligence (EMAI,degree level,keyword,Applicants should have relevant prior knowledge for the Artificial Intelligence joint master's.,weak
+15,Erasmus Mundus Joint Master in Artificial Intelligence (EMAI,funding,keyword,The listed dates are for self-funded applicants;,wrong
+16,Global Korea Scholarship for Graduate Degrees (GKS-G),CGPA,none,,none
+16,Global Korea Scholarship for Graduate Degrees (GKS-G),IELTS,none,,none
+16,Global Korea Scholarship for Graduate Degrees (GKS-G),degree level,keyword,South Korean government scholarship for international master's and doctoral students at designated universities.,ok
+16,Global Korea Scholarship for Graduate Degrees (GKS-G),funding,keyword,Fully funded Korean government scholarship,ok
+17,Global Korea Scholarship for Graduate Degrees (GKS-G),CGPA,none,,none
+17,Global Korea Scholarship for Graduate Degrees (GKS-G),IELTS,none,,none
+17,Global Korea Scholarship for Graduate Degrees (GKS-G),degree level,keyword,South Korean government scholarship for international master's and doctoral students at designated universities.,ok
+17,Global Korea Scholarship for Graduate Degrees (GKS-G),funding,keyword,Fully funded Korean government scholarship,ok
+18,Japanese Government (MEXT) Scholarship for Research Students,CGPA,none,,none
+18,Japanese Government (MEXT) Scholarship for Research Students,IELTS,none,,none
+18,Japanese Government (MEXT) Scholarship for Research Students,degree level,keyword,"Japanese government scholarship for graduate research students, applied for through the Japanese embassy in the applicant's country.",ok
+18,Japanese Government (MEXT) Scholarship for Research Students,funding,keyword,"Fully funded: tuition exemption, round-trip airfare and monthly stipend",ok
+19,Japanese Government (MEXT) Scholarship for Research Students,CGPA,none,,none
+19,Japanese Government (MEXT) Scholarship for Research Students,IELTS,none,,none
+19,Japanese Government (MEXT) Scholarship for Research Students,degree level,keyword,"Japanese government scholarship for graduate research students, applied for through the Japanese embassy in the applicant's country.",weak
+19,Japanese Government (MEXT) Scholarship for Research Students,funding,keyword,"Fully funded: tuition exemption, round-trip airfare and monthly stipend",ok
