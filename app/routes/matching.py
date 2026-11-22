@@ -68,6 +68,6 @@ def match():
                 "skills": form["skills"],
             }
             rows = get_db().execute("SELECT * FROM opportunities").fetchall()
-            results = rank_opportunities(profile, rows)
+            results = rank_opportunities(profile, rows, with_evidence=True)
 
     return render_template("matching/match.html", form=form, errors=errors, results=results)

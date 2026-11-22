@@ -1,4 +1,5 @@
 from app.services.eligibility import check_eligibility
+from app.services.evidence import get_evidence
 from app.services.keyword_matcher import keyword_score
 from app.services.semantic_matcher import semantic_scores
 
@@ -25,11 +26,15 @@ def student_text(profile):
     return ". ".join(p.strip() for p in parts if p and p.strip())
 
 
-def rank_opportunities(profile, opportunities):
+def rank_opportunities(profile, opportunities, with_evidence=False, evidence_top=10):
     """Rank opportunities for one student profile and explain each result.
 
     Opportunities that fail a requirement are listed after the others, not hidden.
     The score is for ordering only. It is not a chance of admission.
+
+    With with_evidence=True, the best supporting sentence from the official text is
+    added to each requirement of the first `evidence_top` results (or None when the
+    text has no such sentence). Evidence never changes the order.
     """
     profile = dict(profile)
     opportunities = list(opportunities)
@@ -66,10 +71,19 @@ def rank_opportunities(profile, opportunities):
             "country_hit": country_hit,
             "eligibility": eligibility,
             "reasons": reasons,
+            "evidence": None,
         })
 
     results.sort(
         key=lambda r: (r["eligibility"]["overall"] != "not_satisfied", r["final_score"]),
         reverse=True,
     )
+
+    if with_evidence:
+        for result in results[:evidence_top]:
+            evidence = get_evidence(result["opportunity"])
+            result["evidence"] = evidence
+            for requirement in result["eligibility"]["requirements"]:
+                requirement["evidence"] = evidence.get(requirement["requirement"])
+
     return results
