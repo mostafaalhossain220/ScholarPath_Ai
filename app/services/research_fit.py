@@ -2,7 +2,6 @@ from app.services.evidence import split_sentences
 from app.services.keyword_matcher import tokenize
 from app.services.semantic_matcher import get_model
 
-SOURCE_FIELDS = ("title", "field", "description", "requirements_text")
 TOP_SENTENCES = 2
 _cache = {}
 
@@ -24,20 +23,16 @@ def label_for(score):
 
 
 def interests_text(profile):
-    parts = [profile.get("research_interests"), profile.get("field")]
-    return ". ".join(p.strip() for p in parts if p and p.strip())
+    """Only the research interests. A field name is a department, not a research topic."""
+    return (profile.get("research_interests") or "").strip()
 
 
 def project_sentences(opportunity):
-    """Title, field and sentences of the description and requirements."""
+    """Sentences of the description and requirements. Title and field are only labels."""
     sentences = []
-    for field in SOURCE_FIELDS:
+    for field in ("description", "requirements_text"):
         value = _value(opportunity, field)
-        if not value:
-            continue
-        if field in ("title", "field"):
-            sentences.append(value.strip())
-        else:
+        if value:
             sentences.extend(split_sentences(value))
     seen, unique = set(), []
     for s in sentences:
@@ -48,9 +43,10 @@ def project_sentences(opportunity):
 
 
 def get_research_fit(profile, opportunity, use_model=True):
-    """Compare a student's interests with a PhD project text.
+    """Compare a student's research interests with a PhD project description.
 
-    Returns None for non-PhD opportunities or when the student gave no interests.
+    Returns None for non-PhD opportunities, when the student gave no interests,
+    or when the opportunity has no description to compare with.
     The result only describes how close the texts are. It does not judge admission chances.
     """
     if _value(opportunity, "degree_level") != "phd":
@@ -60,13 +56,15 @@ def get_research_fit(profile, opportunity, use_model=True):
         return None
 
     sentences = project_sentences(opportunity)
+    if not sentences:
+        return None
     project_words = tokenize(" ".join(sentences))
     shared_terms = sorted(tokenize(text) & project_words)
     skills_overlap = sorted(tokenize(profile.get("skills") or "") & project_words)
 
     result = {"score": 0.0, "label": "weak", "matches": [],
               "shared_terms": shared_terms, "skills_overlap": skills_overlap}
-    if not use_model or not sentences:
+    if not use_model:
         return result
 
     from sentence_transformers import util
