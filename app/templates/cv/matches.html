@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}CV matches | ScholarPath AI{% endblock %}
+{% block content %}
+{% set req_meta = {
+  "satisfied": {"label": "Satisfied", "cls": "status-satisfied"},
+  "not_satisfied": {"label": "Not satisfied", "cls": "status-not-satisfied"},
+  "unclear": {"label": "Unclear", "cls": "status-unclear"},
+  "not_provided": {"label": "Not provided", "cls": "status-not-provided"},
+} %}
+{% set overall_meta = {
+  "satisfied": {"label": "Meets checks", "cls": "status-satisfied"},
+  "not_satisfied": {"label": "Not satisfied", "cls": "status-not-satisfied"},
+  "needs_verification": {"label": "Needs verification", "cls": "status-unclear"},
+} %}
+<header class="page-head reveal">
+  <span class="page-eyebrow"><i class="bi bi-stars"></i> Matches from your CV</span>
+  <h1 class="page-title">Scholarships that fit your CV</h1>
+  <p class="page-sub">Ranked using your saved profile
+    {% if profile.target_degree %}({{ "PhD" if profile.target_degree == "phd" else "Master's" }} only){% else %}(all degree levels){% endif %}.
+    <a href="{{ url_for('cv.upload') }}">Upload another CV</a> or <a href="{{ url_for('profile.edit') }}">edit your profile</a>.</p>
+</header>
+
+{% for category, message in get_flashed_messages(with_categories=true) %}
+<div class="alert alert-{{ category if category in ('success','warning','danger') else 'info' }} py-2 px-3 small" role="alert">{{ message }}</div>
+{% endfor %}
+
+<div class="alert alert-warning d-flex align-items-start gap-2 mb-4 p-3 small reveal">
+  <i class="bi bi-info-circle-fill fs-5"></i>
+  <div><strong>Advisory notice:</strong> ranking is by topic overlap
+    ({{ "semantic similarity" if method == "semantic" else "shared keywords; install sentence-transformers for semantic matching" }}).
+    It does not predict admission or funding. Confirm every requirement on the official page.</div>
+</div>
+
+<div class="results-bar">
+  <h2 class="h5 fw-bold m-0">Ranked results</h2>
+  <span class="chip chip-brand">showing {{ results|length }} of {{ total }}</span>
+</div>
+
+{% if not results %}
+<div class="card"><div class="empty-state"><i class="bi bi-search-heart"></i>
+  <p class="mb-0">No opportunities found for this profile.</p></div></div>
+{% endif %}
+
+<div class="d-flex flex-column gap-3">
+{% for r in results %}
+{% set o = r.opportunity %}
+{% set pct = [[(r.final_score * 100)|round|int, 100]|min, 0]|max %}
+<article class="card sp-panel reveal" style="--reveal-delay: {{ (loop.index0 % 6) * 60 }}ms">
+  <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+    <div class="min-w-0">
+      <div class="d-flex flex-wrap gap-2 mb-2">
+        <span class="pick-rank" style="width:28px;height:28px;font-size:.8rem;border-radius:9px">{{ loop.index }}</span>
+        <span class="chip">{{ "PhD" if o.degree_level == "phd" else "Master's" }}</span>
+        {% set om = overall_meta[r.eligibility.overall] %}
+        <span class="status-chip {{ om.cls }}">{{ om.label }}</span>
+      </div>
+      <a href="{{ url_for('opportunities.detail', opportunity_id=o.id) }}" class="track-title">{{ o.title }}</a>
+      <div class="pick-meta mt-1">
+        <i class="bi bi-building me-1"></i>{{ o.provider }}
+        <span class="mx-1">·</span><i class="bi bi-geo-alt me-1"></i>{{ o.country or "Country not provided" }}
+        <span class="mx-1">·</span><i class="bi bi-calendar-event me-1"></i>{{ o.deadline or "No deadline listed" }}
+      </div>
+    </div>
+    <div class="score-orb" style="--value: {{ pct }}" title="Relevance score {{ '%.2f'|format(r.final_score) }}">
+      <div><b>{{ "%.2f"|format(r.final_score) }}</b><small>match</small></div>
+    </div>
+  </div>
+  <div class="row g-3">
+    <div class="col-lg-6"><div class="reason-box h-100">
+      <strong><i class="bi bi-lightbulb text-warning me-1"></i>Why recommended</strong>
+      <ul>{% for reason in r.reasons %}<li>{{ reason }}</li>{% endfor %}</ul>
+    </div></div>
+    <div class="col-lg-6"><div class="reason-box h-100">
+      <strong><i class="bi bi-clipboard2-check text-success me-1"></i>Eligibility checklist</strong>
+      <div class="d-flex flex-column gap-2 mt-2">
+        {% for req in r.eligibility.requirements %}{% set rm = req_meta[req.status] %}
+        <div class="mini-req"><span class="status-chip {{ rm.cls }}" style="min-width: 98px; justify-content: center;">{{ rm.label }}</span>
+          <span><strong>{{ req.requirement[:1]|upper }}{{ req.requirement[1:] }}:</strong> {{ req.reason }}</span></div>
+        {% endfor %}
+      </div>
+    </div></div>
+  </div>
+</article>
+{% endfor %}
+</div>
+
+{% if total > results|length %}
+<div class="text-center mt-4"><a class="btn btn-ghost px-4" href="{{ url_for('cv.matches', all=1) }}">Show all {{ total }}</a></div>
+{% elif show_all and total > 10 %}
+<div class="text-center mt-4"><a class="btn btn-ghost px-4" href="{{ url_for('cv.matches') }}">Show top 10 only</a></div>
+{% endif %}
+{% endblock %}

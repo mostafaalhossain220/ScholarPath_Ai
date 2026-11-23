@@ -17,18 +17,22 @@ def create_app():
     app.config["SESSION_COOKIE_HTTPONLY"] = True
     app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
+    # Largest request body accepted (CV upload limit)
+    app.config["MAX_CONTENT_LENGTH"] = 4 * 1024 * 1024
+
     os.makedirs(app.instance_path, exist_ok=True)
     app.config["DATABASE"] = os.path.join(app.instance_path, "scholarpath.db")
 
     from . import db
     db.init_app(app)
 
-    from .routes import auth, changes, opportunities, profile, saved
+    from .routes import auth, changes, cv, opportunities, profile, saved
     app.register_blueprint(auth.bp)
     app.register_blueprint(opportunities.bp)
     app.register_blueprint(profile.bp)
     app.register_blueprint(saved.bp)
     app.register_blueprint(changes.bp)
+    app.register_blueprint(cv.bp)
 
     # `flask check-sources` command (source monitoring / change detection)
     from .services import monitoring
@@ -80,6 +84,10 @@ def create_app():
     @app.errorhandler(403)
     def forbidden(e):
         return render_template("errors.html", error_title="Access Forbidden (403)", error_message="You do not have permission to access this resource."), 403
+
+    @app.errorhandler(413)
+    def too_large(e):
+        return render_template("errors.html", error_title="File Too Large (413)", error_message="The uploaded file is larger than 4 MB. Please upload a smaller CV."), 413
 
     @app.errorhandler(404)
     def not_found(e):

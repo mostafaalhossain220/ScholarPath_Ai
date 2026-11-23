@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}Upload CV | ScholarPath AI{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-9 col-xl-8">
+    <header class="page-head reveal">
+      <span class="page-eyebrow"><i class="bi bi-file-earmark-person"></i> CV upload</span>
+      <h1 class="page-title">Build your profile from your CV</h1>
+      <p class="page-sub">Upload your CV and we read your CGPA, IELTS, field, skills and research interests,
+        then show matching scholarships. You review everything before it is saved.</p>
+    </header>
+
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category if category in ('success','warning','danger') else 'info' }} py-2 px-3 small" role="alert">{{ message }}</div>
+    {% endfor %}
+
+    {% if not review %}
+    <div class="card reveal" style="--reveal-delay: 60ms">
+      <form method="post" enctype="multipart/form-data" class="form-section">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-section-head">
+          <span class="sp-icon-badge"><i class="bi bi-upload"></i></span>
+          <div><h2>Choose your CV</h2><p>PDF, DOCX or TXT, up to 4 MB. Text-based files only (not scanned images).</p></div>
+        </div>
+        <input class="form-control mb-3" type="file" name="cv" accept=".pdf,.docx,.txt" required>
+        <button class="btn btn-sp-sweet px-4 py-2" type="submit" data-loading-text="Reading your CV…">
+          <i class="bi bi-magic me-1"></i> Read my CV
+        </button>
+        <div class="sp-fineprint mt-3">
+          <i class="bi bi-shield-lock"></i> Your CV file is read in memory and is <b>not stored</b>.
+          Only the profile values you confirm on the next screen are saved.
+        </div>
+      </form>
+    </div>
+
+    {% else %}
+    <div class="alert alert-success py-2 px-3 small reveal">
+      <i class="bi bi-check-circle-fill me-1"></i>
+      We read <b>{{ review.filename or "your CV" }}</b>
+      {% if review.found %}and found: <b>{% for key in review.found %}{{ review.labels[key] }}{{ ', ' if not loop.last }}{% endfor %}</b>.
+      {% else %}but could not detect any details. Please fill them in below.{% endif %}
+      Please check every value, because automatic reading can be wrong.
+    </div>
+    {% for note in review.notes %}
+    <div class="alert alert-warning py-2 px-3 small"><i class="bi bi-exclamation-triangle-fill me-1"></i>{{ note }}</div>
+    {% endfor %}
+
+    <form method="post" action="{{ url_for('cv.apply') }}" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      {% set form = review.form %}
+      <div class="card reveal" style="--reveal-delay: 60ms">
+        <section class="form-section">
+          <div class="form-section-head">
+            <span class="sp-icon-badge"><i class="bi bi-mortarboard"></i></span>
+            <div><h2>Review your details</h2><p>Fields marked <span class="chip chip-brand">from CV</span> were found in your CV.</p></div>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label" for="cgpa">CGPA (out of 4.00) {% if 'cgpa' in review.found %}<span class="chip chip-brand">from CV</span>{% endif %}</label>
+              <input class="form-control {{ 'is-invalid' if errors.cgpa }}" id="cgpa" name="cgpa" value="{{ form.cgpa }}" inputmode="decimal" placeholder="e.g. 3.45">
+              {% if errors.cgpa %}<div class="invalid-feedback">{{ errors.cgpa }}</div>{% endif %}
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="ielts">IELTS overall {% if 'ielts' in review.found %}<span class="chip chip-brand">from CV</span>{% endif %}</label>
+              <input class="form-control {{ 'is-invalid' if errors.ielts }}" id="ielts" name="ielts" value="{{ form.ielts }}" inputmode="decimal" placeholder="e.g. 6.5">
+              {% if errors.ielts %}<div class="invalid-feedback">{{ errors.ielts }}</div>{% endif %}
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="target_degree">Target degree {% if 'target_degree' in review.found %}<span class="chip chip-brand">from CV</span>{% endif %}</label>
+              <select class="form-select {{ 'is-invalid' if errors.target_degree }}" id="target_degree" name="target_degree">
+                <option value="">Not decided (show all)</option>
+                <option value="masters" {{ 'selected' if form.target_degree == 'masters' }}>Master's</option>
+                <option value="phd" {{ 'selected' if form.target_degree == 'phd' }}>PhD</option>
+              </select>
+              {% if errors.target_degree %}<div class="invalid-feedback">{{ errors.target_degree }}</div>{% endif %}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="field">Field of study {% if 'field' in review.found %}<span class="chip chip-brand">from CV</span>{% endif %}</label>
+              <input class="form-control {{ 'is-invalid' if errors.field }}" id="field" name="field" value="{{ form.field }}" placeholder="e.g. Computer Science">
+              {% if errors.field %}<div class="invalid-feedback">{{ errors.field }}</div>{% endif %}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="preferred_countries_search">Preferred countries (not in CVs, please add)</label>
+              <div class="tag-input {{ 'is-invalid' if errors.preferred_countries }}" data-tag-input data-listing='{{ listing_countries()|tojson }}'>
+                <input type="hidden" id="preferred_countries" name="preferred_countries" value="{{ form.preferred_countries }}">
+                <div class="tag-input-box"><input class="tag-input-field" id="preferred_countries_search" autocomplete="off" placeholder="Search and add countries…"></div>
+                <div class="autocomplete-dropdown" role="listbox"></div>
+              </div>
+              {% if errors.preferred_countries %}<div class="text-danger small mt-1 fw-semibold">{{ errors.preferred_countries }}</div>{% endif %}
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="research_interests">Research interests {% if 'research_interests' in review.found %}<span class="chip chip-brand">from CV</span>{% endif %}</label>
+              <textarea class="form-control {{ 'is-invalid' if errors.research_interests }}" id="research_interests" name="research_interests" rows="2">{{ form.research_interests }}</textarea>
+              {% if errors.research_interests %}<div class="invalid-feedback">{{ errors.research_interests }}</div>{% endif %}
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="skills">Skills &amp; tools {% if 'skills' in review.found %}<span class="chip chip-brand">from CV</span>{% endif %}</label>
+              <textarea class="form-control {{ 'is-invalid' if errors.skills }}" id="skills" name="skills" rows="2">{{ form.skills }}</textarea>
+              {% if errors.skills %}<div class="invalid-feedback">{{ errors.skills }}</div>{% endif %}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="funding_need">Funding need</label>
+              <select class="form-select" id="funding_need" name="funding_need">
+                <option value="">Not decided</option>
+                {% for key, label in funding_choices.items() %}
+                <option value="{{ key }}" {{ 'selected' if form.funding_need == key }}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="d-flex gap-2 mt-4">
+            <button class="btn btn-sp-sweet px-4 py-2" type="submit" data-loading-text="Saving…"><i class="bi bi-stars me-1"></i> Save and show matching scholarships</button>
+            <a class="btn btn-ghost px-3 py-2" href="{{ url_for('cv.upload') }}">Upload a different CV</a>
+          </div>
+        </section>
+      </div>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
