@@ -1,6 +1,7 @@
 from app.services.eligibility import check_eligibility
 from app.services.evidence import get_evidence
 from app.services.keyword_matcher import keyword_score
+from app.services.research_fit import get_research_fit
 from app.services.semantic_matcher import semantic_scores
 
 SEMANTIC_WEIGHT = 0.8
@@ -32,9 +33,9 @@ def rank_opportunities(profile, opportunities, with_evidence=False, evidence_top
     Opportunities that fail a requirement are listed after the others, not hidden.
     The score is for ordering only. It is not a chance of admission.
 
-    With with_evidence=True, the best supporting sentence from the official text is
-    added to each requirement of the first `evidence_top` results (or None when the
-    text has no such sentence). Evidence never changes the order.
+    With with_evidence=True, the first `evidence_top` results also get supporting
+    sentences from the official text and, for PhD positions, a research-fit comparison.
+    These never change the order.
     """
     profile = dict(profile)
     opportunities = list(opportunities)
@@ -72,6 +73,7 @@ def rank_opportunities(profile, opportunities, with_evidence=False, evidence_top
             "eligibility": eligibility,
             "reasons": reasons,
             "evidence": None,
+            "research_fit": None,
         })
 
     results.sort(
@@ -85,5 +87,7 @@ def rank_opportunities(profile, opportunities, with_evidence=False, evidence_top
             result["evidence"] = evidence
             for requirement in result["eligibility"]["requirements"]:
                 requirement["evidence"] = evidence.get(requirement["requirement"])
+            if result["opportunity"]["degree_level"] == "phd":
+                result["research_fit"] = get_research_fit(profile, result["opportunity"])
 
     return results
