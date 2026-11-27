@@ -4,3 +4,18 @@ P02,phd,3.4,6.5,Computer Science,Germany,cybersecurity,Linux; networking
 P03,masters,3.2,6.5,Data Science,Canada,data analysis,Python; statistics
 P04,phd,3.7,7.0,Biology,UK,genomics,R; statistics
 P05,masters,3.0,6.0,Business,USA,marketing,Excel
+P06,phd,3.8,7.0,Computer Science,UK,deep learning,Python; PyTorch
+P07,phd,3.5,6.5,Computer Science,UK; USA,artificial intelligence,Python; TensorFlow
+P08,phd,3.6,7.5,Artificial Intelligence,UK,natural language processing,Python; transformers
+P09,phd,3.4,6.5,Computer Science,UK,computer vision,Python; OpenCV
+P10,phd,3.7,7.0,Artificial Intelligence,UK,machine learning for healthcare,Python; statistics
+P11,phd,3.5,7.0,Computer Science,USA,reinforcement learning,Python; mathematics
+P12,phd,3.3,6.5,Software Engineering,UK,software testing,Java; Python
+P13,phd,3.6,7.0,Computer Science,UK,software engineering,Java; Git
+P14,phd,3.5,6.5,Computer Science,UK; Germany,network security,Linux; networking
+P15,masters,3.4,6.5,Artificial Intelligence,UK,machine learning,Python
+P16,masters,3.2,6.5,Artificial Intelligence,Netherlands,artificial intelligence,Python
+P17,masters,3.3,6.5,Computer Science,UK,artificial intelligence and machine learning,Python; Java
+P18,masters,3.1,6.5,Data Science,UK,data analysis,Python; SQL
+P19,masters,3.0,6.0,Statistics,China,statistics,R; Python
+P20,phd,3.6,7.0,Chemistry,UK,organic synthesis,Lab skills
