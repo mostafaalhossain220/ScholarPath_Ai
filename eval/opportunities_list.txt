@@ -1,0 +1,50 @@
+1 | SI Scholarship for Global Professionals | None | masters | Sweden
+2 | PhD in Computer Science | Computer Science | phd | USA
+3 | PhD in Data Science | Data Science; Artificial Intelligence | phd | USA
+4 | PhD in Computer Science | Computer Science | phd | USA
+5 | Computing PhD Studentships | Computer Science | phd | UK
+6 | PhD in Computer Science (Gates Cambridge and other trusts) | Computer Science | phd | UK
+7 | Erasmus Mundus Joint Master in Data Engineering and Artificial Intelligence (DEAI) | Data Engineering; Artificial Intelligence; Computer Science | masters | Belgium; Spain; Austria; France; Italy
+8 | Citizen-Centred Artificial Intelligence (CCAI) PhD | Artificial Intelligence; Human-Centred AI; AI Governance; Interdisciplinary Computing | phd | UK
+9 | Funded PhD Studentship in Computer Science, IT and Software Engineering | Artificial Intelligence; Software Engineering; Interaction Design; Technology and Education; Multimedia and Networking | phd | UK
+10 | Computing Science PhD Studentships 2027 | Computing Science; Healthcare Technologies; Cybersecurity; Data Science; Autonomous Systems; Programming Languages | phd | UK
+11 | International Graduate Admission in Computer Science 2027 | Computer Science and Technology; Artificial Intelligence (research areas subject to department catalogue) | masters | China
+12 | International Graduate Admission in Computer Science 2027 | Computer Science and Technology; Artificial Intelligence (research areas subject to department catalogue) | phd | China
+13 | MSc Computing Science – Cyber Security and AI specialisation | Computer Science; Cyber Security; Artificial Intelligence | masters | Netherlands
+14 | Master in Analytics and Artificial Intelligence (September 2027 intake) | Analytics; Artificial Intelligence; Data Science | masters | Germany
+15 | Erasmus Mundus Joint Master in Artificial Intelligence (EMAI) – self-funded application | Artificial Intelligence; Machine Learning | masters | Spain; Netherlands; Slovenia; Czech Republic (consortium mobility; confirm partner locations)
+16 | Global Korea Scholarship for Graduate Degrees (GKS-G) | None | masters | South Korea
+17 | Global Korea Scholarship for Graduate Degrees (GKS-G) | None | phd | South Korea
+18 | Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | None | masters | Japan
+19 | Japanese Government (MEXT) Scholarship for Research Students (Embassy Recommendation) | None | phd | Japan
+20 | Leverhulme Centre for Algorithmic Life PhD Studentships | Artificial Intelligence | phd | United Kingdom
+21 | Computer Science PhD Studentships | Computer Science | phd | United Kingdom
+22 | AI Centre for Doctoral Training in Biomedical Innovation | Biomedical AI | phd | United Kingdom
+23 | Citizen-Centred Artificial Intelligence PhD | Artificial Intelligence; Human-Centred AI | phd | United Kingdom
+24 | Funded PhD Studentships in Computer Science and Software Engineering | Computer Science; Software Engineering | phd | United Kingdom
+25 | Sussex AI PhD Studentships | Artificial Intelligence | phd | United Kingdom
+26 | AI for Nature: Multimodal and Agentic AI PhD | Multimodal AI | phd | United Kingdom
+27 | Oxford-UBS Centre Applied AI DPhil Studentship | Applied AI | phd | United Kingdom
+28 | Efficient and Adaptive AI PhD Studentship | Artificial Intelligence | phd | United Kingdom
+29 | Foundational AI PhD Studentship | Artificial Intelligence | phd | United Kingdom
+30 | Trustworthy AI for Software Testing PhD Studentship | AI; Software Engineering | phd | United Kingdom
+31 | MSc Data Science | Data Science | masters | China
+32 | MSc Financial Engineering | Financial Engineering | masters | China
+33 | MSc Computer Science | Computer Science | masters | China
+34 | MSc Statistics | Statistics | masters | China
+35 | MSc Artificial Intelligence | Artificial Intelligence | masters | China
+36 | MSc Artificial Intelligence Applied to Society | Artificial Intelligence | masters | France
+37 | Artificial Intelligence MSc | Artificial Intelligence | masters | United Kingdom
+38 | Data Science MSc | Data Science | masters | United Kingdom
+39 | Artificial Intelligence and Data Engineering MSc | Artificial Intelligence; Data Engineering | masters | United Kingdom
+40 | Data Science MSc | Data Science | masters | United Kingdom
+41 | Machine Learning MSc | Machine Learning | masters | United Kingdom
+42 | Artificial Intelligence MSc | Artificial Intelligence | masters | Hungary
+43 | Artificial Intelligence MSc | Artificial Intelligence | masters | Netherlands
+44 | Artificial Intelligence MSc | Artificial Intelligence | masters | United Kingdom
+45 | Computer Science with AI and Machine Learning MSc | Artificial Intelligence; Computer Science | masters | United Kingdom
+46 | Master in Analytics and Artificial Intelligence | Analytics; Artificial Intelligence; Data Science | masters | Germany
+47 | Artificial Intelligence MSc | Artificial Intelligence | masters | United Kingdom
+48 | Artificial Intelligence MSc | Artificial Intelligence | masters | United Kingdom
+49 | Artificial Intelligence MSc | Artificial Intelligence | masters | United Kingdom
+50 | Computer Science PhD | Computer Science | phd | United Kingdom

@@ -1,0 +1,6 @@
+profile_id,target_degree,cgpa,ielts,field,preferred_countries,research_interests,skills
+P01,phd,3.6,7.0,Computer Science,UK; USA,machine learning,Python
+P02,phd,3.4,6.5,Computer Science,Germany,cybersecurity,Linux; networking
+P03,masters,3.2,6.5,Data Science,Canada,data analysis,Python; statistics
+P04,phd,3.7,7.0,Biology,UK,genomics,R; statistics
+P05,masters,3.0,6.0,Business,USA,marketing,Excel
