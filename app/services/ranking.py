@@ -2,7 +2,7 @@ from app.services.eligibility import check_eligibility
 from app.services.evidence import get_evidence
 from app.services.keyword_matcher import keyword_score
 from app.services.research_fit import get_research_fit
-from app.services.semantic_matcher import semantic_scores
+from app.services.semantic_matcher import HAS_MODEL, semantic_scores
 
 SEMANTIC_WEIGHT = 0.8
 COUNTRY_WEIGHT = 0.2
@@ -14,10 +14,12 @@ def split_list(text):
 
 
 def strength_label(score):
-    """Rough labels. Thresholds should be tuned later with labelled examples."""
-    if score >= 0.45:
+    """Rough labels. Light (TF-IDF) mode uses lower thresholds because its scores are smaller.
+    Thresholds should be tuned later with labelled examples."""
+    strong, moderate = (0.45, 0.30) if HAS_MODEL else (0.20, 0.10)
+    if score >= strong:
         return "strong"
-    if score >= 0.30:
+    if score >= moderate:
         return "moderate"
     return "weak"
 
