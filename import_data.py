@@ -1,3 +1,4 @@
+
 import csv
 from datetime import datetime
 
@@ -5,8 +6,18 @@ from app import create_app
 from app.db import get_db
 
 CSV_PATH = "data/opportunities.csv"
-ALLOWED_TYPES = {"scholarship", "phd", "masters", "admission_and_scholarship"}
+
+# Updated: Added "admission" as an allowed opportunity type.
+ALLOWED_TYPES = {
+    "scholarship",
+    "phd",
+    "masters",
+    "admission",
+    "admission_and_scholarship",
+}
+
 ALLOWED_DEGREES = {"masters", "phd"}
+
 REQUIRED_COLUMNS = [
     "title", "provider", "type", "degree_level", "field", "country", "funding",
     "min_cgpa", "min_ielts", "deadline", "description", "requirements_text",
@@ -36,12 +47,16 @@ def to_iso_date(value, label):
     value = clean(value)
     if value is None:
         return None
+
     for fmt in ("%Y-%m-%d", "%m/%d/%Y"):
         try:
             return datetime.strptime(value, fmt).strftime("%Y-%m-%d")
         except ValueError:
             pass
-    raise ValueError(f"{label} '{value}' must look like YYYY-MM-DD or MM/DD/YYYY")
+
+    raise ValueError(
+        f"{label} '{value}' must look like YYYY-MM-DD or MM/DD/YYYY"
+    )
 
 
 def build_records(raw):
@@ -53,14 +68,21 @@ def build_records(raw):
     title = clean(raw["title"])
     provider = clean(raw["provider"])
     source_url = clean(raw["source_url"])
+
     if not (title and provider and source_url):
         raise ValueError("title, provider and source_url are required")
 
     opp_type = clean(raw["type"])
+
     if opp_type not in ALLOWED_TYPES:
         raise ValueError(f"unknown type '{opp_type}'")
 
-    degrees = [d.strip() for d in (raw["degree_level"] or "").split(";") if d.strip()]
+    degrees = [
+        d.strip()
+        for d in (raw["degree_level"] or "").split(";")
+        if d.strip()
+    ]
+
     if not degrees or any(d not in ALLOWED_DEGREES for d in degrees):
         raise ValueError(f"unknown degree_level '{raw['degree_level']}'")
 
@@ -71,10 +93,20 @@ def build_records(raw):
 
     return [
         (
-            title, provider, opp_type, degree, clean(raw["field"]),
-            clean(raw["country"]), clean(raw["funding"]), min_cgpa, min_ielts,
-            deadline, clean(raw["description"]), clean(raw["requirements_text"]),
-            source_url, last_checked,
+            title,
+            provider,
+            opp_type,
+            degree,
+            clean(raw["field"]),
+            clean(raw["country"]),
+            clean(raw["funding"]),
+            min_cgpa,
+            min_ielts,
+            deadline,
+            clean(raw["description"]),
+            clean(raw["requirements_text"]),
+            source_url,
+            last_checked,
         )
         for degree in degrees
     ]
@@ -104,9 +136,15 @@ def import_csv(path=CSV_PATH):
 
     with app.app_context():
         db = get_db()
+
         with open(path, newline="", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
-            missing = [c for c in REQUIRED_COLUMNS if c not in (reader.fieldnames or [])]
+
+            missing = [
+                c for c in REQUIRED_COLUMNS
+                if c not in (reader.fieldnames or [])
+            ]
+
             if missing:
                 print("Missing columns in CSV:", ", ".join(missing))
                 return
@@ -124,15 +162,24 @@ def import_csv(path=CSV_PATH):
                         "WHERE title = ? AND provider = ? AND degree_level = ?",
                         (record[0], record[1], record[3]),
                     ).fetchone()
+
                     if existing:
-                        db.execute(UPDATE_SQL, record + (existing["id"],))
+                        db.execute(
+                            UPDATE_SQL,
+                            record + (existing["id"],)
+                        )
                         updated += 1
                     else:
                         db.execute(INSERT_SQL, record)
                         inserted += 1
+
         db.commit()
 
-    print(f"Inserted: {inserted}, updated: {updated}, skipped rows: {len(errors)}")
+    print(
+        f"Inserted: {inserted}, updated: {updated}, "
+        f"skipped rows: {len(errors)}"
+    )
+
     for message in errors:
         print("  skipped ->", message)
 
