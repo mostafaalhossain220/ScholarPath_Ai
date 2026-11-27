@@ -1,6 +1,6 @@
 from app.services.evidence import split_sentences
 from app.services.keyword_matcher import tokenize
-from app.services.semantic_matcher import get_model
+from app.services.semantic_matcher import HAS_MODEL, get_model
 
 TOP_SENTENCES = 2
 _cache = {}
@@ -14,10 +14,12 @@ def _value(opportunity, key):
 
 
 def label_for(score):
-    """Same rough thresholds as the ranking; they are assumptions, not tuned values."""
-    if score >= 0.45:
+    """Light (TF-IDF) mode would use lower thresholds because its scores are smaller.
+    Both are assumptions, not tuned values."""
+    strong, moderate = (0.45, 0.30) if HAS_MODEL else (0.20, 0.10)
+    if score >= strong:
         return "strong"
-    if score >= 0.30:
+    if score >= moderate:
         return "moderate"
     return "weak"
 
@@ -64,7 +66,8 @@ def get_research_fit(profile, opportunity, use_model=True):
 
     result = {"score": 0.0, "label": "weak", "matches": [],
               "shared_terms": shared_terms, "skills_overlap": skills_overlap}
-    if not use_model:
+    # Without the heavy model, return only shared terms and skills overlap.
+    if not (use_model and HAS_MODEL):
         return result
 
     from sentence_transformers import util

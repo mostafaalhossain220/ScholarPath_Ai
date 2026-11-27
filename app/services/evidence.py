@@ -1,6 +1,6 @@
 import re
 
-from app.services.semantic_matcher import get_model
+from app.services.semantic_matcher import HAS_MODEL, get_model
 
 # For each requirement: keywords are tried first (precise), meaning second (fallback).
 REQUIREMENTS = {
@@ -77,7 +77,8 @@ def find_evidence(opportunity, use_semantic=True):
             continue
 
         result[name] = {"sentence": None, "source": None, "method": None, "score": 0.0}
-        if not (use_semantic and candidates):
+        # Without the heavy model, only keyword evidence is used.
+        if not (use_semantic and HAS_MODEL and candidates):
             continue
 
         from sentence_transformers import util
