@@ -1,0 +1,4 @@
+Profiles: 20, opportunities: 50, K = 5
+method                   P@K     R@K  nDCG@K
+keyword baseline       0.440   0.232   0.495
+TF-IDF (light)         0.630   0.321   0.718
