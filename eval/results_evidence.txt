@@ -1,0 +1,23 @@
+Rows: 76
+Verdict values found: ['none', 'ok', 'weak', 'wrong']
+
+By method
+group                 n     ok   weak  other   strict  lenient
+keyword              55     30     19      6    0.545    0.891
+none                 10      0      0     10    0.000    0.000
+semantic             11      4      7      0    0.364    1.000
+
+By requirement
+group                 n     ok   weak  other   strict  lenient
+CGPA                 19      4      9      6    0.211    0.684
+IELTS                19      7      6      6    0.368    0.684
+degree level         19     12      6      1    0.632    0.947
+funding              19     11      5      3    0.579    0.842
+
+Overall
+group                 n     ok   weak  other   strict  lenient
+all                  76     34     26     16    0.447    0.789
+
+strict  = ok / total            (evidence correctness)
+lenient = (ok + weak) / total
+unsupported-evidence rate (strict) = 1 - strict
