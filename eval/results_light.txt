@@ -1,4 +1,4 @@
-Profiles: 20, opportunities: 50, K = 5
+Profiles: 20 (evaluated: 19, skipped: P20), opportunities: 50, K = 5
 method                   P@K     R@K  nDCG@K
-keyword baseline       0.440   0.232   0.495
-TF-IDF (light)         0.630   0.321   0.718
+keyword baseline       0.463   0.232   0.495
+semantic               0.621   0.279   0.645

@@ -86,16 +86,28 @@ def main():
         "keyword baseline": keyword_ranking,
         "semantic" if HAS_MODEL else "TF-IDF (light)": semantic_ranking,
     }
+
+    # Profiles with no relevant opportunity (e.g. P20) cannot be scored
+    # for recall or nDCG, so they are excluded from all metrics.
+    evaluated = {
+        pid: row
+        for pid, row in profiles.items()
+        if labels.get(pid) and sum(labels[pid].values()) > 0
+    }
+    skipped = [pid for pid in profiles if pid not in evaluated]
+
     with app.app_context():
         rows = get_db().execute("SELECT * FROM opportunities").fetchall()
-        print(f"Profiles: {len(profiles)}, opportunities: {len(rows)}, K = {K}")
+        print(
+            f"Profiles: {len(profiles)} (evaluated: {len(evaluated)}, "
+            f"skipped: {', '.join(skipped) or 'none'}), "
+            f"opportunities: {len(rows)}, K = {K}"
+        )
         print(f"{'method':<20}{'P@K':>8}{'R@K':>8}{'nDCG@K':>8}")
         for name, fn in methods.items():
             p, r, n = [], [], []
-            for pid, row in profiles.items():
-                rel = labels.get(pid)
-                if not rel:
-                    continue
+            for pid, row in evaluated.items():
+                rel = labels[pid]
                 ranked = fn(to_profile(row), rows)
                 p.append(precision_at_k(ranked, rel, K))
                 r.append(recall_at_k(ranked, rel, K))
